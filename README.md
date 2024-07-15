@@ -24,20 +24,25 @@ Deploy a GitHub Repository Stack to Portainer or Update an Existing Stack.
 | name     | Yes      | -                 | Stack Name            |
 | file     | No       | `compose.yaml`    | Compose File          |
 
+Portainer API Token Documentation: https://docs.portainer.io/api/access
+
+Note: If an `endpoint` is not provided the first endpoint returned by the API will be used.
+If you only have one endpoint, this will work as expected, otherwise, you should provide one. 
+
 ```yaml
-  - name: "Parse Issue"
-    id: issue
+  - name: "Portainer Deploy"
     uses: cssnr/portainer-stack-deploy-action@v1
     with:
       url: https://portainer.example.com:9443
       token: ${{ secrets.PORTAINER_TOKEN }}
-      endpoint: 2
-      name: stack-name
+      endpoint: 1
+      name: node-discord-hook
       file: docker-compose.yaml
 ```
 
 ## Known Issues
 
+- Repository authentication options have not been added yet, but are coming soon...
 - Only works for repository stacks but can be expanded to support other types.
 
 This is a very simple action, for more details see
