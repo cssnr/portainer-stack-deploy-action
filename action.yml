@@ -1,0 +1,28 @@
+name: "Portainer Stack Deploy Action"
+description: "Portainer Stack Deploy Action"
+author: "Shane"
+branding:
+  icon: "layers"
+  color: "blue"
+
+inputs:
+  url:
+    description: "Portainer URL"
+    required: true
+  token:
+    description: "Portainer Token"
+    required: true
+  endpoint:
+    description: "Portainer Endpoint ID"
+    required: false
+  name:
+    description: "Stack Name"
+    required: true
+  file:
+    description: "Compose File"
+    required: false
+    default: "compose.yaml"
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
