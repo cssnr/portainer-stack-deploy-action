@@ -1,5 +1,5 @@
 name: "Portainer Stack Deploy Action"
-description: "Portainer Stack Deploy Action"
+description: "Deploy or Update a Portainer Stack from a GitHub Repository"
 author: "Shane"
 branding:
   icon: "layers"
@@ -22,6 +22,14 @@ inputs:
     description: "Compose File"
     required: false
     default: "compose.yaml"
+  prune:
+    description: "Prune Services"
+    required: false
+    default: "true"
+  pull:
+    description: "Pull Images"
+    required: false
+    default: "true"
 
 runs:
   using: "node20"
