@@ -3,9 +3,12 @@
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 # Portainer Stack Deploy Action
 
-Deploy a GitHub Repository Stack to Portainer or Update an Existing Stack.
+Deploy or Update a Portainer Stack from a GitHub Repository.
+
+This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
 *   [Inputs](#Inputs)
+*   [Example](#Example)
 *   [Known Issues](#Known-Issues)
 *   [Support](#Support)
 
@@ -23,11 +26,15 @@ Deploy a GitHub Repository Stack to Portainer or Update an Existing Stack.
 | endpoint | No       | `endpoints[0].Id` | Portainer Endpoint ID |
 | name     | Yes      | -                 | Stack Name            |
 | file     | No       | `compose.yaml`    | Compose File          |
+| prune    | No       | `true`            | Prune Services        |
+| pull     | No       | `true`            | Pull Images           |
 
-Portainer API Token Documentation: https://docs.portainer.io/api/access
+Creating a Portainer API Token: https://docs.portainer.io/api/access
+
+To disable a boolean use either the yaml `false` or a string `"false"` (anything but `true` will disable). 
 
 Note: If an `endpoint` is not provided the first endpoint returned by the API will be used.
-If you only have one endpoint, this will work as expected, otherwise, you should provide one. 
+If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint. 
 
 ```yaml
   - name: "Portainer Deploy"
@@ -35,9 +42,61 @@ If you only have one endpoint, this will work as expected, otherwise, you should
     with:
       url: https://portainer.example.com:9443
       token: ${{ secrets.PORTAINER_TOKEN }}
-      endpoint: 1
-      name: node-discord-hook
+      name: stack-name
       file: docker-compose.yaml
+```
+
+## Example
+
+This example builds a docker image using BuildX Bake, then pushes and deploys to Portainer.
+
+```yaml
+name: "Build"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Docker Login"
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ vars.GHCR_USER }}
+          password: ${{ secrets.GHCR_PASS }}
+
+      - name: "Setup Buildx"
+        uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: "Bake and Push"
+        uses: docker/bake-action@v5
+        with:
+          push: true
+          files: docker-compose-build.yaml
+
+      - name: "Portainer Deploy"
+        uses: cssnr/portainer-stack-deploy-action@v1
+        with:
+          url: https://portainer.example.com
+          token: ${{ secrets.PORTAINER_TOKEN }}
+          name: stack-name
+          file: docker-compose-swarm.yaml
 ```
 
 ## Known Issues
@@ -48,7 +107,7 @@ If you only have one endpoint, this will work as expected, otherwise, you should
 This is a very simple action, for more details see
 [src/index.js](src%2Findex.js) and [src/portainer.js](src%2Fportainer.js).
 
-# Support
+## Support
 
 For general help or to request a feature, see:
 

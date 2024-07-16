@@ -11,7 +11,7 @@ const Portainer = require('./portainer')
         console.log('repositoryURL:', repositoryURL)
 
         const url = core.getInput('url', { required: true })
-        // console.log('url:', url)
+        console.log('url:', url)
         const token = core.getInput('token', { required: true })
         // console.log('token:', token)
         let endpointID = core.getInput('endpoint')
@@ -20,6 +20,10 @@ const Portainer = require('./portainer')
         console.log('name:', name)
         const composeFile = core.getInput('file', { required: true })
         console.log('composeFile:', composeFile)
+        const prune = core.getInput('prune') === 'true'
+        console.log('prune:', prune)
+        const pullImage = core.getInput('pull') === 'true'
+        console.log('pullImage:', pullImage)
 
         const portainer = new Portainer(url, token)
 
@@ -47,21 +51,21 @@ const Portainer = require('./portainer')
 
         if (stackID) {
             console.log(`Stack Found - Updating Stack ID: ${stackID}`)
-
-            const stack = await portainer.updateStack(stackID, endpointID, {
-                prune: true,
-                pullImage: true,
+            const body = {
+                prune,
+                pullImage,
                 repositoryReferenceName: github.context.ref,
                 repositoryAuthentication: false,
                 // repositoryPassword: 'string',
                 // repositoryUsername: 'string',
-            })
+            }
+            console.log('body:', body)
+            const stack = await portainer.updateStack(stackID, endpointID, body)
             // console.log('stack:', stack)
-            console.log(`Updated Stack ${stack.Name}`)
+            console.log(`Updated Stack: ${stack.Name}`)
         } else {
             console.log('Stack NOT Found - Deploying NEW Stack')
-
-            const stack = await portainer.createStack(endpointID, {
+            const body = {
                 name,
                 swarmID,
                 repositoryURL,
@@ -71,12 +75,14 @@ const Portainer = require('./portainer')
                 repositoryAuthentication: false,
                 // repositoryUsername: 'myGitUsername',
                 // repositoryPassword: 'myGitPassword',
-            })
+            }
+            console.log('body:', body)
+            const stack = await portainer.createStack(endpointID, body)
             // console.log('stack:', stack)
-            console.log(`Deployed Stack ${stack.Name}`)
+            console.log(`Deployed Stack: ${stack.Name}`)
         }
 
-        core.info('Success.')
+        core.info('Success')
     } catch (e) {
         core.debug(e)
         core.info(e.message)
