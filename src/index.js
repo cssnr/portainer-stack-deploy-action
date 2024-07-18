@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
+
 const Portainer = require('./portainer')
 
 ;(async () => {
@@ -20,9 +21,9 @@ const Portainer = require('./portainer')
         console.log('name:', name)
         const composeFile = core.getInput('file', { required: true })
         console.log('composeFile:', composeFile)
-        const prune = core.getInput('prune') === 'true'
+        const prune = core.getBooleanInput('prune')
         console.log('prune:', prune)
-        const pullImage = core.getInput('pull') === 'true'
+        const pullImage = core.getBooleanInput('pull')
         console.log('pullImage:', pullImage)
 
         const portainer = new Portainer(url, token)
@@ -85,7 +86,7 @@ const Portainer = require('./portainer')
         core.info('Success')
     } catch (e) {
         core.debug(e)
-        core.info(e.message)
+        console.log('response:', e.response?.data)
         core.setFailed(e.message)
     }
 })()
