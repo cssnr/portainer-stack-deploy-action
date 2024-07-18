@@ -31,8 +31,6 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 
 Creating a Portainer API Token: https://docs.portainer.io/api/access
 
-To disable a boolean use either the yaml `false` or a string `"false"` (anything but `true` will disable). 
-
 Note: If an `endpoint` is not provided the first endpoint returned by the API will be used.
 If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint. 
 
@@ -99,12 +97,27 @@ jobs:
           file: docker-compose-swarm.yaml
 ```
 
+To include this in a general workflow but only run on release events use an if:
+
+- `if: ${{ github.event_name == 'release' }}`
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    if: ${{ github.event_name == 'release' }}
+    with:
+      url: https://portainer.example.com:9443
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      name: stack-name
+      file: docker-compose.yaml
+```
+
 ## Known Issues
 
 - Repository authentication options have not been added yet, but are coming soon...
 - Only works for repository stacks but can be expanded to support other types.
 
-This is a very simple action, for more details see
+This is a fairly simple action, for more details see
 [src/index.js](src%2Findex.js) and [src/portainer.js](src%2Fportainer.js).
 
 ## Support
@@ -118,4 +131,4 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/portainer-stack-deploy-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Parse%20Issue%20Form)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)

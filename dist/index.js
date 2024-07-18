@@ -39371,6 +39371,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
+
 const Portainer = __nccwpck_require__(2275)
 
 ;(async () => {
@@ -39391,9 +39392,9 @@ const Portainer = __nccwpck_require__(2275)
         console.log('name:', name)
         const composeFile = core.getInput('file', { required: true })
         console.log('composeFile:', composeFile)
-        const prune = core.getInput('prune') === 'true'
+        const prune = core.getBooleanInput('prune')
         console.log('prune:', prune)
-        const pullImage = core.getInput('pull') === 'true'
+        const pullImage = core.getBooleanInput('pull')
         console.log('pullImage:', pullImage)
 
         const portainer = new Portainer(url, token)
@@ -39456,7 +39457,7 @@ const Portainer = __nccwpck_require__(2275)
         core.info('Success')
     } catch (e) {
         core.debug(e)
-        core.info(e.message)
+        console.log('response:', e.response?.data)
         core.setFailed(e.message)
     }
 })()
