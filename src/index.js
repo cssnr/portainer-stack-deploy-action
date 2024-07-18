@@ -83,7 +83,7 @@ const Portainer = require('./portainer')
             console.log(`Deployed Stack: ${stack.Name}`)
         }
 
-        core.info('Success')
+        core.info('Success.')
     } catch (e) {
         core.debug(e)
         console.log('response:', e.response?.data)
