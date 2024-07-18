@@ -6,15 +6,12 @@ branding:
   color: "blue"
 
 inputs:
-  url:
-    description: "Portainer URL"
-    required: true
   token:
     description: "Portainer Token"
     required: true
-  endpoint:
-    description: "Portainer Endpoint ID"
-    required: false
+  url:
+    description: "Portainer URL"
+    required: true
   name:
     description: "Stack Name"
     required: true
@@ -22,6 +19,19 @@ inputs:
     description: "Compose File"
     required: false
     default: "compose.yaml"
+  endpoint:
+    description: "Portainer Endpoint ID"
+    required: false
+  ref:
+    description: "Repository Ref"
+    required: false
+  repo:
+    description: "Repository URL"
+    required: false
+  tlsskip:
+    description: "Skip TLS Repo Verification"
+    required: false
+    default: "false"
   prune:
     description: "Prune Services"
     required: false
@@ -30,6 +40,14 @@ inputs:
     description: "Pull Images"
     required: false
     default: "true"
+  username:
+    description: "Repository Username"
+    required: false
+    default: ""
+  password:
+    description: "Repository Password"
+    required: false
+    default: ""
 
 runs:
   using: "node20"

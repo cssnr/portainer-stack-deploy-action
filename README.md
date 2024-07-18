@@ -8,7 +8,7 @@ Deploy or Update a Portainer Stack from a GitHub Repository.
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
 *   [Inputs](#Inputs)
-*   [Example](#Example)
+*   [Examples](#Examples)
 *   [Known Issues](#Known-Issues)
 *   [Support](#Support)
 
@@ -21,30 +21,74 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 
 | input    | required | default           | description           |
 |----------|----------|-------------------|-----------------------|
+| token    | Yes      | -                 | Portainer Token *     |
 | url      | Yes      | -                 | Portainer URL         |
-| token    | Yes      | -                 | Portainer Token       |
-| endpoint | No       | `endpoints[0].Id` | Portainer Endpoint ID |
 | name     | Yes      | -                 | Stack Name            |
 | file     | No       | `compose.yaml`    | Compose File          |
+| endpoint | No       | `endpoints[0].Id` | Portainer Endpoint *  |
+| ref      | No       | `current ref`     | Repository Ref *      |
+| repo     | No       | `current repo`    | Repository URL *      |
+| tlsskip  | No       | `false`           | Skip Repo TLS Verify  |
 | prune    | No       | `true`            | Prune Services        |
 | pull     | No       | `true`            | Pull Images           |
+| username | No       | -                 | Repository Username * |
+| password | No       | -                 | Repository Password * |
 
-Creating a Portainer API Token: https://docs.portainer.io/api/access
+**token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
-Note: If an `endpoint` is not provided the first endpoint returned by the API will be used.
+**endpoint** - If `endpoint` is not provided the first endpoint returned by the API will be used.
 If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint. 
+
+**ref** - If you want to deploy a different ref than the one triggering the workflow.
+Useful if you are deploying from another repository. Example: `refs/heads/master`
+
+**repo** - This defaults to the repository running the action. If you want to deploy a different repository
+put the full http URL to that repository here.
+
+**username/password** - Only set these if the `repo` is private and requires authentication.
+This is NOT the Portainer username/password, see `token` for Portainer authentication.
 
 ```yaml
   - name: "Portainer Deploy"
     uses: cssnr/portainer-stack-deploy-action@v1
     with:
-      url: https://portainer.example.com:9443
       token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
       name: stack-name
       file: docker-compose.yaml
 ```
 
-## Example
+## Examples
+
+Deploying a repository other than the current repository:
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+      file: docker-compose.yaml
+      repo: https://github.com/user/some-other-repo
+      ref: refs/heads/master
+```
+
+To include this in a general workflow but only run on release events use an if:
+
+- `if: ${{ github.event_name == 'release' }}`
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    if: ${{ github.event_name == 'release' }}
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+      file: docker-compose.yaml
+```
+
 
 This example builds a docker image using BuildX Bake, then pushes and deploys to Portainer.
 
@@ -91,30 +135,14 @@ jobs:
       - name: "Portainer Deploy"
         uses: cssnr/portainer-stack-deploy-action@v1
         with:
-          url: https://portainer.example.com
           token: ${{ secrets.PORTAINER_TOKEN }}
+          url: https://portainer.example.com
           name: stack-name
           file: docker-compose-swarm.yaml
 ```
 
-To include this in a general workflow but only run on release events use an if:
-
-- `if: ${{ github.event_name == 'release' }}`
-
-```yaml
-  - name: "Portainer Deploy"
-    uses: cssnr/portainer-stack-deploy-action@v1
-    if: ${{ github.event_name == 'release' }}
-    with:
-      url: https://portainer.example.com:9443
-      token: ${{ secrets.PORTAINER_TOKEN }}
-      name: stack-name
-      file: docker-compose.yaml
-```
-
 ## Known Issues
 
-- Repository authentication options have not been added yet, but are coming soon...
 - Only works for repository stacks but can be expanded to support other types.
 
 This is a fairly simple action, for more details see
