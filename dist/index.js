@@ -39377,7 +39377,6 @@ const Portainer = __nccwpck_require__(2275)
 ;(async () => {
     try {
         // console.log('github.context:', github.context)
-        // console.log('github.context.ref:', github.context.ref)
         const { owner, repo } = github.context.repo
 
         const token = core.getInput('token', { required: true })
@@ -39445,7 +39444,7 @@ const Portainer = __nccwpck_require__(2275)
                 repositoryPassword,
                 repositoryUsername,
             }
-            console.log('body:', body)
+            // console.log('body:', body)
             const stack = await portainer.updateStack(stackID, endpointID, body)
             // console.log('stack:', stack)
             console.log(`Updated Stack: ${stack.Name}`)
@@ -39462,7 +39461,7 @@ const Portainer = __nccwpck_require__(2275)
                 repositoryPassword,
                 repositoryUsername,
             }
-            console.log('body:', body)
+            // console.log('body:', body)
             const stack = await portainer.createStack(endpointID, body)
             // console.log('stack:', stack)
             console.log(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
