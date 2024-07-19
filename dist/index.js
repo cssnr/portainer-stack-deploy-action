@@ -39377,25 +39377,39 @@ const Portainer = __nccwpck_require__(2275)
 ;(async () => {
     try {
         // console.log('github.context:', github.context)
-        console.log('github.context.ref:', github.context.ref)
+        // console.log('github.context.ref:', github.context.ref)
         const { owner, repo } = github.context.repo
-        const repositoryURL = `https://github.com/${owner}/${repo}`
-        console.log('repositoryURL:', repositoryURL)
 
-        const url = core.getInput('url', { required: true })
-        console.log('url:', url)
         const token = core.getInput('token', { required: true })
         // console.log('token:', token)
-        let endpointID = core.getInput('endpoint')
-        console.log('endpointID:', endpointID)
+        const url = core.getInput('url', { required: true })
+        console.log('url:', url)
         const name = core.getInput('name', { required: true })
         console.log('name:', name)
         const composeFile = core.getInput('file', { required: true })
         console.log('composeFile:', composeFile)
+        let endpointID = core.getInput('endpoint')
+        console.log('endpointID:', endpointID)
+        const repositoryReferenceName =
+            core.getInput('ref') || github.context.ref
+        console.log('repositoryReferenceName:', repositoryReferenceName)
+        const repositoryURL =
+            core.getInput('repo') || `https://github.com/${owner}/${repo}`
+        console.log('repositoryURL:', repositoryURL)
+        const tlsskipVerify = core.getBooleanInput('tlsskip')
+        console.log('tlsskipVerify:', tlsskipVerify)
         const prune = core.getBooleanInput('prune')
         console.log('prune:', prune)
         const pullImage = core.getBooleanInput('pull')
         console.log('pullImage:', pullImage)
+        let repositoryUsername = core.getInput('username')
+        // console.log('repositoryUsername:', repositoryUsername)
+        let repositoryPassword = core.getInput('password')
+        // console.log('repositoryPassword:', repositoryPassword)
+        const repositoryAuthentication = !!(
+            repositoryUsername || repositoryPassword
+        )
+        console.log('repositoryAuthentication:', repositoryAuthentication)
 
         const portainer = new Portainer(url, token)
 
@@ -39426,10 +39440,10 @@ const Portainer = __nccwpck_require__(2275)
             const body = {
                 prune,
                 pullImage,
-                repositoryReferenceName: github.context.ref,
-                repositoryAuthentication: false,
-                // repositoryPassword: 'string',
-                // repositoryUsername: 'string',
+                repositoryReferenceName,
+                repositoryAuthentication,
+                repositoryPassword,
+                repositoryUsername,
             }
             console.log('body:', body)
             const stack = await portainer.updateStack(stackID, endpointID, body)
@@ -39442,16 +39456,16 @@ const Portainer = __nccwpck_require__(2275)
                 swarmID,
                 repositoryURL,
                 composeFile,
-                tlsskipVerify: false,
-                repositoryReferenceName: github.context.ref,
-                repositoryAuthentication: false,
-                // repositoryUsername: 'myGitUsername',
-                // repositoryPassword: 'myGitPassword',
+                tlsskipVerify,
+                repositoryReferenceName,
+                repositoryAuthentication,
+                repositoryPassword,
+                repositoryUsername,
             }
             console.log('body:', body)
             const stack = await portainer.createStack(endpointID, body)
             // console.log('stack:', stack)
-            console.log(`Deployed Stack: ${stack.Name}`)
+            console.log(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
         }
 
         core.info('Success')
