@@ -1,21 +1,23 @@
 [![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/tags.yaml)
 [![CSSNR Website](https://img.shields.io/badge/pages-website-blue?logo=github&logoColor=white&color=blue)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+
 # Portainer Stack Deploy Action
 
 Deploy or Update a Portainer Stack from a GitHub Repository.
 
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
-*   [Inputs](#Inputs)
-*   [Examples](#Examples)
-*   [Known Issues](#Known-Issues)
-*   [Support](#Support)
+* [Inputs](#Inputs)
+* [Examples](#Examples)
+* [Known Issues](#Known-Issues)
+* [Support](#Support)
 
 > [!NOTE]   
 > Please submit
 > a [Feature Request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests)
-> for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any bugs.
+> for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any
+> bugs.
 
 ## Inputs
 
@@ -37,7 +39,7 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
 **endpoint** - If `endpoint` is not provided the first endpoint returned by the API will be used.
-If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint. 
+If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint.
 
 **ref** - If you want to deploy a different ref than the one triggering the workflow.
 Useful if you are deploying from another repository. Example: `refs/heads/master`
@@ -88,7 +90,6 @@ To include this in a general workflow but only run on release events use an if:
       name: stack-name
       file: docker-compose.yaml
 ```
-
 
 This example builds a docker image using BuildX Bake, then pushes and deploys to Portainer.
 
@@ -143,7 +144,11 @@ jobs:
 
 ## Known Issues
 
-- Only works for repository stacks but can be expanded to support other types.
+- Does not support additional variables, but will be added once
+  a [feature request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests) is
+  made.
+- Only works for repository stacks but can be expanded to support other
+  types, [request this feature](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests).
 
 This is a fairly simple action, for more details see
 [src/index.js](src%2Findex.js) and [src/portainer.js](src%2Fportainer.js).
@@ -159,4 +164,5 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/portainer-stack-deploy-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)
+- Provide General
+  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)
