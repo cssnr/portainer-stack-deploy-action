@@ -39445,7 +39445,7 @@ const Portainer = __nccwpck_require__(2275)
                 repositoryPassword,
                 repositoryUsername,
             }
-            console.log('body:', body)
+            // console.log('body:', body)
             const stack = await portainer.updateStack(stackID, endpointID, body)
             // console.log('stack:', stack)
             console.log(`Updated Stack: ${stack.Name}`)
@@ -39462,7 +39462,7 @@ const Portainer = __nccwpck_require__(2275)
                 repositoryPassword,
                 repositoryUsername,
             }
-            console.log('body:', body)
+            // console.log('body:', body)
             const stack = await portainer.createStack(endpointID, body)
             // console.log('stack:', stack)
             console.log(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
