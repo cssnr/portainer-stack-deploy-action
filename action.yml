@@ -40,6 +40,10 @@ inputs:
     description: "Pull Images"
     required: false
     default: "true"
+  type:
+    description: "Deploy Type"
+    required: false
+    default: "repo"
   username:
     description: "Repository Username"
     required: false

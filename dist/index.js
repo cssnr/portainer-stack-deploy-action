@@ -32726,7 +32726,7 @@ class Portainer {
         return response.data
     }
 
-    async updateStack(stackID, endpointId, body) {
+    async updateStackRepo(stackID, endpointId, body) {
         const response = await this.client.put(
             `/stacks/${stackID}/git/redeploy`,
             body,
@@ -32735,7 +32735,7 @@ class Portainer {
         return response.data
     }
 
-    async createStack(endpointId, body) {
+    async createStackRepo(endpointId, body) {
         const response = await this.client.post(
             '/stacks/create/swarm/repository',
             body,
@@ -32743,6 +32743,41 @@ class Portainer {
         )
         return response.data
     }
+
+    async updateStackString(stackID, endpointId, body) {
+        const response = await this.client.put(`/stacks/${stackID}`, body, {
+            params: { endpointId },
+        })
+        return response.data
+    }
+
+    async createStackString(endpointId, body) {
+        const response = await this.client.post(
+            '/stacks/create/swarm/string',
+            body,
+            { params: { endpointId } }
+        )
+        return response.data
+    }
+
+    // async createStackFile(endpointId, swarmID, name, file) {
+    //     const form = new FormData()
+    //     form.append('swarmID', swarmID)
+    //     form.append('name', name)
+    //     form.append('file', fs.createReadStream(file))
+    //     const response = await this.client.post(
+    //         '/stacks/create/swarm/file',
+    //         form,
+    //         {
+    //             headers: {
+    //                 ...form.getHeaders(),
+    //                 ...this.client.defaults.headers.common,
+    //             },
+    //             params: { endpointId },
+    //         }
+    //     )
+    //     return response.data
+    // }
 }
 
 module.exports = Portainer
@@ -39371,6 +39406,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
+const fs = __nccwpck_require__(7147)
 
 const Portainer = __nccwpck_require__(2275)
 
@@ -39401,6 +39437,11 @@ const Portainer = __nccwpck_require__(2275)
         console.log('prune:', prune)
         const pullImage = core.getBooleanInput('pull')
         console.log('pullImage:', pullImage)
+        const type = core.getInput('type')
+        console.log('type:', type)
+        if (!['repo', 'file'].includes(type)) {
+            core.setFailed(`Unknown type: ${type}. Must be repo or file.`)
+        }
         let repositoryUsername = core.getInput('username')
         // console.log('repositoryUsername:', repositoryUsername)
         let repositoryPassword = core.getInput('password')
@@ -39434,40 +39475,80 @@ const Portainer = __nccwpck_require__(2275)
         const stackID = stack?.Id
         console.log('stackID:', stackID)
 
-        if (stackID) {
-            console.log(`Stack Found - Updating Stack ID: ${stackID}`)
-            const body = {
-                prune,
-                pullImage,
-                repositoryReferenceName,
-                repositoryAuthentication,
-                repositoryPassword,
-                repositoryUsername,
+        if (type === 'repo') {
+            core.info('Performing Repository Deployment.')
+            if (stackID) {
+                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
+                const body = {
+                    prune,
+                    pullImage,
+                    repositoryReferenceName,
+                    repositoryAuthentication,
+                    repositoryPassword,
+                    repositoryUsername,
+                }
+                // console.log('body:', body)
+                const stack = await portainer.updateStackRepo(
+                    stackID,
+                    endpointID,
+                    body
+                )
+                // console.log('stack:', stack)
+                core.info(`Updated Stack: ${stack.Name}`)
+            } else {
+                core.info('Stack NOT Found - Deploying NEW Stack')
+                const body = {
+                    name,
+                    swarmID,
+                    repositoryURL,
+                    composeFile,
+                    tlsskipVerify,
+                    repositoryReferenceName,
+                    repositoryAuthentication,
+                    repositoryPassword,
+                    repositoryUsername,
+                }
+                // console.log('body:', body)
+                const stack = await portainer.createStackRepo(endpointID, body)
+                // console.log('stack:', stack)
+                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
-            // console.log('body:', body)
-            const stack = await portainer.updateStack(stackID, endpointID, body)
-            // console.log('stack:', stack)
-            console.log(`Updated Stack: ${stack.Name}`)
-        } else {
-            console.log('Stack NOT Found - Deploying NEW Stack')
-            const body = {
-                name,
-                swarmID,
-                repositoryURL,
-                composeFile,
-                tlsskipVerify,
-                repositoryReferenceName,
-                repositoryAuthentication,
-                repositoryPassword,
-                repositoryUsername,
+        } else if (type === 'file') {
+            core.info('Performing Stack File Deployment.')
+            const stackFileContent = fs.readFileSync(composeFile, 'utf-8')
+            if (stackID) {
+                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
+                const body = {
+                    prune,
+                    pullImage,
+                    stackFileContent,
+                }
+                // console.log('body:', body)
+                const stack = await portainer.updateStackString(
+                    stackID,
+                    endpointID,
+                    body
+                )
+                // console.log('stack:', stack)
+                core.info(`Updated Stack: ${stack.Name}`)
+            } else {
+                core.info('Stack NOT Found - Deploying NEW Stack')
+                const body = {
+                    name,
+                    swarmID,
+                    stackFileContent,
+                }
+                // console.log('body:', body)
+                const stack = await portainer.createStackString(
+                    endpointID,
+                    body
+                )
+                // console.log('stack:', stack)
+                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
-            // console.log('body:', body)
-            const stack = await portainer.createStack(endpointID, body)
-            // console.log('stack:', stack)
-            console.log(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
         }
 
-        core.info('Success')
+        core.info(`\u001b[32;1mFinished Success`)
     } catch (e) {
         core.debug(e)
         console.log('response:', e.response?.data)
