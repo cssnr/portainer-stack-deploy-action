@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const fs = require('fs')
+const dotenv = require('dotenv')
 
 const Portainer = require('./portainer')
 
@@ -36,6 +37,12 @@ const Portainer = require('./portainer')
         if (!['repo', 'file'].includes(type)) {
             core.setFailed(`Unknown type: ${type}. Must be repo or file.`)
         }
+        const env_json = core.getInput('env_json')
+        // console.log('env_json:', env_json)
+        const env_file = core.getInput('env_file')
+        // console.log('env_file:', env_file)
+        const env = getEnv(env_json, env_file)
+        // console.log('env:', env)
         let repositoryUsername = core.getInput('username')
         // console.log('repositoryUsername:', repositoryUsername)
         let repositoryPassword = core.getInput('password')
@@ -74,6 +81,7 @@ const Portainer = require('./portainer')
             if (stackID) {
                 core.info(`Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
+                    env,
                     prune,
                     pullImage,
                     repositoryReferenceName,
@@ -96,6 +104,7 @@ const Portainer = require('./portainer')
                     swarmID,
                     repositoryURL,
                     composeFile,
+                    env,
                     tlsskipVerify,
                     repositoryReferenceName,
                     repositoryAuthentication,
@@ -113,6 +122,7 @@ const Portainer = require('./portainer')
             if (stackID) {
                 core.info(`Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
+                    env,
                     prune,
                     pullImage,
                     stackFileContent,
@@ -131,6 +141,7 @@ const Portainer = require('./portainer')
                     name,
                     swarmID,
                     stackFileContent,
+                    env,
                 }
                 // console.log('body:', body)
                 const stack = await portainer.createStackString(
@@ -149,3 +160,26 @@ const Portainer = require('./portainer')
         core.setFailed(e.message)
     }
 })()
+
+/**
+ * @function getEnv
+ * @param {String} env_json
+ * @param {String} env_file
+ * @return {Object[]}
+ */
+function getEnv(env_json, env_file) {
+    const env = []
+    if (env_json) {
+        let data = JSON.parse(env_json)
+        for (const [name, value] of Object.entries(data)) {
+            env.push({ name, value })
+        }
+    }
+    if (env_file) {
+        let data = dotenv.config({ path: env_file })
+        for (const [name, value] of Object.entries(data.parsed)) {
+            env.push({ name, value })
+        }
+    }
+    return env
+}

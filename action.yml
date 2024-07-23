@@ -44,6 +44,12 @@ inputs:
     description: "Deploy Type"
     required: false
     default: "repo"
+  env_json:
+    description: "Dotenv JSON String"
+    required: false
+  env_file:
+    description: "Dotenv File Path"
+    required: false
   username:
     description: "Repository Username"
     required: false

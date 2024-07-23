@@ -6,7 +6,8 @@
 
 # Portainer Stack Deploy Action
 
-Deploy or Update a Portainer Stack from a GitHub Repository. Currently, supports repository and file deployments and updates.
+Deploy or Update a Portainer Stack from a GitHub Repository. Currently, supports repository and file deployments and
+updates.
 
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
@@ -37,6 +38,8 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 | prune    | No       | `true`            | Prune Services        |
 | pull     | No       | `true`            | Pull Images           |
 | type     | No       | `repo`            | Type `[repo, file]` * |
+| env_json | No       | -                 | Dotenv JSON Data *    |
+| env_file | No       | -                 | Dotenv File Path *    |
 | username | No       | -                 | Repository Username * |
 | password | No       | -                 | Repository Password * |
 
@@ -52,6 +55,9 @@ Useful if you are deploying from another repository. Example: `refs/heads/master
 put the full http URL to that repository here.
 
 **type** - Type of Deployment. Currently, supports either `repo` or `file`.
+
+**env_json/env_file** - Optional environment variables used when creating the stack. File should be in dotenv format and
+JSON should be an object. Example: `{"var_name": "Test Value"}`
 
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
