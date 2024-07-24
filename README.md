@@ -13,7 +13,6 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 
 * [Inputs](#Inputs)
 * [Examples](#Examples)
-* [Known Issues](#Known-Issues)
 * [Support](#Support)
 * [Contributing](#Contributing)
 
@@ -184,12 +183,6 @@ jobs:
           name: stack-name
           file: docker-compose-swarm.yaml
 ```
-
-## Known Issues
-
-- Does not support additional variables, but will be added once
-  a [feature request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests) is
-  made.
 
 This is a fairly simple action, for more details see
 [src/index.js](src%2Findex.js) and [src/portainer.js](src%2Fportainer.js).
