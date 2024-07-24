@@ -6,13 +6,13 @@
 
 # Portainer Stack Deploy Action
 
-Deploy or Update a Portainer Stack from a GitHub Repository.
+Deploy or Update a Portainer Stack from a GitHub Repository or Compose File. Supports most features including specifying
+the repository, compose file, environment variables and much more...
 
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
 * [Inputs](#Inputs)
 * [Examples](#Examples)
-* [Known Issues](#Known-Issues)
 * [Support](#Support)
 * [Contributing](#Contributing)
 
@@ -26,9 +26,9 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 
 | input    | required | default           | description           |
 |----------|----------|-------------------|-----------------------|
-| token    | Yes      | -                 | Portainer Token *     |
-| url      | Yes      | -                 | Portainer URL         |
-| name     | Yes      | -                 | Stack Name            |
+| token    | **Yes**  | -                 | Portainer Token *     |
+| url      | **Yes**  | -                 | Portainer URL         |
+| name     | **Yes**  | -                 | Stack Name            |
 | file     | No       | `compose.yaml`    | Compose File          |
 | endpoint | No       | `endpoints[0].Id` | Portainer Endpoint *  |
 | ref      | No       | `current ref`     | Repository Ref *      |
@@ -36,6 +36,9 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 | tlsskip  | No       | `false`           | Skip Repo TLS Verify  |
 | prune    | No       | `true`            | Prune Services        |
 | pull     | No       | `true`            | Pull Images           |
+| type     | No       | `repo`            | Type `[repo, file]` * |
+| env_json | No       | -                 | Dotenv JSON Data *    |
+| env_file | No       | -                 | Dotenv File Path *    |
 | username | No       | -                 | Repository Username * |
 | password | No       | -                 | Repository Password * |
 
@@ -50,6 +53,11 @@ Useful if you are deploying from another repository. Example: `refs/heads/master
 **repo** - This defaults to the repository running the action. If you want to deploy a different repository
 put the full http URL to that repository here.
 
+**type** - Type of Deployment. Currently, supports either `repo` or `file`.
+
+**env_json/env_file** - Optional environment variables used when creating the stack. File should be in dotenv format and
+JSON should be an object. Example: `{"KEY": "Value"}`
+
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
 
@@ -62,6 +70,9 @@ This is NOT the Portainer username/password, see `token` for Portainer authentic
       name: stack-name
       file: docker-compose.yaml
 ```
+
+For more information on variables, see the Portainer API
+Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/2.19.5
 
 ## Examples
 
@@ -77,6 +88,34 @@ Deploying a repository other than the current repository:
       file: docker-compose.yaml
       repo: https://github.com/user/some-other-repo
       ref: refs/heads/master
+```
+
+Deploy from compose file and not repository:
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+      file: docker-compose.yaml
+      type: file
+```
+
+Specify environment variables, may use json, or file, or a combination of both:
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+      file: docker-compose.yaml
+      type: file
+      env_json: '{"KEY": "Value"}'
+      env_file: .env
 ```
 
 To include this in a general workflow but only run on release events use an if:
@@ -145,18 +184,10 @@ jobs:
           file: docker-compose-swarm.yaml
 ```
 
-## Known Issues
-
-- Does not support additional variables, but will be added once
-  a [feature request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests) is
-  made.
-- Only works for repository stacks but can be expanded to support other
-  types, [request this feature](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests).
-
 This is a fairly simple action, for more details see
 [src/index.js](src%2Findex.js) and [src/portainer.js](src%2Fportainer.js).
 
-## Support
+# Support
 
 For general help or to request a feature, see:
 

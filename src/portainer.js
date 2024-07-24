@@ -34,7 +34,7 @@ class Portainer {
         return response.data
     }
 
-    async updateStack(stackID, endpointId, body) {
+    async updateStackRepo(stackID, endpointId, body) {
         const response = await this.client.put(
             `/stacks/${stackID}/git/redeploy`,
             body,
@@ -43,7 +43,7 @@ class Portainer {
         return response.data
     }
 
-    async createStack(endpointId, body) {
+    async createStackRepo(endpointId, body) {
         const response = await this.client.post(
             '/stacks/create/swarm/repository',
             body,
@@ -51,6 +51,41 @@ class Portainer {
         )
         return response.data
     }
+
+    async updateStackString(stackID, endpointId, body) {
+        const response = await this.client.put(`/stacks/${stackID}`, body, {
+            params: { endpointId },
+        })
+        return response.data
+    }
+
+    async createStackString(endpointId, body) {
+        const response = await this.client.post(
+            '/stacks/create/swarm/string',
+            body,
+            { params: { endpointId } }
+        )
+        return response.data
+    }
+
+    // async createStackFile(endpointId, swarmID, name, file) {
+    //     const form = new FormData()
+    //     form.append('swarmID', swarmID)
+    //     form.append('name', name)
+    //     form.append('file', fs.createReadStream(file))
+    //     const response = await this.client.post(
+    //         '/stacks/create/swarm/file',
+    //         form,
+    //         {
+    //             headers: {
+    //                 ...form.getHeaders(),
+    //                 ...this.client.defaults.headers.common,
+    //             },
+    //             params: { endpointId },
+    //         }
+    //     )
+    //     return response.data
+    // }
 }
 
 module.exports = Portainer
