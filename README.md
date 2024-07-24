@@ -6,8 +6,8 @@
 
 # Portainer Stack Deploy Action
 
-Deploy or Update a Portainer Stack from a GitHub Repository. Currently, supports repository and file deployments and
-updates.
+Deploy or Update a Portainer Stack from a GitHub Repository or Compose File. Supports most features including specifying
+the repository, compose file, environment variables and much more...
 
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
@@ -57,7 +57,7 @@ put the full http URL to that repository here.
 **type** - Type of Deployment. Currently, supports either `repo` or `file`.
 
 **env_json/env_file** - Optional environment variables used when creating the stack. File should be in dotenv format and
-JSON should be an object. Example: `{"var_name": "Test Value"}`
+JSON should be an object. Example: `{"KEY": "Value"}`
 
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
@@ -71,6 +71,9 @@ This is NOT the Portainer username/password, see `token` for Portainer authentic
       name: stack-name
       file: docker-compose.yaml
 ```
+
+For more information on variables, see the Portainer API
+Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/2.19.5
 
 ## Examples
 
@@ -99,6 +102,21 @@ Deploy from compose file and not repository:
       name: stack-name
       file: docker-compose.yaml
       type: file
+```
+
+Specify environment variables, may use json, or file, or a combination of both:
+
+```yaml
+  - name: "Portainer Deploy"
+    uses: cssnr/portainer-stack-deploy-action@v1
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+      file: docker-compose.yaml
+      type: file
+      env_json: '{"KEY": "Value"}'
+      env_file: .env
 ```
 
 To include this in a general workflow but only run on release events use an if:
