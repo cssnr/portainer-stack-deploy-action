@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "src/**"
+      - "tests/**"
 
 jobs:
   test:
