@@ -1,5 +1,5 @@
 name: "Portainer Stack Deploy Action"
-description: "Deploy or Update a Portainer Stack from a GitHub Repository"
+description: "Deploy or Update a Portainer Stack from a Repository or Compose File"
 author: "Shane"
 branding:
   icon: "layers"
@@ -18,7 +18,7 @@ inputs:
   file:
     description: "Compose File"
     required: false
-    default: "compose.yaml"
+    default: "docker-compose.yaml"
   endpoint:
     description: "Portainer Endpoint ID"
     required: false
