@@ -2,3 +2,6 @@
 *.iml
 .vscode/
 node_modules/
+.env
+.secrets
+.vars
