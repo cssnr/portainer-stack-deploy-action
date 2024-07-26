@@ -15,6 +15,7 @@ repository, compose file, environment variables and much more...
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
 * [Inputs](#Inputs)
+* [Outputs](#Outputs)
 * [Examples](#Examples)
 * [Troubleshooting](#Troubleshooting)
 * [Support](#Support)
@@ -77,6 +78,30 @@ This is NOT the Portainer username/password, see `token` for Portainer authentic
 
 For more information on variables, see the Portainer API
 Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/2.19.5
+
+## Outputs
+
+| output     | description |
+|------------|-------------|
+| stackID    | Stack ID    |
+| swarmID    | Swarm ID    |
+| endpointID | Endpoint ID |
+
+```yaml
+  - name: "Portainer Deploy"
+    id: stack
+    uses: cssnr/portainer-stack-deploy-action@v1
+    with:
+      token: ${{ secrets.PORTAINER_TOKEN }}
+      url: https://portainer.example.com:9443
+      name: stack-name
+
+  - name: "Echo Output"
+    run: |
+      echo 'stackID: ${{ steps.stack.outputs.stackID }}'
+      echo 'swarmID: ${{ steps.stack.outputs.swarmID }}'
+      echo 'endpointID: ${{ steps.stack.outputs.endpointID }}'
+```
 
 ## Examples
 

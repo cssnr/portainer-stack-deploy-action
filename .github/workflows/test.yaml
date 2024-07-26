@@ -17,14 +17,40 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
+      - name: "Write YAML"
+        id: yaml-action
+        uses: teunmooij/yaml@v1
+        with:
+          data: '{"version":"3.8","services":{"alpine":{"image":"alpine","command":"tail -f /dev/null"}}}'
+          to-file: "docker-compose.yaml"
+
       - name: "Test Local Action"
+        id: test
         uses: ./
         with:
           token: ${{ secrets.PORTAINER_TOKEN }}
           url: ${{ secrets.PORTAINER_URL }}
           name: alpine-test
-          file: test-compose.yaml
+          file: docker-compose.yaml
           type: file
+
+      - name: "Echo Output"
+        run: |
+          echo 'stackID: ${{ steps.test.outputs.stackID }}'
+          echo 'swarmID: ${{ steps.test.outputs.swarmID }}'
+          echo 'endpointID: ${{ steps.test.outputs.endpointID }}'
+
+      #- name: "Call API"
+      #  uses: indiesdev/curl@v1.1
+      #  with:
+      #    url: "${{ secrets.PORTAINER_URL }}/api/stacks/${{ steps.test.outputs.stackID }}"
+      #    method: "DELETE"
+      #    accept: 204
+      #    headers: '{ "X-API-Key": "${{ secrets.PORTAINER_TOKEN }}" }'
+      #    params: '{ "endpointId": "${{ steps.test.outputs.endpointID }}" }'
+      #    timeout: 5000
+      #    log-response: true
+      #    retries: 1
 
   lint:
     name: "Lint"
