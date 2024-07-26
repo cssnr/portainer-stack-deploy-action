@@ -2,11 +2,11 @@ blank_issues_enabled: true
 contact_links:
   - name: "💡 Request a Feature"
     about: Request a New Feature or Enhancement in the Discussions.
-    url: https://github.com/cssnr/update-version-tags-action/discussions/new?category=feature-requests
+    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=feature-requests
 
   - name: "❔ Ask a Question"
     about: Ask a General Question or start a Discussions.
-    url: https://github.com/cssnr/update-version-tags-action/discussions/new?category=q-a
+    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=q-a
 
   - name: "💬 Join Discord"
     about: Chat with us about Issues, Features, Questions and More.
