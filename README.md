@@ -15,6 +15,7 @@ repository, compose file, environment variables and much more...
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
 * [Inputs](#Inputs)
+* [Outputs](#Outputs)
 * [Examples](#Examples)
 * [Troubleshooting](#Troubleshooting)
 * [Support](#Support)
