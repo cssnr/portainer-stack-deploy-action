@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.PORTAINER_TOKEN }}
           url: ${{ secrets.PORTAINER_URL }}
           name: alpine-test
-          file: tests/docker-compose.yaml
+          file: test-compose.yaml
           type: file
 
   lint:
