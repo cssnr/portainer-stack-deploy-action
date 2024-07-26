@@ -28,6 +28,10 @@ inputs:
   repo:
     description: "Repository URL"
     required: false
+  redeploy:
+    description: "Redeploy Stack"
+    required: false
+    default: "false"
   tlsskip:
     description: "Skip TLS Repo Verification"
     required: false

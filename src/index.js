@@ -26,6 +26,8 @@ const Portainer = require('./portainer')
         const repositoryURL =
             core.getInput('repo') || `https://github.com/${owner}/${repo}`
         console.log('repositoryURL:', repositoryURL)
+        const redeploy = core.getBooleanInput('redeploy')
+        console.log('redeploy:', redeploy)
         const tlsskipVerify = core.getBooleanInput('tlsskip')
         console.log('tlsskipVerify:', tlsskipVerify)
         const prune = core.getBooleanInput('prune')
@@ -97,6 +99,16 @@ const Portainer = require('./portainer')
                 )
                 // console.log('stack:', stack)
                 core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+                if (redeploy) {
+                    core.info(`Redeploying Stack ${stack.Id}: ${stack.Name}`)
+                    stack = await portainer.redeployStackRepo(
+                        stackID,
+                        endpointID,
+                        body
+                    )
+                    // console.log('stack:', stack)
+                    core.info(`Redeployed Stack ${stack.Id}: ${stack.Name}`)
+                }
             } else {
                 core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {

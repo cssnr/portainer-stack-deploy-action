@@ -38,6 +38,7 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 | endpoint | No       | `endpoints[0].Id`     | Portainer Endpoint *  |
 | ref      | No       | `current reference`   | Repository Ref *      |
 | repo     | No       | `current repository`  | Repository URL *      |
+| redeploy | No       | `false`               | Perform Redeploy *    |
 | tlsskip  | No       | `false`               | Skip Repo TLS Verify  |
 | prune    | No       | `true`                | Prune Services        |
 | pull     | No       | `true`                | Pull Images           |
@@ -57,6 +58,8 @@ Useful if you are deploying from another repository. Example: `refs/heads/master
 
 **repo** - This defaults to the repository running the action. If you want to deploy a different repository
 put the full http URL to that repository here.
+
+**redeploy** - If using `type` repo and stack already exists, this will perform a git redeploy after the update.
 
 **type** - Type of Deployment. Currently, supports either `repo` or `file`.
 
