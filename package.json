@@ -1,8 +1,8 @@
 {
   "name": "portainer-stack-deploy-action",
-  "version": "0.0.1",
   "scripts": {
     "build": "ncc build src/index.js",
+    "build:watch": "npm run build -- --watch",
     "lint": "npx eslint src"
   },
   "dependencies": {
