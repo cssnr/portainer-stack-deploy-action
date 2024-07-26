@@ -73,13 +73,13 @@ const Portainer = require('./portainer')
         // console.log('stacks:', stacks)
         let stack = stacks.find((item) => item.Name === name)
         // console.log('stack:', stack)
-        const stackID = stack?.Id
+        let stackID = stack?.Id
         console.log('stackID:', stackID)
 
         if (type === 'repo') {
             core.info('Performing Repository Deployment.')
             if (stackID) {
-                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
+                core.info(`Stack Found - Updating Stack ID: ${stack.Id}`)
                 const body = {
                     env,
                     prune,
@@ -90,13 +90,13 @@ const Portainer = require('./portainer')
                     repositoryUsername,
                 }
                 // console.log('body:', body)
-                const stack = await portainer.updateStackRepo(
+                stack = await portainer.updateStackRepo(
                     stackID,
                     endpointID,
                     body
                 )
                 // console.log('stack:', stack)
-                core.info(`Updated Stack: ${stack.Name}`)
+                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
                 core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {
@@ -112,7 +112,7 @@ const Portainer = require('./portainer')
                     repositoryUsername,
                 }
                 // console.log('body:', body)
-                const stack = await portainer.createStackRepo(endpointID, body)
+                stack = await portainer.createStackRepo(endpointID, body)
                 // console.log('stack:', stack)
                 core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
@@ -128,13 +128,13 @@ const Portainer = require('./portainer')
                     stackFileContent,
                 }
                 // console.log('body:', body)
-                const stack = await portainer.updateStackString(
+                stack = await portainer.updateStackString(
                     stackID,
                     endpointID,
                     body
                 )
                 // console.log('stack:', stack)
-                core.info(`Updated Stack: ${stack.Name}`)
+                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
                 core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {
@@ -144,14 +144,15 @@ const Portainer = require('./portainer')
                     env,
                 }
                 // console.log('body:', body)
-                const stack = await portainer.createStackString(
-                    endpointID,
-                    body
-                )
+                stack = await portainer.createStackString(endpointID, body)
                 // console.log('stack:', stack)
                 core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
         }
+
+        core.setOutput('stackID', stack.Id)
+        core.setOutput('swarmID', swarmID)
+        core.setOutput('endpointID', endpointID)
 
         core.info(`\u001b[32;1mFinished Success`)
     } catch (e) {

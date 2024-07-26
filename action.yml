@@ -59,6 +59,14 @@ inputs:
     required: false
     default: ""
 
+outputs:
+  stackID:
+    description: "Stack ID"
+  swarmID:
+    description: "Swarm ID"
+  endpointID:
+    description: "Endpoint ID"
+
 runs:
   using: "node20"
   main: "dist/index.js"
