@@ -29,23 +29,24 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 
 ## Inputs
 
-| input    | required | default               | description           |
-|----------|----------|-----------------------|-----------------------|
-| token    | **Yes**  | -                     | Portainer Token *     |
-| url      | **Yes**  | -                     | Portainer URL         |
-| name     | **Yes**  | -                     | Stack Name            |
-| file     | No       | `docker-compose.yaml` | Compose File          |
-| endpoint | No       | `endpoints[0].Id`     | Portainer Endpoint *  |
-| ref      | No       | `current reference`   | Repository Ref *      |
-| repo     | No       | `current repository`  | Repository URL *      |
-| tlsskip  | No       | `false`               | Skip Repo TLS Verify  |
-| prune    | No       | `true`                | Prune Services        |
-| pull     | No       | `true`                | Pull Images           |
-| type     | No       | `repo`                | Type `[repo, file]` * |
-| env_json | No       | -                     | Dotenv JSON Data *    |
-| env_file | No       | -                     | Dotenv File Path *    |
-| username | No       | -                     | Repository Username * |
-| password | No       | -                     | Repository Password * |
+| input      | required | default               | description             |
+|------------|----------|-----------------------|-------------------------|
+| token      | **Yes**  | -                     | Portainer Token *       |
+| url        | **Yes**  | -                     | Portainer URL           |
+| name       | **Yes**  | -                     | Stack Name              |
+| file       | No       | `docker-compose.yaml` | Compose File            |
+| endpoint   | No       | `endpoints[0].Id`     | Portainer Endpoint *    |
+| ref        | No       | `current reference`   | Repository Ref *        |
+| repo       | No       | `current repository`  | Repository URL *        |
+| tlsskip    | No       | `false`               | Skip Repo TLS Verify    |
+| prune      | No       | `true`                | Prune Services          |
+| pull       | No       | `true`                | Pull Images             |
+| type       | No       | `repo`                | Type `[repo, file]` *   |
+| standalone | No       | `false`               | Deploy Standalone Stack |
+| env_json   | No       | -                     | Dotenv JSON Data *      |
+| env_file   | No       | -                     | Dotenv File Path *      |
+| username   | No       | -                     | Repository Username *   |
+| password   | No       | -                     | Repository Password *   |
 
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 

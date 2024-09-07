@@ -33103,12 +33103,15 @@ class Portainer {
         return response.data
     }
 
-    async createStackRepo(endpointId, body) {
-        const response = await this.client.post(
-            '/stacks/create/swarm/repository',
-            body,
-            { params: { endpointId } }
-        )
+    async createStackRepo(endpointId, body, url = '') {
+        if (body.swarmID) {
+            url = '/stacks/create/swarm/repository'
+        } else {
+            url = '/stacks/create/standalone/repository'
+        }
+        const response = await this.client.post(url, body, {
+            params: { endpointId },
+        })
         return response.data
     }
 
@@ -33119,12 +33122,15 @@ class Portainer {
         return response.data
     }
 
-    async createStackString(endpointId, body) {
-        const response = await this.client.post(
-            '/stacks/create/swarm/string',
-            body,
-            { params: { endpointId } }
-        )
+    async createStackString(endpointId, body, url = '') {
+        if (body.swarmID) {
+            url = '/stacks/create/swarm/string'
+        } else {
+            url = '/stacks/create/standalone/string'
+        }
+        const response = await this.client.post(url, body, {
+            params: { endpointId },
+        })
         return response.data
     }
 
@@ -39819,6 +39825,8 @@ const Portainer = __nccwpck_require__(2275)
         if (!['repo', 'file'].includes(type)) {
             core.setFailed(`Unknown type: ${type}. Must be repo or file.`)
         }
+        const standalone = core.getBooleanInput('standalone')
+        console.log('standalone:', standalone)
         const env_json = core.getInput('env_json')
         // console.log('env_json:', env_json)
         const env_file = core.getInput('env_file')
@@ -39846,10 +39854,13 @@ const Portainer = __nccwpck_require__(2275)
             }
         }
 
-        const swarm = await portainer.getSwarm(endpointID)
-        // console.log('swarm:', swarm)
-        const swarmID = swarm.ID
-        console.log('swarmID:', swarmID)
+        let swarmID = null
+        if (!standalone) {
+            const swarm = await portainer.getSwarm(endpointID)
+            // console.log('swarm:', swarm)
+            swarmID = swarm.ID
+            console.log('swarmID:', swarmID)
+        }
 
         const stacks = await portainer.getStacks()
         // console.log('stacks:', stacks)

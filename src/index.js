@@ -37,6 +37,8 @@ const Portainer = require('./portainer')
         if (!['repo', 'file'].includes(type)) {
             core.setFailed(`Unknown type: ${type}. Must be repo or file.`)
         }
+        const standalone = core.getBooleanInput('standalone')
+        console.log('standalone:', standalone)
         const env_json = core.getInput('env_json')
         // console.log('env_json:', env_json)
         const env_file = core.getInput('env_file')
@@ -64,10 +66,13 @@ const Portainer = require('./portainer')
             }
         }
 
-        const swarm = await portainer.getSwarm(endpointID)
-        // console.log('swarm:', swarm)
-        const swarmID = swarm.ID
-        console.log('swarmID:', swarmID)
+        let swarmID = null
+        if (!standalone) {
+            const swarm = await portainer.getSwarm(endpointID)
+            // console.log('swarm:', swarm)
+            swarmID = swarm.ID
+            console.log('swarmID:', swarmID)
+        }
 
         const stacks = await portainer.getStacks()
         // console.log('stacks:', stacks)
