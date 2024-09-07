@@ -44,6 +44,10 @@ inputs:
     description: "Deploy Type"
     required: false
     default: "repo"
+  standalone:
+    description: "Standalone Stack"
+    required: false
+    default: "false"
   env_json:
     description: "Dotenv JSON String"
     required: false

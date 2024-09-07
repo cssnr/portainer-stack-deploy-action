@@ -43,12 +43,15 @@ class Portainer {
         return response.data
     }
 
-    async createStackRepo(endpointId, body) {
-        const response = await this.client.post(
-            '/stacks/create/swarm/repository',
-            body,
-            { params: { endpointId } }
-        )
+    async createStackRepo(endpointId, body, url = '') {
+        if (body.swarmID) {
+            url = '/stacks/create/swarm/repository'
+        } else {
+            url = '/stacks/create/standalone/repository'
+        }
+        const response = await this.client.post(url, body, {
+            params: { endpointId },
+        })
         return response.data
     }
 
@@ -59,12 +62,15 @@ class Portainer {
         return response.data
     }
 
-    async createStackString(endpointId, body) {
-        const response = await this.client.post(
-            '/stacks/create/swarm/string',
-            body,
-            { params: { endpointId } }
-        )
+    async createStackString(endpointId, body, url = '') {
+        if (body.swarmID) {
+            url = '/stacks/create/swarm/string'
+        } else {
+            url = '/stacks/create/standalone/string'
+        }
+        const response = await this.client.post(url, body, {
+            params: { endpointId },
+        })
         return response.data
     }
 
