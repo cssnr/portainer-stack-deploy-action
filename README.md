@@ -81,7 +81,7 @@ This is NOT the Portainer username/password, see `token` for Portainer authentic
 ```
 
 For more information on variables, see the Portainer API
-Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/2.19.5
+Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 ## Outputs
 
