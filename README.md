@@ -274,8 +274,6 @@ This is a fairly simple action, for more details see
 
 ## Troubleshooting
 
-Some common errors you might see:
-
 - No such image: ghcr.io/user/repo-name:tag
 
 Make sure your package is not private. If you intend to use a private package, then:  
@@ -285,8 +283,16 @@ Choose Custom registry, set `ghcr.io` for Registry URL, enable authentication, a
 - Error: Resource not accessible by integration
 
 Only applies to `build-push-action` or `bake-action` type actions, not this action.  
-Go to your repository action settings: https://github.com/user/repo/settings/actions  
-Make sure Workflow permissions are set to Read and write permissions.
+Permissions can be added on the job or step level with:
+
+```yaml
+permissions:
+  packages: write
+```
+
+Permissions documentation:  
+https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token  
+https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
 
 # Support
 

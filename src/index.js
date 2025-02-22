@@ -113,7 +113,7 @@ const Portainer = require('./portainer')
             core.info('📄 Performing Stack File Deployment')
             const stackFileContent = fs.readFileSync(inputs.file, 'utf-8')
             if (stackID) {
-                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
+                core.info(`  Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
                     env,
                     prune: inputs.prune,
@@ -127,9 +127,9 @@ const Portainer = require('./portainer')
                     body
                 )
                 // console.log('stack:', stack)
-                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+                core.info(`  Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
-                core.info('Stack NOT Found - Deploying NEW Stack')
+                core.info('  Stack NOT Found - Deploying NEW Stack')
                 const body = {
                     name: inputs.name,
                     swarmID,
@@ -139,7 +139,7 @@ const Portainer = require('./portainer')
                 // console.log('body:', body)
                 stack = await portainer.createStackString(endpointID, body)
                 // console.log('stack:', stack)
-                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
+                core.info(`  Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
         }
 
@@ -208,8 +208,6 @@ async function writeSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
     const action = stack.UpdateDate ? 'Updated' : 'Created'
     core.summary.addRaw(`${action} Stack ${stack.Id} - ${stack.Name}\n\n`)
-
-    console.log(stack)
 
     const status = { 1: 'Active', 2: 'Inactive' }
     const type = { 1: 'Swarm', 2: 'Compose' }
