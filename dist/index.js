@@ -37427,7 +37427,6 @@ module.exports = /*#__PURE__*/JSON.parse('{"application/1d-interleaved-parityfec
 /************************************************************************/
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484)
-// const github = require('@actions/github')
 const fs = __nccwpck_require__(9896)
 const dotenv = __nccwpck_require__(8889)
 
