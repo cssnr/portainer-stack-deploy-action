@@ -10,19 +10,19 @@
 
 # Portainer Stack Deploy Action
 
-Deploy or Update a Portainer Stack from a Repository or Compose File. Supports most features including specifying the
-repository, compose file, environment variables and much more...
-
-This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
-
-_No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)
-
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Troubleshooting](#Troubleshooting)
 - [Support](#Support)
 - [Contributing](#Contributing)
+
+Deploy or Update a Portainer Stack from a Repository or Compose File. Supports most features including specifying the
+repository, compose file, environment variables and much more...
+
+This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
+
+_No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)
 
 > [!NOTE]  
 > Please submit
@@ -32,25 +32,27 @@ _No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-
 
 ## Inputs
 
-| input      | required | default               | description             |
-| ---------- | -------- | --------------------- | ----------------------- |
-| token      | **Yes**  | -                     | Portainer Token \*      |
-| url        | **Yes**  | -                     | Portainer URL           |
-| name       | **Yes**  | -                     | Stack Name              |
-| file       | No       | `docker-compose.yaml` | Compose File            |
-| endpoint   | No       | `endpoints[0].Id`     | Portainer Endpoint \*   |
-| ref        | No       | `current reference`   | Repository Ref \*       |
-| repo       | No       | `current repository`  | Repository URL \*       |
-| tlsskip    | No       | `false`               | Skip Repo TLS Verify    |
-| prune      | No       | `true`                | Prune Services          |
-| pull       | No       | `true`                | Pull Images             |
-| type       | No       | `repo`                | Type `[repo, file]` \*  |
-| standalone | No       | `false`               | Deploy Standalone Stack |
-| env_json   | No       | -                     | Dotenv JSON Data \*     |
-| env_file   | No       | -                     | Dotenv File Path \*     |
-| username   | No       | -                     | Repository Username \*  |
-| password   | No       | -                     | Repository Password \*  |
-| fs_path    | No       | -                     | Relative Path (BE) \*   |
+| input      | required | default               | description              |
+| ---------- | -------- | --------------------- | ------------------------ |
+| token      | **Yes**  | -                     | Portainer Token \*       |
+| url        | **Yes**  | -                     | Portainer URL            |
+| name       | **Yes**  | -                     | Stack Name               |
+| file       | No       | `docker-compose.yaml` | Compose File             |
+| endpoint   | No       | `endpoints[0].Id`     | Portainer Endpoint \*    |
+| ref        | No       | `current reference`   | Repository Ref \*        |
+| repo       | No       | `current repository`  | Repository URL \*        |
+| tlsskip    | No       | `false`               | Skip Repo TLS Verify     |
+| prune      | No       | `true`                | Prune Services           |
+| pull       | No       | `true`                | Pull Images              |
+| type       | No       | `repo`                | Type [`repo`, `file`] \* |
+| standalone | No       | `false`               | Deploy Standalone Stack  |
+| env_json   | No       | -                     | Dotenv JSON Data \*      |
+| env_file   | No       | -                     | Dotenv File Path \*      |
+| merge_env  | No       | `false`               | Merge Env Vars \*        |
+| username   | No       | -                     | Repository Username \*   |
+| password   | No       | -                     | Repository Password \*   |
+| fs_path    | No       | -                     | Relative Path (BE) \*    |
+| summary    | No       | `true`                | Add Summary to Job \*    |
 
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
@@ -68,11 +70,28 @@ put the full http URL to that repository here.
 **env_json/env_file** - Optional environment variables used when creating the stack. File should be in dotenv format and
 JSON should be an object. Example: `{"KEY": "Value"}`
 
+**merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
+
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
 
-**file_system_path** - Only available in Portainer Business Edition. When specified, enables relative path volumes support
-and uses the provided path as the base directory for relative volume mappings in your compose file.
+**fs_path** - Relative Path Support for Portainer BE.
+Set this to enable relative path volumes support for volume mappings in your compose file.
+See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
+
+**summary** - Write a Summary for the job. To disable this set to `false`.
+
+<details><summary>📜 View Example Summary</summary>
+
+---
+
+More details coming soon...
+
+<table><tr><td>ID</td><td>31</td></tr><tr><td>Name</td><td>alpine-test</td></tr><tr><td>File</td><td>docker-compose.yml</td></tr><tr><td>Created</td><td>7/25/2024, 7:40:23 AM</td></tr><tr><td>Updated</td><td>2/22/2025, 9:30:28 AM</td></tr><tr><td>Type</td><td>1</td></tr><tr><td>Status</td><td>1</td></tr></table>
+
+---
+
+</details>
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -84,8 +103,8 @@ and uses the provided path as the base directory for relative volume mappings in
     file: docker-compose.yaml
 ```
 
-For more information on variables, see the Portainer API
-Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/
+For more information on variables, see the Portainer API Documentation:  
+https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 ## Outputs
 
@@ -106,9 +125,9 @@ Documentation: https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 - name: 'Echo Output'
   run: |
-    echo 'stackID: ${{ steps.stack.outputs.stackID }}'
-    echo 'swarmID: ${{ steps.stack.outputs.swarmID }}'
-    echo 'endpointID: ${{ steps.stack.outputs.endpointID }}'
+    echo stackID: '${{ steps.stack.outputs.stackID }}'
+    echo swarmID: '${{ steps.stack.outputs.swarmID }}'
+    echo endpointID: '${{ steps.stack.outputs.endpointID }}'
 ```
 
 ## Examples
@@ -153,6 +172,21 @@ Specify environment variables, may use json, or file, or a combination of both:
     type: file
     env_json: '{"KEY": "Value"}'
     env_file: .env
+```
+
+Merging existing environment variables with additional variables:
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    type: file
+    env_json: '{"KEY": "Value"}'
+    merge_env: true
 ```
 
 Deploy with relative path volumes (BE only):

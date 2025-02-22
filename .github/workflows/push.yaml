@@ -31,6 +31,7 @@ jobs:
           file: docker-compose.yaml
           type: file
           env_json: '{"TEST": "TRUE"}'
+          merge_env: true
 
       - name: "Echo Output"
         run: |
