@@ -85,9 +85,10 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 
 ---
 
-More details coming soon...
+Updated Stack 110 - alpine-test
 
-<table><tr><td>ID</td><td>31</td></tr><tr><td>Name</td><td>alpine-test</td></tr><tr><td>File</td><td>docker-compose.yml</td></tr><tr><td>Created</td><td>7/25/2024, 7:40:23 AM</td></tr><tr><td>Updated</td><td>2/22/2025, 9:30:28 AM</td></tr><tr><td>Type</td><td>1</td></tr><tr><td>Status</td><td>1</td></tr></table>
+<details><summary>Stack Details</summary><table><tr><td>ID</td><td>110</td></tr><tr><td>Name</td><td>alpine-test</td></tr><tr><td>File</td><td>docker-compose.yml</td></tr><tr><td>Type</td><td>Swarm</td></tr><tr><td>Status</td><td>Active</td></tr><tr><td>Created</td><td>2/22/2025, 9:02:26 PM</td></tr><tr><td>Updated</td><td>2/22/2025, 9:18:27 PM</td></tr><tr><td>EndpointID</td><td>1</td></tr><tr><td>SwarmID</td><td>wr8i8agdr05n6wsf1tkcnhwik</td></tr></table>
+</details>
 
 ---
 

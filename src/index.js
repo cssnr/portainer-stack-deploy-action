@@ -206,9 +206,14 @@ function getEnv(inputs, stack) {
  */
 async function writeSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
-    core.summary.addRaw(`More details coming soon...\n\n`)
+    const action = stack.UpdateDate ? 'Updated' : 'Created'
+    core.summary.addRaw(`${action} Stack ${stack.Id} - ${stack.Name}\n\n`)
 
-    core.summary.addTable([
+    console.log(stack)
+
+    const status = { 1: 'Active', 2: 'Inactive' }
+    const type = { 1: 'Swarm', 2: 'Compose' }
+    const details_table = [
         // [
         //     { data: 'Item', header: true },
         //     { data: 'Value', header: true },
@@ -216,31 +221,29 @@ async function writeSummary(inputs, stack) {
         [{ data: 'ID' }, { data: `${stack.Id}` }],
         [{ data: 'Name' }, { data: `${stack.Name}` }],
         [{ data: 'File' }, { data: `${stack.EntryPoint}` }],
+        [{ data: 'Type' }, { data: `${type[stack.Type]}` }],
+        [{ data: 'Status' }, { data: `${status[stack.Status]}` }],
         [
             { data: 'Created' },
             { data: `${new Date(stack.CreationDate * 1000).toLocaleString()}` },
         ],
-        [
+    ]
+    if (stack.UpdateDate) {
+        details_table.push([
             { data: 'Updated' },
             { data: `${new Date(stack.UpdateDate * 1000).toLocaleString()}` },
-        ],
-        [{ data: 'Type' }, { data: `${stack.Type}` }],
-        [{ data: 'Status' }, { data: `${stack.Status}` }],
+        ])
+    }
+    details_table.push([
+        { data: 'EndpointID' },
+        { data: `${stack.EndpointId}` },
     ])
-
-    // core.summary.addRaw('<details><summary>Inputs</summary>')
-    // core.summary.addTable([
-    //     [
-    //         { data: 'Input', header: true },
-    //         { data: 'Value', header: true },
-    //     ],
-    //     [{ data: 'source' }, { data: `<code>${inputs.source}</code>` }],
-    //     [{ data: 'type' }, { data: `<code>${inputs.type}</code>` }],
-    //     [{ data: 'dest' }, { data: `<code>${inputs.dest}</code>` }],
-    //     [{ data: 'sensitive' }, { data: `<code>${inputs.sensitive}</code>` }],
-    //     [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-    // ])
-    // core.summary.addRaw('</details>\n')
+    if (stack.SwarmId) {
+        details_table.push([{ data: 'SwarmID' }, { data: `${stack.SwarmId}` }])
+    }
+    core.summary.addRaw('<details><summary>Stack Details</summary>')
+    core.summary.addTable(details_table)
+    core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
     const link = `https://github.com/${process.env.GITHUB_ACTION_REPOSITORY}`
