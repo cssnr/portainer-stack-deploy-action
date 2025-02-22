@@ -30,6 +30,7 @@ jobs:
           name: alpine-test
           file: docker-compose.yaml
           type: file
+          env_json: '{"TEST": "TRUE"}'
 
       - name: "Echo Output"
         run: |

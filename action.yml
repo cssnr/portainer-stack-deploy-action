@@ -57,11 +57,9 @@ inputs:
   username:
     description: "Repository Username"
     required: false
-    default: ""
   password:
     description: "Repository Password"
     required: false
-    default: ""
   fs_path:
     description: "Relative path volume in host (only available in Portainer BE)"
     required: false
