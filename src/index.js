@@ -32,8 +32,6 @@ const Portainer = require('./portainer')
         }
 
         // Set Variables
-        const repositoryAuthentication = !!(inputs.username || inputs.password)
-
         let endpointID = parseInt(inputs.endpoint)
         if (!endpointID) {
             const endpoints = await portainer.getEndpoints()
@@ -43,7 +41,7 @@ const Portainer = require('./portainer')
                 return core.setFailed('No Endpoints Found!')
             }
         }
-        core.info(`endpointID: \u001b[36m${endpointID}`)
+        core.info(` endpointID: \u001b[36m${endpointID}`)
 
         let swarmID = null
         if (!inputs.standalone) {
@@ -51,7 +49,7 @@ const Portainer = require('./portainer')
             // console.log('swarm:', swarm)
             swarmID = swarm.ID
         }
-        core.info(`swarmID: \u001b[36m${swarmID}`)
+        core.info(` swarmID: \u001b[36m${swarmID}`)
 
         // Get Stack
         const stacks = await portainer.getStacks()
@@ -59,7 +57,7 @@ const Portainer = require('./portainer')
         let stack = stacks.find((item) => item.Name === inputs.name)
         // console.log('stack:', stack)
         let stackID = stack?.Id
-        core.info(`stackID: \u001b[36m${stackID}`)
+        core.info(` stackID: \u001b[36m${stackID}`)
 
         // Update Environment
         const env = getEnv(inputs, stack)
@@ -67,6 +65,9 @@ const Portainer = require('./portainer')
         // Perform Deploy
         if (inputs.type === 'repo') {
             core.info('🌐 Performing Repository Deployment')
+            const repositoryAuthentication = !!(
+                inputs.username || inputs.password
+            )
             if (stackID) {
                 core.info(`Stack Found - Updating Stack ID: ${stack.Id}`)
                 const body = {
@@ -208,45 +209,50 @@ function getEnv(inputs, stack) {
  */
 async function writeSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
-    const action = stack.UpdateDate ? 'Updated' : 'Created'
-    core.summary.addRaw(`${action} Stack ${stack.Id} - ${stack.Name}\n\n`)
+    const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
+    core.summary.addRaw(
+        `🎉 ${action} Stack ${stack.Id} - \`${stack.Name}\`\n\n`
+    )
 
-    const status = { 1: 'Active', 2: 'Inactive' }
-    const type = { 1: 'Swarm', 2: 'Compose' }
-    const details_table = [
-        // [
-        //     { data: 'Item', header: true },
-        //     { data: 'Value', header: true },
-        // ],
-        [{ data: 'ID' }, { data: `${stack.Id}` }],
-        [{ data: 'Name' }, { data: `${stack.Name}` }],
-        [{ data: 'File' }, { data: `${stack.EntryPoint}` }],
-        [{ data: 'Type' }, { data: `${type[stack.Type]}` }],
-        [{ data: 'Status' }, { data: `${status[stack.Status]}` }],
+    const table = [
+        [
+            { data: 'Item', header: true },
+            { data: 'Value', header: true },
+        ],
+        [{ data: 'ID' }, { data: stack.Id }],
+        [{ data: 'Name' }, { data: stack.Name }],
+        [{ data: 'File' }, { data: stack.EntryPoint }],
+        [{ data: 'Type' }, { data: Portainer.type[stack.Type] }],
+        [{ data: 'Status' }, { data: Portainer.status[stack.Status] }],
         [
             { data: 'Created' },
-            { data: `${new Date(stack.CreationDate * 1000).toLocaleString()}` },
+            { data: new Date(stack.CreationDate * 1000).toLocaleString() },
         ],
-    ]
-    if (stack.UpdateDate) {
-        details_table.push([
+        [
             { data: 'Updated' },
-            { data: `${new Date(stack.UpdateDate * 1000).toLocaleString()}` },
-        ])
-    }
-    details_table.push([
-        { data: 'EndpointID' },
-        { data: `${stack.EndpointId}` },
-    ])
-    if (stack.SwarmId) {
-        details_table.push([{ data: 'SwarmID' }, { data: `${stack.SwarmId}` }])
-    }
+            {
+                data: stack.UpdateDate
+                    ? new Date(stack.UpdateDate * 1000).toLocaleString()
+                    : '-',
+            },
+        ],
+        [{ data: 'Path' }, { data: stack.ProjectPath }],
+        [{ data: 'EndpointID' }, { data: stack.EndpointId }],
+        [{ data: 'SwarmID' }, { data: stack.SwarmId ? stack.SwarmId : '-' }],
+    ]
+    // if (stack.SwarmId) {
+    //     table.push([{ data: 'SwarmID' }, { data: `${stack.SwarmId}` }])
+    // }
+    // const bold_table = table.map((row) => [
+    //     row[0],
+    //     { data: `<code>${row[1].data}</code>` },
+    // ])
     core.summary.addRaw('<details><summary>Stack Details</summary>')
-    core.summary.addTable(details_table)
+    core.summary.addTable(table)
     core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
-    const link = `https://github.com/${process.env.GITHUB_ACTION_REPOSITORY}`
+    const link = `https://github.com/cssnr/portainer-stack-deploy-action`
     core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
     await core.summary.write()
 }
