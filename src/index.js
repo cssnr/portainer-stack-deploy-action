@@ -129,9 +129,9 @@ const Portainer = require('./portainer')
                     repositoryPassword,
                     repositoryUsername,
                     // If fs_path is set, add it to the body
-                    ...(fs_path && { 
+                    ...(fs_path && {
                         supportRelativePath: true,
-                        fileSystemPath: fs_path 
+                        fileSystemPath: fs_path,
                     }),
                 }
                 // console.log('body:', body)

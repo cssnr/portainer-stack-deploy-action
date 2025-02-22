@@ -1,4 +1,4 @@
-[![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/tags.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_portainer-stack-deploy-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_portainer-stack-deploy-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
@@ -50,7 +50,7 @@ _No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-
 | env_file   | No       | -                     | Dotenv File Path \*     |
 | username   | No       | -                     | Repository Username \*  |
 | password   | No       | -                     | Repository Password \*  |
-| fs_path    | No       | -                     | Relative Path (BE) \*  |
+| fs_path    | No       | -                     | Relative Path (BE) \*   |
 
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
@@ -71,7 +71,7 @@ JSON should be an object. Example: `{"KEY": "Value"}`
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
 
-**file_system_path** - Only available in Portainer Business Edition. When specified, enables relative path volumes support 
+**file_system_path** - Only available in Portainer Business Edition. When specified, enables relative path volumes support
 and uses the provided path as the base directory for relative volume mappings in your compose file.
 
 ```yaml
@@ -161,11 +161,11 @@ Deploy with relative path volumes (BE only):
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
   with:
-      token: ${{ secrets.PORTAINER_TOKEN }}
-      url: https://portainer.example.com:9443
-      name: stack-name
-      file: docker-compose.yaml
-      fs_path: /mnt
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    fs_path: /mnt
 ```
 
 To include this in a general workflow but only run on release events use an if:
@@ -273,13 +273,15 @@ Currently, the best way to contribute to this project is to star this project on
 
 Additionally, you can support other GitHub Actions I have published:
 
-- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
-- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
-- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
-- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
-- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
-- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action)
-- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
-- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
+- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
+- [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
+- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
