@@ -37541,7 +37541,7 @@ const Portainer = __nccwpck_require__(1055)
             core.info('📄 Performing Stack File Deployment')
             const stackFileContent = fs.readFileSync(inputs.file, 'utf-8')
             if (stackID) {
-                core.info(`  Stack Found - Updating Stack ID: ${stackID}`)
+                core.info(`   Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
                     env,
                     prune: inputs.prune,
@@ -37555,9 +37555,9 @@ const Portainer = __nccwpck_require__(1055)
                     body
                 )
                 // console.log('stack:', stack)
-                core.info(`  Updated Stack ${stack.Id}: ${stack.Name}`)
+                core.info(`   Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
-                core.info('  Stack NOT Found - Deploying NEW Stack')
+                core.info('   Stack NOT Found - Deploying NEW Stack')
                 const body = {
                     name: inputs.name,
                     swarmID,
@@ -37567,7 +37567,7 @@ const Portainer = __nccwpck_require__(1055)
                 // console.log('body:', body)
                 stack = await portainer.createStackString(endpointID, body)
                 // console.log('stack:', stack)
-                core.info(`  Deployed Stack: ${stack.Id}: ${stack.Name}`)
+                core.info(`   Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
         }
 
@@ -37598,6 +37598,9 @@ const Portainer = __nccwpck_require__(1055)
  * @return {Object[]} Portainer formatted environment
  */
 function getEnv(inputs, stack) {
+    if (!inputs.env_json && !inputs.env_file) {
+        return stack?.env ? stack.env : []
+    }
     const env = {}
     if (inputs.merge_env && stack?.Env?.length) {
         console.log('🔁 Merging Environment with Current')
@@ -37618,7 +37621,6 @@ function getEnv(inputs, stack) {
             env[name] = value
         }
     }
-
     const results = []
     for (const [name, value] of Object.entries(env)) {
         results.push({ name, value })
