@@ -37450,10 +37450,10 @@ const Portainer = __nccwpck_require__(1055)
             return
         }
 
+        // Check Portainer
         const portainer = new Portainer(inputs.url, inputs.token)
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
-        // core.info(`Portainer Version: ${versionString}`)
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
         delete version.Runtime
         console.log(version)
