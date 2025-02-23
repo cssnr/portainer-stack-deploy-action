@@ -216,7 +216,8 @@ async function writeSummary(inputs, stack) {
     const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
     core.summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
 
-    const table = [
+    core.summary.addRaw('<details><summary>Stack Details</summary>')
+    core.summary.addTable([
         [
             { data: 'Item', header: true },
             { data: 'Value', header: true },
@@ -241,16 +242,7 @@ async function writeSummary(inputs, stack) {
         [{ data: 'Path' }, { data: stack.ProjectPath }],
         [{ data: 'EndpointID' }, { data: stack.EndpointId }],
         [{ data: 'SwarmID' }, { data: stack.SwarmId ? stack.SwarmId : '-' }],
-    ]
-    // if (stack.SwarmId) {
-    //     table.push([{ data: 'SwarmID' }, { data: `${stack.SwarmId}` }])
-    // }
-    // const bold_table = table.map((row) => [
-    //     row[0],
-    //     { data: `<code>${row[1].data}</code>` },
-    // ])
-    core.summary.addRaw('<details><summary>Stack Details</summary>')
-    core.summary.addTable(table)
+    ])
     core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
@@ -261,27 +253,7 @@ async function writeSummary(inputs, stack) {
 
 /**
  * @function parseInputs
- * @return {{
- *   token: string,
- *   url: string,
- *   name: string,
- *   file: string,
- *   endpoint: string | undefined,
- *   ref: string,
- *   repo: string,
- *   tlsskip: boolean,
- *   prune: boolean,
- *   pull: boolean,
- *   type: string,
- *   standalone: boolean,
- *   env_json: string | undefined,
- *   env_file: string | undefined,
- *   merge_env: boolean,
- *   username: string | undefined,
- *   password: string | undefined,
- *   fs_path: string | undefined
- *   summary: boolean
- * }}
+ * @return {{ token: string, url: string, name: string, file: string, endpoint: string | undefined, ref: string, repo: string, tlsskip: boolean, prune: boolean, pull: boolean, type: string, standalone: boolean, env_json: string | undefined, env_file: string | undefined, merge_env: boolean, username: string | undefined, password: string | undefined, fs_path: string | undefined, summary: boolean }}
  */
 function parseInputs() {
     return {
