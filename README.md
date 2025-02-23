@@ -70,6 +70,10 @@ put the full http URL to that repository here.
 **env_json/env_file** - Optional environment variables used when creating the stack. File should be in dotenv format and
 JSON should be an object. Example: `{"KEY": "Value"}`
 
+> [!WARNING]  
+> Inputs are NOT secure and using `env_json` on a public repository will expose this data.  
+> To securely pass an environment, use the `env_file` option.
+
 **merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
 If you are not providing an env, the existing env will be used, and you do not need to set this.
 
