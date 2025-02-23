@@ -58,7 +58,6 @@ jobs:
         id: install
         run: |
           npm install
-          npm install -g prettier
 
       - name: "ESLint"
         if: ${{ steps.install.outcome == 'success' }}
@@ -68,7 +67,7 @@ jobs:
       - name: "Prettier"
         if: ${{ steps.install.outcome == 'success' }}
         run: |
-          npm run prettier --check .
+          npx prettier --check .
 
   build:
     name: "Build"
