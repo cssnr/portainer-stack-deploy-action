@@ -30647,7 +30647,7 @@ class Portainer {
     static type = { 1: 'Swarm', 2: 'Compose' }
 
     async getVersion() {
-        const response = await this.client.get('/status/version')
+        const response = await this.client.get('/system/version')
         return response.data
     }
 
@@ -37451,13 +37451,17 @@ const Portainer = __nccwpck_require__(1055)
         }
 
         const portainer = new Portainer(inputs.url, inputs.token)
+        const version = await portainer.getVersion()
+        const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
+        // core.info(`Portainer Version: ${versionString}`)
+        core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
+        delete version.Runtime
+        console.log(version)
+        core.endGroup()
 
         if (inputs.fs_path) {
-            const version = await portainer.getVersion()
-            // console.log('version:', version)
-            const is_portainer_be = version.ServerEdition === 'EE'
-            if (!is_portainer_be) {
-                core.setFailed('Relative path only supported in Portainer BE!')
+            if (version.ServerEdition !== 'EE') {
+                core.setFailed('Relative path only supported in Portainer EE!')
                 return
             }
         }
@@ -37472,7 +37476,7 @@ const Portainer = __nccwpck_require__(1055)
                 return core.setFailed('No Endpoints Found!')
             }
         }
-        core.info(` endpointID: \u001b[36m${endpointID}`)
+        core.info(`  endpointID: \u001b[36m${endpointID}`)
 
         let swarmID = null
         if (!inputs.standalone) {
@@ -37480,7 +37484,7 @@ const Portainer = __nccwpck_require__(1055)
             // console.log('swarm:', swarm)
             swarmID = swarm.ID
         }
-        core.info(` swarmID: \u001b[36m${swarmID}`)
+        core.info(`  swarmID: \u001b[36m${swarmID}`)
 
         // Get Stack
         const stacks = await portainer.getStacks()
@@ -37488,7 +37492,7 @@ const Portainer = __nccwpck_require__(1055)
         let stack = stacks.find((item) => item.Name === inputs.name)
         // console.log('stack:', stack)
         let stackID = stack?.Id
-        core.info(` stackID: \u001b[36m${stackID}`)
+        core.info(`  stackID: \u001b[36m${stackID}`)
 
         // Update Environment
         const env = getEnv(inputs, stack)
@@ -37641,9 +37645,7 @@ function getEnv(inputs, stack) {
 async function writeSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
     const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
-    core.summary.addRaw(
-        `🎉 ${action} Stack ${stack.Id} - \`${stack.Name}\`\n\n`
-    )
+    core.summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
 
     const table = [
         [
