@@ -33,26 +33,26 @@ _No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-
 ## Inputs
 
 | input      | required | default               | description              |
-| ---------- | -------- | --------------------- | ------------------------ |
+| ---------- | :------: | --------------------- | ------------------------ |
 | token      | **Yes**  | -                     | Portainer Token \*       |
 | url        | **Yes**  | -                     | Portainer URL            |
 | name       | **Yes**  | -                     | Stack Name               |
-| file       | No       | `docker-compose.yaml` | Compose File             |
-| endpoint   | No       | `endpoints[0].Id`     | Portainer Endpoint \*    |
-| ref        | No       | `current reference`   | Repository Ref \*        |
-| repo       | No       | `current repository`  | Repository URL \*        |
-| tlsskip    | No       | `false`               | Skip Repo TLS Verify     |
-| prune      | No       | `true`                | Prune Services           |
-| pull       | No       | `true`                | Pull Images              |
-| type       | No       | `repo`                | Type [`repo`, `file`] \* |
-| standalone | No       | `false`               | Deploy Standalone Stack  |
-| env_json   | No       | -                     | Dotenv JSON Data \*      |
-| env_file   | No       | -                     | Dotenv File Path \*      |
-| merge_env  | No       | `false`               | Merge Env Vars \*        |
-| username   | No       | -                     | Repository Username \*   |
-| password   | No       | -                     | Repository Password \*   |
-| fs_path    | No       | -                     | Relative Path (BE) \*    |
-| summary    | No       | `true`                | Add Summary to Job \*    |
+| file       |    -     | `docker-compose.yaml` | Compose File             |
+| endpoint   |    -     | `endpoints[0].Id`     | Portainer Endpoint \*    |
+| ref        |    -     | `current reference`   | Repository Ref \*        |
+| repo       |    -     | `current repository`  | Repository URL \*        |
+| tlsskip    |    -     | `false`               | Skip Repo TLS Verify     |
+| prune      |    -     | `true`                | Prune Services           |
+| pull       |    -     | `true`                | Pull Images              |
+| type       |    -     | `repo`                | Type [`repo`, `file`] \* |
+| standalone |    -     | `false`               | Deploy Standalone Stack  |
+| env_json   |    -     | -                     | Dotenv JSON Data \*\*    |
+| env_file   |    -     | -                     | Dotenv File Path \*      |
+| merge_env  |    -     | `false`               | Merge Env Vars \*        |
+| username   |    -     | -                     | Repository Username \*   |
+| password   |    -     | -                     | Repository Password \*   |
+| fs_path    |    -     | -                     | Relative Path (BE) \*    |
+| summary    |    -     | `true`                | Add Summary to Job \*    |
 
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
@@ -72,7 +72,7 @@ JSON should be an object. Example: `{"KEY": "Value"}`
 
 > [!WARNING]  
 > Inputs are NOT secure and using `env_json` on a public repository will expose this data.  
-> To securely pass an environment, use the `env_file` option.
+> To securely pass an environment use the `env_file` option.
 
 **merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
 If you are not providing an env, the existing env will be used, and you do not need to set this.
@@ -90,9 +90,9 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 
 ---
 
-🎉 **Updated** Existing Stack 110 - `alpine-test`
+🎉 **Updated** Existing Stack 110: `alpine-test`
 
-<details><summary>Stack Details</summary><table><tr><th>Item</th><th>Value</th></tr><tr><td>ID</td><td>110</td></tr><tr><td>Name</td><td>alpine-test</td></tr><tr><td>File</td><td>docker-compose.yml</td></tr><tr><td>Type</td><td>Swarm</td></tr><tr><td>Status</td><td>Active</td></tr><tr><td>Created</td><td>2/22/2025, 9:02:26 PM</td></tr><tr><td>Updated</td><td>2/22/2025, 11:28:42 PM</td></tr><tr><td>Path</td><td>/data/compose/110</td></tr><tr><td>EndpointID</td><td>1</td></tr><tr><td>SwarmID</td><td>wr8i8agdr05n6wsf1tkcnhwik</td></tr></table></details>
+<details><summary>Stack Details</summary><table><tr><th>Item</th><th>Value</th></tr><tr><td>ID</td><td>110</td></tr><tr><td>Name</td><td>alpine-test</td></tr><tr><td>File</td><td>docker-compose.yml</td></tr><tr><td>Type</td><td>Swarm</td></tr><tr><td>Status</td><td>Active</td></tr><tr><td>Created</td><td>2/22/2025, 9:02:26 PM</td></tr><tr><td>Updated</td><td>2/23/2025, 3:41:02 AM</td></tr><tr><td>Path</td><td>/data/compose/110</td></tr><tr><td>EndpointID</td><td>1</td></tr><tr><td>SwarmID</td><td>wr8i8agdr05n6wsf1tkcnhwik</td></tr></table></details>
 
 ---
 
