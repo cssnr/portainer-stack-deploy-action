@@ -26,7 +26,7 @@ const Portainer = require('./portainer')
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
         delete version.Runtime
         console.log(version)
-        core.endGroup()
+        core.endGroup() // Portainer Version
 
         if (inputs.fs_path) {
             if (version.ServerEdition !== 'EE') {
