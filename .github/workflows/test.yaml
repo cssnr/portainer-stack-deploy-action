@@ -52,11 +52,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          #cache: npm
 
-      - name: "ESLint"
+      - name: "Install"
+        id: install
         run: |
           npm install
+
+      - name: "ESLint"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
           npm run lint
+
+      - name: "Prettier"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
+          prettier --check .
 
   build:
     name: "Build"
@@ -71,6 +82,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          #cache: npm
 
       - name: "Build"
         run: |
