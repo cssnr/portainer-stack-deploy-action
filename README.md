@@ -71,6 +71,7 @@ put the full http URL to that repository here.
 JSON should be an object. Example: `{"KEY": "Value"}`
 
 **merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
+If you are not providing an env, the existing env will be used, and you do not need to set this.
 
 **username/password** - Only set these if the `repo` is private and requires authentication.
 This is NOT the Portainer username/password, see `token` for Portainer authentication.
