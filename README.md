@@ -26,10 +26,8 @@ This action is written from the ground up in VanillaJS and is not a fork/clone o
 _No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)
 
 > [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests)
-> for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any
-> bugs.
+> Please submit a [Feature Request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests)
+> for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any bugs.
 
 ## Inputs
 
@@ -72,7 +70,8 @@ put the full http URL to that repository here.
 JSON should be an object. Example: `{"KEY": "Value"}`
 
 > [!WARNING]  
-> Inputs are NOT secure and using `env_json` on a public repository will expose this data.  
+> Inputs are NOT secure unless using secrets or secure output.
+> Using `env_json` on a public repository will otherwise expose this data.  
 > To securely pass an environment use the `env_file` option.
 
 **merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
@@ -178,6 +177,24 @@ Specify environment variables, may use json, or file, or a combination of both:
     type: file
     env_json: '{"KEY": "Value"}'
     env_file: .env
+```
+
+Multiline JSON data (note secrets are secure in this context):
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    type: file
+    env_json: |
+      {
+        "APP_PRIVATE_KEY": "${{ secrets.APP_PRIVATE_KEY }}",
+        "VERSION": "${{ inputs.VERSION }}"
+      }
 ```
 
 Merging existing environment variables with additional variables:
