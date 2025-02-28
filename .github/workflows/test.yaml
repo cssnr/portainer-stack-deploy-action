@@ -3,7 +3,7 @@ name: "Test"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "22 22 * * 2,4,6"
+    - cron: "18 18 * * *"
   push:
     paths:
       - "dist/**"
@@ -36,7 +36,7 @@ jobs:
         with:
           token: ${{ secrets.PORTAINER_TOKEN }}
           url: ${{ secrets.PORTAINER_URL }}
-          name: alpine-test
+          name: test_portainer-stack-deploy
           file: docker-compose.yaml
           type: file
           env_json: '{"TEST": "TRUE"}'
@@ -48,7 +48,7 @@ jobs:
           echo swarmID: '${{ steps.test.outputs.swarmID }}'
           echo endpointID: '${{ steps.test.outputs.endpointID }}'
 
-      - name: "Discord Notification"
+      - name: "Schedule Failure Notification"
         uses: sarisia/actions-status-discord@v1
         if: ${{ always() && github.event_name == 'schedule' && steps.test.outcome == 'failure' }}
         with:
