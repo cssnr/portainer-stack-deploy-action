@@ -1,0 +1,23 @@
+name: "Tags"
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Target Tag"
+        required: true
+
+jobs:
+  tags:
+    name: "Tags"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Update Tags"
+        uses: cssnr/update-version-tags-action@v1
+        with:
+          tag: ${{ inputs.tag }}
+          token: ${{ secrets.GH_PAT }}

@@ -2,45 +2,20 @@ name: "Test"
 
 on:
   workflow_dispatch:
-  pull_request:
+  schedule:
+    - cron: "22 22 * * 2,4,6"
   push:
-    branches: [master]
+    paths:
+      - "dist/**"
+      - "src/**"
+      - ".github/workflows/test.yaml"
+      - "package.json"
+      - "package-lock.json"
+      - "action.yaml"
 
 jobs:
-  #test:
-  #  name: "Test"
-  #  runs-on: ubuntu-latest
-  #  timeout-minutes: 5
-  #
-  #  steps:
-  #    - name: "Checkout"
-  #      uses: actions/checkout@v4
-  #
-  #    - name: "Write YAML"
-  #      id: yaml-action
-  #      uses: teunmooij/yaml@v1
-  #      with:
-  #        data: '{"version":"3.8","services":{"alpine":{"image":"alpine","command":"tail -f /dev/null"}}}'
-  #        to-file: "docker-compose.yaml"
-  #
-  #    - name: "Test Local Action"
-  #      id: test
-  #      uses: ./
-  #      with:
-  #        token: ${{ secrets.PORTAINER_TOKEN }}
-  #        url: ${{ secrets.PORTAINER_URL }}
-  #        name: alpine-test
-  #        file: docker-compose.yaml
-  #        type: file
-  #
-  #    - name: "Echo Output"
-  #      run: |
-  #        echo stackID: '${{ steps.test.outputs.stackID }}'
-  #        echo swarmID: '${{ steps.test.outputs.swarmID }}'
-  #        echo endpointID: '${{ steps.test.outputs.endpointID }}'
-
-  lint:
-    name: "Lint"
+  test:
+    name: "Test"
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -48,55 +23,33 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node 20"
-        uses: actions/setup-node@v4
+      - name: "Write YAML"
+        id: yaml-action
+        uses: teunmooij/yaml@v1
         with:
-          node-version: 20
-          #cache: npm
+          data: '{"version":"3.8","services":{"alpine":{"image":"alpine","command":"tail -f /dev/null"}}}'
+          to-file: "docker-compose.yaml"
 
-      - name: "Install"
-        id: install
-        run: |
-          npm install
-
-      - name: "ESLint"
-        if: ${{ steps.install.outcome == 'success' }}
-        run: |
-          npm run lint
-
-      - name: "Prettier"
-        if: ${{ steps.install.outcome == 'success' }}
-        run: |
-          npx prettier --check .
-
-  build:
-    name: "Build"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-
-      - name: "Setup Node 20"
-        uses: actions/setup-node@v4
+      - name: "Test Local Action"
+        id: test
+        uses: ./
         with:
-          node-version: 20
-          #cache: npm
+          token: ${{ secrets.PORTAINER_TOKEN }}
+          url: ${{ secrets.PORTAINER_URL }}
+          name: alpine-test
+          file: docker-compose.yaml
+          type: file
+          env_json: '{"TEST": "TRUE"}'
+          merge_env: true
 
-      - name: "Build"
+      - name: "Echo Output"
         run: |
-          npm install
-          npm run build
+          echo stackID: '${{ steps.test.outputs.stackID }}'
+          echo swarmID: '${{ steps.test.outputs.swarmID }}'
+          echo endpointID: '${{ steps.test.outputs.endpointID }}'
 
-      - name: "Verify"
-        run: |
-          git status --porcelain dist/
-          if [ ! -d "dist" ];then
-            echo "Missing dist directory, run: npm build"
-            exit 1
-          fi
-          if [ -n "$(git status --porcelain dist)" ];then
-            echo "Build was not run, run: npm build"
-            exit 1
-          fi
+      - name: "Discord Notification"
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ always() && github.event_name == 'schedule' && steps.test.outcome == 'failure' }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}

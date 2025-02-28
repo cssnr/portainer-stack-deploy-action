@@ -1,0 +1,70 @@
+name: "Lint"
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Node 20"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          #cache: npm
+
+      - name: "Install"
+        id: install
+        run: |
+          npm install
+
+      - name: "ESLint"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
+          npm run lint
+
+      - name: "Prettier"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
+          npm run prettier
+
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Node 20"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          #cache: npm
+
+      - name: "Build"
+        run: |
+          npm install
+          npm run build
+
+      - name: "Verify"
+        run: |
+          git status --porcelain dist/
+          if [ ! -d "dist" ];then
+            echo "Missing dist directory, run: npm build"
+            exit 1
+          fi
+          if [ -n "$(git status --porcelain dist)" ];then
+            echo "Build was not run, run: npm build"
+            exit 1
+          fi

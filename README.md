@@ -1,5 +1,6 @@
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_portainer-stack-deploy-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_portainer-stack-deploy-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/commit-activity)
@@ -14,7 +15,6 @@
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Troubleshooting](#Troubleshooting)
-- [Development](#Development)
 - [Support](#Support)
 - [Contributing](#Contributing)
 
@@ -87,7 +87,7 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>👀 View Example Job Summary</summary>
 
 ---
 
@@ -299,32 +299,6 @@ Permissions documentation for
 [Workflows](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token)
 and [Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication).
 
-# Development
-
-Until the `CONTRIBUTING.md` is finished being created, here is a quick rundown:
-
-1. Fork the repository.
-2. Create a branch in your fork!
-3. Run: `npm install`
-4. Make your changes.
-5. Build or watch: `npm run build:watch`
-6. [Test](#Testing) your changes.
-7. Ensure changes are built: `npm build`
-8. Commit and push your changes (including `dist`).
-9. Create a PR to this repository.
-10. Verify the tests pass, otherwise resolve.
-11. Make sure to keep your branch up-to-date.
-
-### Testing
-
-Currently, the test is in [push.yaml](.github/workflows/push.yaml).
-You can either test on GitHub by enabling this workflow, or locally using [act](https://github.com/nektos/act).
-In both cases, you will need to have the secrets added either to GitHub or the `.secrets` file.
-
-For instructions on running/testing actions locally, there is more information in this
-[README.md](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#development) and this
-[README.md](https://github.com/smashedr/js-test-action?tab=readme-ov-file#local-development).
-
 # Support
 
 For general help or to request a feature, see:
@@ -342,6 +316,8 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 # Contributing
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Additionally, you can support other GitHub Actions I have published:
 

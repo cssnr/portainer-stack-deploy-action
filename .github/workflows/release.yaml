@@ -5,21 +5,13 @@ on:
     types: [published]
 
 jobs:
-  tags:
-    name: "Tags"
+  release:
+    name: "Release"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: write
 
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-
-      - name: "Update Version Tags"
-        id: tags
+      - name: "Update Tags"
         uses: cssnr/update-version-tags-action@v1
-
-      - name: "Echo Tags"
-        run: |
-          echo "tags: ${{ steps.tags.outputs.tags }}"
