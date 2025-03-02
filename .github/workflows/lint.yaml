@@ -16,10 +16,10 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node 20"
+      - name: "Setup Node 22"
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           #cache: npm
 
       - name: "Install"
@@ -52,9 +52,12 @@ jobs:
           node-version: 20
           #cache: npm
 
-      - name: "Build"
+      - name: "Install"
         run: |
           npm install
+
+      - name: "Build"
+        run: |
           npm run build
 
       - name: "Verify"

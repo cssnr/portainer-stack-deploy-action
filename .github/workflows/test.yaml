@@ -9,8 +9,7 @@ on:
       - "dist/**"
       - "src/**"
       - ".github/workflows/test.yaml"
-      - "package.json"
-      - "package-lock.json"
+      - "package*.json"
       - "action.yaml"
 
 jobs:
