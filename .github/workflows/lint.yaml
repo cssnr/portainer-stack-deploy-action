@@ -28,12 +28,12 @@ jobs:
           npm install
 
       - name: "ESLint"
-        if: ${{ steps.install.outcome == 'success' }}
+        if: ${{ always() }}
         run: |
           npm run lint
 
       - name: "Prettier"
-        if: ${{ steps.install.outcome == 'success' }}
+        if: ${{ always() }}
         run: |
           npm run prettier
 
