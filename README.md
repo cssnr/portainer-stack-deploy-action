@@ -99,8 +99,7 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
-_(requires login)_.
+[test.yaml run](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml) _(requires login)_.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -331,8 +330,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/portainer-stack-deploy-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)
 
 # Contributing
 
