@@ -99,7 +99,7 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml workflow run](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
+[test.yaml run](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 _(requires login)_.
 
 ```yaml
