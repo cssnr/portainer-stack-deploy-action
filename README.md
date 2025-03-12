@@ -73,7 +73,7 @@ JSON should be an object. Example: `{"KEY": "Value"}`
 
 > [!WARNING]  
 > Inputs are NOT secure unless using secrets or secure output.
-> Using `env_json` on a public repository will otherwise expose this data.  
+> Using `env_json` on a public repository will otherwise expose this data.
 > To securely pass an environment use the `env_file` option.
 
 **merge_env** - If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
@@ -142,9 +142,9 @@ https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 ## Examples
 
-💡 _Click on a heading to expand or collapse an example._
+💡 _Click on an example heading to expand or collapse the example._
 
-<details><summary>Deploy from a compose file</summary>
+<details open><summary>Deploy from a compose file</summary>
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -158,8 +158,20 @@ https://app.swaggerhub.com/apis/portainer/portainer-ce/
 ```
 
 </details>
+<details><summary>Deploy from the repository</summary>
 
-<details open><summary>Deploying from a different repository</summary>
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+```
+
+</details>
+<details><summary>Deploy from a different repository</summary>
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -174,7 +186,6 @@ https://app.swaggerhub.com/apis/portainer/portainer-ce/
 ```
 
 </details>
-
 <details><summary>Specify environment variables</summary>
 
 You can use env_json, env_file, or both.
@@ -193,7 +204,6 @@ You can use env_json, env_file, or both.
 ```
 
 </details>
-
 <details><summary>Merging existing environment variables</summary>
 
 This will add the provided variables to the existing stack variables.
@@ -212,8 +222,7 @@ This will add the provided variables to the existing stack variables.
 ```
 
 </details>
-
-<details><summary>Multiline JSON data</summary>
+<details><summary>Multiline JSON data input</summary>
 
 Note: Secrets are secure in this context.
 
@@ -234,7 +243,24 @@ Note: Secrets are secure in this context.
 ```
 
 </details>
+<details><summary>Only run on release events</summary>
 
+This is accomplished by adding an `if:` to the step:
+
+- `if: ${{ github.event_name == 'release' }}`
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  if: ${{ github.event_name == 'release' }}
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+```
+
+</details>
 <details><summary>Deploy with relative path volumes</summary>
 
 Portainer Business Edition Only.
@@ -251,65 +277,77 @@ Portainer Business Edition Only.
 ```
 
 </details>
-
-<details><summary>Only run on release events</summary>
-
-- `if: ${{ github.event_name == 'release' }}`
-
-```yaml
-- name: 'Portainer Deploy'
-  uses: cssnr/portainer-stack-deploy-action@v1
-  if: ${{ github.event_name == 'release' }}
-  with:
-    token: ${{ secrets.PORTAINER_TOKEN }}
-    url: https://portainer.example.com:9443
-    name: stack-name
-    file: docker-compose.yaml
-```
-
-</details>
-
 <details><summary>Full Example</summary>
 
+This example builds an image and pushes it, then deploys it to Portainer.
+
 ```yaml
-name: 'Build'
+name: 'Portainer Stack Deploy Action'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+    inputs:
+      tags:
+        description: 'Tags: comma,separated'
+        required: true
+        default: 'latest'
+
+env:
+  REGISTRY: 'ghcr.io'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   build:
-    name: 'Build'
+  name: 'Build'
+  runs-on: ubuntu-latest
+  timeout-minutes: 15
+  permissions:
+    packages: write
+
+  steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+
+    - name: 'Setup Buildx'
+      uses: docker/setup-buildx-action@v2
+      with:
+        platforms: 'linux/amd64,linux/arm64'
+
+    - name: 'Docker Login'
+      uses: docker/login-action@v3
+      with:
+        registry: $${{ env.REGISTRY }}
+        username: ${{ secrets.GHCR_USER }}
+        password: ${{ secrets.GHCR_PASS }}
+
+    - name: 'Generate Tags'
+      id: tags
+      uses: cssnr/docker-tags-action@v1
+      with:
+        images: $${{ env.REGISTRY }}/${{ github.repository }}
+        tags: ${{ inputs.tags }}
+
+    - name: 'Build and Push'
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        platforms: 'linux/amd64,linux/arm64'
+        push: true
+        tags: ${{ steps.tags.outputs.tags }}
+        labels: ${{ steps.tags.outputs.labels }}
+
+  deploy:
+    name: 'Deploy'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      packages: write
+    timeout-minutes: 5
+    needs: [build]
 
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
-
-      - name: 'Docker Login'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ vars.GHCR_USER }}
-          password: ${{ secrets.GHCR_PASS }}
-
-      - name: 'Setup Buildx'
-        uses: docker/setup-buildx-action@v2
-        with:
-          platforms: linux/amd64,linux/arm64
-
-      - name: 'Bake and Push'
-        uses: docker/bake-action@v5
-        with:
-          push: true
-          files: docker-compose-build.yaml
 
       - name: 'Portainer Deploy'
         uses: cssnr/portainer-stack-deploy-action@v1
@@ -318,6 +356,22 @@ jobs:
           url: https://portainer.example.com
           name: stack-name
           file: docker-compose-swarm.yaml
+
+  cleanup:
+    name: 'Cleanup'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: deploy
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 'Purge Cache'
+        uses: cssnr/cloudflare-purge-cache-action@v2
+        with:
+          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          zones: cssnr.com
 ```
 
 </details>
