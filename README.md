@@ -387,17 +387,15 @@ https://github.com/cssnr/portainer-stack-deploy-action/network/dependents
 
 ## Tags
 
-The following [rolling tags](https://github.com/cssnr/portainer-stack-deploy-action/tags) are maintained.
+The following rolling [tags](https://github.com/cssnr/portainer-stack-deploy-action/tags) are maintained.
+
+[![GitHub Release](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 
 | Tag      | Example  | Bugs | Feat. | Description                            |
 | -------- | -------- | :--: | :---: | -------------------------------------- |
 | `vN`     | `v1`     |  ✅  |  ✅   | Points to latest `vN.x.x` release.     |
 | `vN.N`   | `v1.0`   |  ✅  |  ❌   | Points to latest `vN.N.x` release.     |
 | `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | Points directly to a specific release. |
-
-[![GitHub Release](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
-
-**Important:** Make sure to use one of the [latest tags](https://github.com/cssnr/portainer-stack-deploy-action/tags).
 
 You can view the release notes for each version on the [releases page](https://github.com/cssnr/portainer-stack-deploy-action/releases).
 
