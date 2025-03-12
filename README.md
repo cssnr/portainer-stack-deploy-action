@@ -18,6 +18,7 @@
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
+- [Tags](#Tags)
 - [Troubleshooting](#Troubleshooting)
 - [Support](#Support)
 - [Contributing](#Contributing)
@@ -380,6 +381,23 @@ jobs:
 ```
 
 </details>
+
+For more examples, you can check out other projects using this action:  
+https://github.com/cssnr/portainer-stack-deploy-action/network/dependents
+
+## Tags
+
+The following [rolling tags](https://github.com/cssnr/portainer-stack-deploy-action/tags) are maintained.
+
+| Tag      | Example  | Bugs | Feat. | Description                            |
+| -------- | -------- | :--: | :---: | -------------------------------------- |
+| `vN`     | `v1`     |  ✅  |  ✅   | Points to latest `vN.x.x` release.     |
+| `vN.N`   | `v1.0`   |  ✅  |  ❌   | Points to latest `vN.N.x` release.     |
+| `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | Points directly to a specific release. |
+
+**Important:** Make sure to use one of the [latest tags](https://github.com/cssnr/portainer-stack-deploy-action/tags).
+
+You can view the release notes for each version on the [Releases Page](https://github.com/cssnr/portainer-stack-deploy-action/releases).
 
 ## Troubleshooting
 
