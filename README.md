@@ -395,11 +395,11 @@ The following [rolling tags](https://github.com/cssnr/portainer-stack-deploy-act
 | `vN.N`   | `v1.0`   |  ✅  |  ❌   | Points to latest `vN.N.x` release.     |
 | `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | Points directly to a specific release. |
 
-[![GitHub Release](https://img.shields.io/github/v/release/cssnr/stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 
 **Important:** Make sure to use one of the [latest tags](https://github.com/cssnr/portainer-stack-deploy-action/tags).
 
-You can view the release notes for each version on the [Releases Page](https://github.com/cssnr/portainer-stack-deploy-action/releases).
+You can view the release notes for each version on the [releases page](https://github.com/cssnr/portainer-stack-deploy-action/releases).
 
 ## Troubleshooting
 
