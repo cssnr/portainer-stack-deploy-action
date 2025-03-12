@@ -7,7 +7,7 @@
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/commit-activity)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/portainer-stack-deploy-action)
-[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action)](https://github.com/portainer-stack/stack-deploy-action/discussions)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action)](https://github.com/cssnr/portainer-stack-deploy-action/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
