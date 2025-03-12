@@ -8,7 +8,7 @@ This is a basic contributing guide and is a work in progress.
 ## Workflow
 
 1. Fork the repository.
-2. Create a branch in your fork!
+2. Create a branch in your fork.
 3. Run: `npm install`
 4. Make your changes.
 5. Build or watch: `npm run build:watch`

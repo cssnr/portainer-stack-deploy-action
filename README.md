@@ -1,11 +1,13 @@
+[![Tags](https://img.shields.io/badge/tags-v1_%7C_v1.1-blue?logo=git&logoColor=white)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=git&logoColor=white&label=latest)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_portainer-stack-deploy-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_portainer-stack-deploy-action)
-[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/commit-activity)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx&logoColor=white)](https://github.com/cssnr/portainer-stack-deploy-action)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
@@ -86,6 +88,9 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
+To view a workflow run, click on a recent
+[Test](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml) job _(requires login)_.
+
 <details><summary>👀 View Example Job Summary</summary>
 
 ---
@@ -97,9 +102,6 @@ See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 ---
 
 </details>
-
-To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml) _(requires login)_.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -140,7 +142,24 @@ https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 ## Examples
 
-Deploying a repository other than the current repository:
+💡 _Click on a heading to expand or collapse an example._
+
+<details><summary>Deploy from a compose file</summary>
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    type: file
+```
+
+</details>
+
+<details open><summary>Deploying from a different repository</summary>
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -154,20 +173,11 @@ Deploying a repository other than the current repository:
     ref: refs/heads/master
 ```
 
-Deploy from compose file and not repository:
+</details>
 
-```yaml
-- name: 'Portainer Deploy'
-  uses: cssnr/portainer-stack-deploy-action@v1
-  with:
-    token: ${{ secrets.PORTAINER_TOKEN }}
-    url: https://portainer.example.com:9443
-    name: stack-name
-    file: docker-compose.yaml
-    type: file
-```
+<details><summary>Specify environment variables</summary>
 
-Specify environment variables, may use json, or file, or a combination of both:
+You can use env_json, env_file, or both.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -182,7 +192,30 @@ Specify environment variables, may use json, or file, or a combination of both:
     env_file: .env
 ```
 
-Multiline JSON data (note secrets are secure in this context):
+</details>
+
+<details><summary>Merging existing environment variables</summary>
+
+This will add the provided variables to the existing stack variables.
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    type: file
+    env_json: '{"KEY": "Value"}'
+    merge_env: true
+```
+
+</details>
+
+<details><summary>Multiline JSON data</summary>
+
+Note: Secrets are secure in this context.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -200,22 +233,11 @@ Multiline JSON data (note secrets are secure in this context):
       }
 ```
 
-Merging existing environment variables with additional variables:
+</details>
 
-```yaml
-- name: 'Portainer Deploy'
-  uses: cssnr/portainer-stack-deploy-action@v1
-  with:
-    token: ${{ secrets.PORTAINER_TOKEN }}
-    url: https://portainer.example.com:9443
-    name: stack-name
-    file: docker-compose.yaml
-    type: file
-    env_json: '{"KEY": "Value"}'
-    merge_env: true
-```
+<details><summary>Deploy with relative path volumes</summary>
 
-Deploy with relative path volumes (BE only):
+Portainer Business Edition Only.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -228,7 +250,9 @@ Deploy with relative path volumes (BE only):
     fs_path: /mnt
 ```
 
-To include this in a general workflow but only run on release events use an if:
+</details>
+
+<details><summary>Only run on release events</summary>
 
 - `if: ${{ github.event_name == 'release' }}`
 
@@ -243,7 +267,9 @@ To include this in a general workflow but only run on release events use an if:
     file: docker-compose.yaml
 ```
 
-This example builds a docker image using BuildX Bake, then pushes and deploys to Portainer.
+</details>
+
+<details><summary>Full Example</summary>
 
 ```yaml
 name: 'Build'
@@ -293,6 +319,8 @@ jobs:
           name: stack-name
           file: docker-compose-swarm.yaml
 ```
+
+</details>
 
 This is a fairly simple action, for more details see
 [src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).

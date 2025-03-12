@@ -28,14 +28,40 @@ jobs:
           npm install
 
       - name: "ESLint"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           npm run lint
 
       - name: "Prettier"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
-          npm run prettier
+          npm run prettier:check
+
+      - name: "Yamllint"
+        if: ${{ !cancelled() }}
+        env:
+          CONFIG: "{extends: relaxed, ignore: [node_modules/], rules: {line-length: {max: 119}}}"
+        run: |
+          echo "::group::List Files"
+          yamllint -d '${{ env.CONFIG }}' --list-files .
+          echo "::endgroup::"
+          yamllint -d '${{ env.CONFIG }}' .
+
+      - name: "Actionlint"
+        if: ${{ !cancelled() }}
+        run: |
+          echo "::group::Download"
+          loc=$(curl -sI https://github.com/rhysd/actionlint/releases/latest | grep -i '^location:')
+          echo "loc: ${loc}"
+          tag=$(echo "${loc}" | sed -E 's|.*/tag/v?(.*)|\1|' | tr -d '\t\r\n')
+          echo "tag: ${tag}"
+          url="https://github.com/rhysd/actionlint/releases/latest/download/actionlint_${tag}_linux_amd64.tar.gz"
+          echo "url: ${url}"
+          curl -sL "${url}" | tar xz -C "${RUNNER_TEMP}" actionlint
+          file "${RUNNER_TEMP}/actionlint"
+          "${RUNNER_TEMP}/actionlint" --version
+          echo "::endgroup::"
+          "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
 
   build:
     name: "Build"
@@ -71,3 +97,13 @@ jobs:
             echo "Build was not run, run: npm build"
             exit 1
           fi
+
+      - name: "Verify Failed"
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Adding comment to PR number: ${{ github.event.number }}"
+          comment='@${{ github.triggering_actor }} - run `npm run build` then add, commit and push the `dist` folder.'
+          echo "${comment}"
+          gh pr comment ${{ github.event.number }} --body "${comment}"
