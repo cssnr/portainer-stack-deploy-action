@@ -33,6 +33,9 @@ _No Portainer?_ You can deploy directly to a docker over ssh with: [cssnr/stack-
 > Please submit a [Feature Request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any bugs.
 
+This is a fairly simple action, for more details see
+[src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
+
 ## Inputs
 
 | input      | required | default               | description              |
@@ -377,9 +380,6 @@ jobs:
 ```
 
 </details>
-
-This is a fairly simple action, for more details see
-[src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
 
 ## Troubleshooting
 
