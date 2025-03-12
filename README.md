@@ -391,13 +391,13 @@ The following rolling [tags](https://github.com/cssnr/portainer-stack-deploy-act
 
 [![GitHub Release](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 
-| Tag      | Example  | Bugs | Feat. | Description                            |
-| -------- | -------- | :--: | :---: | -------------------------------------- |
-| `vN`     | `v1`     |  ✅  |  ✅   | Points to latest `vN.x.x` release.     |
-| `vN.N`   | `v1.0`   |  ✅  |  ❌   | Points to latest `vN.N.x` release.     |
-| `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | Points directly to a specific release. |
+| Tag      | Example  | Bugs | Feat. |  Target  | Description                   |
+| -------- | -------- | :--: | :---: | :------: | ----------------------------- |
+| `vN`     | `v1`     |  ✅  |  ✅   | `vN.x.x` | Always backwards compatible.  |
+| `vN.N`   | `v1.0`   |  ✅  |  ❌   | `vN.N.x` | Only receives bug fixes.      |
+| `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | `vN.N.N` | Not rolling. Not recommended. |
 
-You can view the release notes for each version on the [releases page](https://github.com/cssnr/portainer-stack-deploy-action/releases).
+You can view the release notes for each version on the [releases](https://github.com/cssnr/portainer-stack-deploy-action/releases).
 
 ## Troubleshooting
 
