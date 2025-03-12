@@ -1,4 +1,5 @@
-[![Tags](https://img.shields.io/badge/tags-v1_%7C_v1.1-blue?logo=git&logoColor=white)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
+[![Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?filter=!v*.*&logo=git&logoColor=white)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
+[![Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?filter=!v*.*.*&logo=git&logoColor=white)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=git&logoColor=white&label=latest)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=github&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=github&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
