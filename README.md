@@ -395,9 +395,9 @@ The following rolling [tags](https://github.com/cssnr/portainer-stack-deploy-act
 | -------- | -------- | -------- | :--: | :---: | --------------------------------------------------------- |
 | `vN`     | `v1`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
 | `vN.N`   | `v1.0`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
-| `vN.N.N` | `v1.0.0` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. Not recommended!                       |
+| `vN.N.N` | `v1.0.0` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
 
-You can view the release notes for each version on the [releases](https://github.com/cssnr/portainer-stack-deploy-action/releases).
+You can view the release notes for each version on the [releases](https://github.com/cssnr/portainer-stack-deploy-action/releases) page.
 
 ## Troubleshooting
 
