@@ -61,6 +61,9 @@ This is a fairly simple action, for more details see
 | fs_path    |    -     | -                     | Relative Path (BE) \*    |
 | summary    |    -     | `true`                | Add Summary to Job \*    |
 
+_For additional details on inputs, see the Portainer API
+[documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/)._
+
 **token** - To create a Portainer API token see: https://docs.portainer.io/api/access
 
 **endpoint** - If `endpoint` is not provided the first endpoint returned by the API will be used.
@@ -118,9 +121,6 @@ To view a workflow run, click on a recent
     name: stack-name
     file: docker-compose.yaml
 ```
-
-For more information on variables, see the Portainer API Documentation:  
-https://app.swaggerhub.com/apis/portainer/portainer-ce/
 
 ## Outputs
 
@@ -394,6 +394,8 @@ The following [rolling tags](https://github.com/cssnr/portainer-stack-deploy-act
 | `vN`     | `v1`     |  ✅  |  ✅   | Points to latest `vN.x.x` release.     |
 | `vN.N`   | `v1.0`   |  ✅  |  ❌   | Points to latest `vN.N.x` release.     |
 | `vN.N.N` | `v1.0.0` |  ❌  |  ❌   | Points directly to a specific release. |
+
+[![GitHub Release](https://img.shields.io/github/v/release/cssnr/stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 
 **Important:** Make sure to use one of the [latest tags](https://github.com/cssnr/portainer-stack-deploy-action/tags).
 
