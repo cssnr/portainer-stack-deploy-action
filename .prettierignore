@@ -10,3 +10,6 @@
 # Build
 dist/
 node_modules/
+
+# Files
+.github/pull_request_template.md
