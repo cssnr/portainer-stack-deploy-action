@@ -250,7 +250,7 @@ Note: Secrets are secure in this context.
 </details>
 <details><summary>Only run on release events</summary>
 
-This is accomplished by adding an `if:` to the step:
+This is accomplished by adding an `if` to the step.
 
 - `if: ${{ github.event_name == 'release' }}`
 
@@ -284,7 +284,7 @@ Portainer Business Edition Only.
 </details>
 <details><summary>Full Example</summary>
 
-This example builds an image and pushes it, then deploys it to Portainer.
+This example builds an image, pushes to a registry, then deploys to Portainer.
 
 ```yaml
 name: 'Portainer Stack Deploy Action'
@@ -416,7 +416,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
 - Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Portainer%20Stack%20Deploy)
 
-For more information, see the [General CSSNR SUPPORT.md](https://github.com/cssnr/.github/blob/master/.github/SUPPORT.md#support).
+For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.github/blob/master/.github/SUPPORT.md#support).
 
 # Contributing
 
