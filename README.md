@@ -392,11 +392,11 @@ The following rolling [tags](https://github.com/cssnr/portainer-stack-deploy-act
 
 [![GitHub Release](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?style=for-the-badge&label=latest%20version)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
 
-| Tag      | Example  | Target   | Bugs | Feat. | Description                                               |
-| -------- | -------- | -------- | :--: | :---: | --------------------------------------------------------- |
-| `vN`     | `v1`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
-| `vN.N`   | `v1.0`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
-| `vN.N.N` | `v1.0.0` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
+| Tag                                                                                                                                         | Example  | Target   | Bugs | Feat. | Description                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | :--: | :---: | --------------------------------------------------------- |
+| ![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/stack-deploy-action?filter=!v*.*&style=for-the-badge&label=%20&color=limegreen)     | `vN`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
+| ![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/stack-deploy-action?filter=!v*.*.*&style=for-the-badge&label=%20&color=yellowgreen) | `vN.N`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
+| ![GitHub Release](https://img.shields.io/github/v/release/cssnr/stack-deploy-action?style=for-the-badge&label=%20&color=orange)             | `vN.N.N` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
 
 You can view the release notes for each version on the [releases](https://github.com/cssnr/portainer-stack-deploy-action/releases) page.
 
