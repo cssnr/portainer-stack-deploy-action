@@ -2,6 +2,11 @@ const axios = require('axios')
 const https = require('https')
 
 class Portainer {
+    /**
+     * Portainer API
+     * @param {String} url
+     * @param {String} token
+     */
     constructor(url, token) {
         url = url.replace(/\/$/, '')
         if (!url.endsWith('api')) {
@@ -20,16 +25,29 @@ class Portainer {
     static status = { 1: 'Active', 2: 'Inactive' }
     static type = { 1: 'Swarm', 2: 'Compose' }
 
+    /**
+     * Get Version
+     * @return {Promise<Object>}
+     */
     async getVersion() {
         const response = await this.client.get('/system/version')
         return response.data
     }
 
+    /**
+     * Get Endpoints
+     * @return {Promise<Object[]>}
+     */
     async getEndpoints() {
         const response = await this.client.get('/endpoints')
         return response.data
     }
 
+    /**
+     * Get Swarm
+     * @param {String|Number} endpointId
+     * @return {Promise<Object>}
+     */
     async getSwarm(endpointId) {
         const response = await this.client.get(
             `/endpoints/${endpointId}/docker/swarm`
@@ -37,11 +55,22 @@ class Portainer {
         return response.data
     }
 
+    /**
+     * Get Stacks
+     * @return {Promise<Object[]>}
+     */
     async getStacks() {
         const response = await this.client.get('/stacks')
         return response.data
     }
 
+    /**
+     * Update Stack Repository
+     * @param {String} stackID
+     * @param {String|Number} endpointId
+     * @param {Object} body
+     * @return {Promise<Object>}
+     */
     async updateStackRepo(stackID, endpointId, body) {
         const response = await this.client.put(
             `/stacks/${stackID}/git/redeploy`,
@@ -51,6 +80,13 @@ class Portainer {
         return response.data
     }
 
+    /**
+     * Create Stack Repository
+     * @param {String|Number} endpointId
+     * @param {Object} body
+     * @param {String} [url]
+     * @return {Promise<Object>}
+     */
     async createStackRepo(endpointId, body, url = '') {
         if (body.swarmID) {
             url = '/stacks/create/swarm/repository'
@@ -63,6 +99,13 @@ class Portainer {
         return response.data
     }
 
+    /**
+     * Update Stack String
+     * @param {String} stackID
+     * @param {String|Number} endpointId
+     * @param {Object} body
+     * @return {Promise<Object>}
+     */
     async updateStackString(stackID, endpointId, body) {
         const response = await this.client.put(`/stacks/${stackID}`, body, {
             params: { endpointId },
@@ -70,6 +113,13 @@ class Portainer {
         return response.data
     }
 
+    /**
+     * Create Stack String
+     * @param {String|Number} endpointId
+     * @param {Object} body
+     * @param {String} [url]
+     * @return {Promise<Object>}
+     */
     async createStackString(endpointId, body, url = '') {
         if (body.swarmID) {
             url = '/stacks/create/swarm/string'

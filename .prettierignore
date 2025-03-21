@@ -6,6 +6,7 @@
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
+eslint_report.json
 
 # Build
 dist/

@@ -11,8 +11,12 @@ on:
       - "src/**"
       - ".github/workflows/test.yaml"
       - "package*.json"
-      - "requirements.txt"
+      - "requirements*.txt"
       - "action.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -43,11 +47,29 @@ jobs:
           env_json: '{"TEST": "TRUE"}'
           merge_env: true
 
-      - name: "Echo Output"
+      #- name: "Echo Output"
+      #  run: |
+      #    echo stackID: '${{ steps.test.outputs.stackID }}'
+      #    echo swarmID: '${{ steps.test.outputs.swarmID }}'
+      #    echo endpointID: '${{ steps.test.outputs.endpointID }}'
+
+      - name: "Verify Outputs"
         run: |
-          echo stackID: '${{ steps.test.outputs.stackID }}'
-          echo swarmID: '${{ steps.test.outputs.swarmID }}'
-          echo endpointID: '${{ steps.test.outputs.endpointID }}'
+          echo "stackID: '${{ steps.test.outputs.stackID }}'"
+          if [ -z '${{ steps.test.outputs.stackID }}' ];then
+            echo "Missing output: stackID"
+            exit 1
+          fi
+          echo "swarmID: '${{ steps.test.outputs.swarmID }}'"
+          if [ -z '${{ steps.test.outputs.swarmID }}' ];then
+            echo "Missing output: swarmID"
+            exit 1
+          fi
+          echo "endpointID: '${{ steps.test.outputs.endpointID }}'"
+          if [ -z '${{ steps.test.outputs.endpointID }}' ];then
+            echo "Missing output: endpointID"
+            exit 1
+          fi
 
       - name: "Schedule Failure Notification"
         if: ${{ failure() && github.event_name == 'schedule' }}

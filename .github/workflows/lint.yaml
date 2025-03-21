@@ -32,9 +32,10 @@ jobs:
           npm install
 
       - name: "ESLint"
+        id: eslint
         if: ${{ !cancelled() }}
         run: |
-          npm run lint
+          npm run lint:report
 
       - name: "Prettier"
         if: ${{ !cancelled() }}
@@ -67,6 +68,13 @@ jobs:
           echo "::endgroup::"
           "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
 
+      #- name: "Check Build Action"
+      #  uses: cssnr/check-build-action@master
+
+      - name: "ESLint Annotate"
+        if: ${{ failure() && steps.eslint.outcome != 'success' }}
+        uses: ataylorme/eslint-annotate-action@v3
+
   build:
     name: "Build"
     runs-on: ubuntu-latest
@@ -94,11 +102,11 @@ jobs:
         run: |
           git status --porcelain dist/
           if [ ! -d "dist" ];then
-            echo "Missing dist directory, run: npm build"
+            echo "Missing dist directory, run: npm run build"
             exit 1
           fi
           if [ -n "$(git status --porcelain dist)" ];then
-            echo "Build was not run, run: npm build"
+            echo "Build was not run, run: npm run build"
             exit 1
           fi
 
