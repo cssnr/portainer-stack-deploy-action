@@ -1,6 +1,7 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/portainer-stack-deploy-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src/index.js)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=github&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=github&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/lint.yaml)
@@ -8,7 +9,6 @@
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/commit-activity)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/portainer-stack-deploy-action)
-[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action)](https://github.com/cssnr/portainer-stack-deploy-action/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
@@ -39,27 +39,27 @@ This is a fairly simple action, for more details see [src/index.js](src/index.js
 
 ## Inputs
 
-| Input        | Required | Default               | Description              |
-| :----------- | :------: | :-------------------- | :----------------------- |
-| `token`      | **Yes**  | -                     | Portainer Token \*       |
-| `url`        | **Yes**  | -                     | Portainer URL            |
-| `name`       | **Yes**  | -                     | Stack Name               |
-| `file`       |    -     | `docker-compose.yaml` | Compose File             |
-| `endpoint`   |    -     | `endpoints[0].Id`     | Portainer Endpoint \*    |
-| `ref`        |    -     | `current reference`   | Repository Ref \*        |
-| `repo`       |    -     | `current repository`  | Repository URL \*        |
-| `tlsskip`    |    -     | `false`               | Skip Repo TLS Verify     |
-| `prune`      |    -     | `true`                | Prune Services           |
-| `pull`       |    -     | `true`                | Pull Images              |
-| `type`       |    -     | `repo`                | Type [`repo`, `file`] \* |
-| `standalone` |    -     | `false`               | Deploy Standalone Stack  |
-| `env_json`   |    -     | -                     | Dotenv JSON Data \*\*    |
-| `env_file`   |    -     | -                     | Dotenv File Path \*      |
-| `merge_env`  |    -     | `false`               | Merge Env Vars \*        |
-| `username`   |    -     | -                     | Repository Username \*   |
-| `password`   |    -     | -                     | Repository Password \*   |
-| `fs_path`    |    -     | -                     | Relative Path (BE) \*    |
-| `summary`    |    -     | `true`                | Add Summary to Job \*    |
+| Input        |  Req.   | Default&nbsp;Value    | Input&nbsp;Description   |
+| :----------- | :-----: | :-------------------- | :----------------------- |
+| `token`      | **Yes** | -                     | Portainer Token \*       |
+| `url`        | **Yes** | -                     | Portainer URL            |
+| `name`       | **Yes** | -                     | Stack Name               |
+| `file`       |    -    | `docker-compose.yaml` | Compose File             |
+| `endpoint`   |    -    | `endpoints[0].Id`     | Portainer Endpoint \*    |
+| `ref`        |    -    | `current reference`   | Repository Ref \*        |
+| `repo`       |    -    | `current repository`  | Repository URL \*        |
+| `tlsskip`    |    -    | `false`               | Skip Repo TLS Verify     |
+| `prune`      |    -    | `true`                | Prune Services           |
+| `pull`       |    -    | `true`                | Pull Images              |
+| `type`       |    -    | `repo`                | Type [`repo`, `file`] \* |
+| `standalone` |    -    | `false`               | Deploy Standalone Stack  |
+| `env_json`   |    -    | -                     | Dotenv JSON Data \*\*    |
+| `env_file`   |    -    | -                     | Dotenv File Path \*      |
+| `merge_env`  |    -    | `false`               | Merge Env Vars \*        |
+| `username`   |    -    | -                     | Repository Username \*   |
+| `password`   |    -    | -                     | Repository Password \*   |
+| `fs_path`    |    -    | -                     | Relative Path (BE) \*    |
+| `summary`    |    -    | `true`                | Add Summary to Job \*    |
 
 > For more details on inputs, see the Portainer API [documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
 
@@ -122,11 +122,11 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
 
 ## Outputs
 
-| Output     | Description |
-| :--------- | :---------- |
-| stackID    | Stack ID    |
-| swarmID    | Swarm ID    |
-| endpointID | Endpoint ID |
+| Output     | Output&nbsp;Description |
+| :--------- | :---------------------- |
+| stackID    | Resulting Stack ID      |
+| swarmID    | Resulting Swarm ID      |
+| endpointID | Endpoint ID             |
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -139,9 +139,9 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
 
 - name: 'Echo Output'
   run: |
-    echo stackID: '${{ steps.stack.outputs.stackID }}'
-    echo swarmID: '${{ steps.stack.outputs.swarmID }}'
-    echo endpointID: '${{ steps.stack.outputs.endpointID }}'
+    echo "stackID: '${{ steps.stack.outputs.stackID }}'"
+    echo "swarmID: '${{ steps.stack.outputs.swarmID }}'"
+    echo "endpointID: '${{ steps.stack.outputs.endpointID }}'"
 ```
 
 ## Examples

@@ -45,7 +45,7 @@ const Portainer = require('./portainer')
                 return core.setFailed('No Endpoints Found!')
             }
         }
-        core.info(`  endpointID: \u001b[36m${endpointID}`)
+        core.info(`endpointID: \u001b[36m${endpointID}`)
 
         let swarmID = null
         if (!config.standalone) {
@@ -53,7 +53,7 @@ const Portainer = require('./portainer')
             // console.log('swarm:', swarm)
             swarmID = swarm.ID
         }
-        core.info(`  swarmID: \u001b[36m${swarmID}`)
+        core.info(`swarmID: \u001b[36m${swarmID}`)
 
         // Get Stack
         const stacks = await portainer.getStacks()
@@ -61,7 +61,7 @@ const Portainer = require('./portainer')
         let stack = stacks.find((item) => item.Name === config.name)
         // console.log('stack:', stack)
         let stackID = stack?.Id
-        core.info(`  stackID: \u001b[36m${stackID}`)
+        core.info(`stackID: \u001b[36m${stackID}`)
 
         // Update Environment
         const env = getEnv(config, stack)
@@ -118,7 +118,7 @@ const Portainer = require('./portainer')
             core.info('📄 Performing Stack File Deployment')
             const stackFileContent = fs.readFileSync(config.file, 'utf-8')
             if (stackID) {
-                core.info(`   Stack Found - Updating Stack ID: ${stackID}`)
+                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
                     env,
                     prune: config.prune,
@@ -132,7 +132,7 @@ const Portainer = require('./portainer')
                     body
                 )
                 // console.log('stack:', stack)
-                core.info(`   Updated Stack ${stack.Id}: ${stack.Name}`)
+                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
                 core.info('   Stack NOT Found - Deploying NEW Stack')
                 const body = {
@@ -144,7 +144,7 @@ const Portainer = require('./portainer')
                 // console.log('body:', body)
                 stack = await portainer.createStackString(endpointID, body)
                 // console.log('stack:', stack)
-                core.info(`   Deployed Stack: ${stack.Id}: ${stack.Name}`)
+                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
         }
 
@@ -246,6 +246,7 @@ async function writeSummary(config, stack) {
     core.summary.addRaw('</details>\n')
 
     delete config.token
+    delete config.env_json
     const yaml = Object.entries(config)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
