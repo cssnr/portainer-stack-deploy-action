@@ -37553,7 +37553,10 @@ const Portainer = __nccwpck_require__(1055)
         // Get Stack
         const stacks = await portainer.getStacks()
         // console.log('stacks:', stacks)
-        let stack = stacks.find((item) => item.Name === config.name)
+        let stack = stacks.find(
+            (item) =>
+                item.Name === config.name && item.EndpointId === endpointID
+        )
         // console.log('stack:', stack)
         let stackID = stack?.Id
         core.info(`stackID: \u001b[36m${stackID}`)
