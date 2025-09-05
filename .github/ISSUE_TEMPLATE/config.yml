@@ -2,11 +2,11 @@ blank_issues_enabled: true
 contact_links:
   - name: "💡 Request a Feature"
     about: Request a new feature or enhancement in a discussions.
-    url: https://github.com/cssnr/virustotal-action/discussions/new?category=feature-requests
+    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=feature-requests
 
   - name: "❔ Ask a Question"
     about: Ask a general question or start a discussions.
-    url: https://github.com/cssnr/virustotal-action/discussions/new?category=q-a
+    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=q-a
 
   - name: "💬 Join Discord"
     about: Chat with us about general questions, issues or suggestions.
