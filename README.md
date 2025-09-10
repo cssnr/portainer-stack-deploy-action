@@ -324,7 +324,7 @@ Portainer Business Edition Only.
 This example builds an image, pushes to a registry, then deploys to Portainer.
 
 ```yaml
-name: 'Portainer Stack Deploy Action'
+name: 'Portainer Stack Deploy'
 
 on:
   workflow_dispatch:
@@ -336,6 +336,9 @@ on:
 
 env:
   REGISTRY: 'ghcr.io'
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}
@@ -354,7 +357,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 'Setup Buildx'
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v3
       with:
         platforms: 'linux/amd64,linux/arm64'
 
@@ -385,7 +388,7 @@ jobs:
     name: 'Deploy'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [build]
+    needs: build
 
     steps:
       - name: 'Checkout'
@@ -403,10 +406,7 @@ jobs:
     name: 'Cleanup'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [deploy]
-    permissions:
-      contents: read
-      packages: write
+    needs: deploy
 
     steps:
       - name: 'Purge Cache'
@@ -475,12 +475,14 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
+
+To contribute to the [documentation site](https://portainer-deploy.cssnr.com/) go here: [cssnr/portainer-stack-deploy-docs](https://github.com/cssnr/portainer-stack-deploy-docs)
+
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
-
-If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Additionally, you can support other GitHub Actions I have published:
 
