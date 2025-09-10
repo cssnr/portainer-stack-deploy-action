@@ -87,7 +87,7 @@ class Portainer {
      * @param {String} [url]
      * @return {Promise<Object>}
      */
-    async createStackRepo(endpointId, body, url = '') {
+    async createStackRepo(endpointId, body, url) {
         if (body.swarmID) {
             url = '/stacks/create/swarm/repository'
         } else {
@@ -120,7 +120,7 @@ class Portainer {
      * @param {String} [url]
      * @return {Promise<Object>}
      */
-    async createStackString(endpointId, body, url = '') {
+    async createStackString(endpointId, body, url) {
         if (body.swarmID) {
             url = '/stacks/create/swarm/string'
         } else {

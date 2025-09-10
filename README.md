@@ -9,9 +9,10 @@
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
 [![GitHub Contributors](https://img.shields.io/github/contributors/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/contributors)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/portainer-stack-deploy-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/portainer-stack-deploy-action)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/portainer-stack-deploy-action)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/portainer-stack-deploy-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/stack-deploy-action/blob/master/src/main.sh)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/discussions)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
@@ -19,6 +20,7 @@
 
 # Portainer Stack Deploy Action
 
+- [Features](#Features)
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
@@ -27,8 +29,11 @@
 - [Support](#Support)
 - [Contributing](#Contributing)
 
-Deploy or Update a Portainer Stack from a Repository or Compose File. Supports most features including specifying the
-repository, compose file, environment variables and much more...
+> [!TIP]  
+> ▶️ View the [Getting Started Guide](https://portainer-deploy.cssnr.com/guides/get-started) on the website.
+
+Deploy or Update a Portainer Stack from a Repository or Compose File.
+Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
 
 This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
 
@@ -38,27 +43,38 @@ _No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with:
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
   with:
+    name: 'stack-name'
+    file: 'docker-compose.yaml'
+    url: ${{ secrets.PORTAINER_URL }}
     token: ${{ secrets.PORTAINER_TOKEN }}
-    url: https://portainer.example.com:9443
-    name: stack-name
-    file: docker-compose.yaml
 ```
 
 Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
 
 This is a fairly simple action, for more details see [src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
 
-> [!NOTE]  
-> Please submit a [Feature Request](https://github.com/cssnr/portainer-stack-deploy-action/discussions/categories/feature-requests)
-> for new features or [Open an Issue](https://github.com/cssnr/portainer-stack-deploy-action/issues) if you find any bugs.
+## Features
+
+- Deploy a new stack or update existing one.
+- Deploy from a repository or a compose file, see [type](https://portainer-deploy.cssnr.com/docs/inputs#type).
+- Deploy from a different [repo](https://portainer-deploy.cssnr.com/docs/inputs#repo) than the current one.
+- Provide environment variables in [JSON](https://portainer-deploy.cssnr.com/docs/inputs#env_json) or [file](https://portainer-deploy.cssnr.com/docs/inputs#env_file) format.
+- Automatically parse [Endpoint ID](https://portainer-deploy.cssnr.com/docs/inputs#endpoint) if only one endpoint.
+- Supports Docker Swarm and Docker [Standalone](https://portainer-deploy.cssnr.com/docs/inputs#standalone).
+- **To view all features see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs).**
+
+You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started) or view [workflow examples](https://portainer-deploy.cssnr.com/guides/examples).
 
 ## Inputs
 
+> [!IMPORTANT]  
+> Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date docs.
+
 | Input        |  Req.   | Default&nbsp;Value    | Input&nbsp;Description   |
 | :----------- | :-----: | :-------------------- | :----------------------- |
-| `token`      | **Yes** | -                     | Portainer Token \*       |
-| `url`        | **Yes** | -                     | Portainer URL            |
 | `name`       | **Yes** | -                     | Stack Name               |
+| `url`        | **Yes** | -                     | Portainer URL            |
+| `token`      | **Yes** | -                     | Portainer Token \*       |
 | `file`       |    -    | `docker-compose.yaml` | Compose File             |
 | `endpoint`   |    -    | `endpoints[0].Id`     | Portainer Endpoint \*    |
 | `ref`        |    -    | `current reference`   | Repository Ref \*        |
@@ -135,6 +151,9 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
     file: docker-compose.yaml
 ```
 
+> [!TIP]  
+> View the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs) for more details.
+
 ## Outputs
 
 | Output     | Output&nbsp;Description |
@@ -160,6 +179,8 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
 ```
 
 ## Examples
+
+View more [Examples](https://portainer-deploy.cssnr.com/guides/examples) on the website.
 
 💡 _Click on an example heading to expand or collapse the example._
 
@@ -473,5 +494,6 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
+- [Algolia Crawler Action](https://github.com/cssnr/algolia-crawler-action?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)

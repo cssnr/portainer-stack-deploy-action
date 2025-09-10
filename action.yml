@@ -6,14 +6,14 @@ branding:
   color: "blue"
 
 inputs:
-  token:
-    description: "Portainer Token"
+  name:
+    description: "Stack Name"
     required: true
   url:
     description: "Portainer URL"
     required: true
-  name:
-    description: "Stack Name"
+  token:
+    description: "Portainer Token"
     required: true
   file:
     description: "Compose File"
