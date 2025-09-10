@@ -157,10 +157,15 @@ const Portainer = require('./portainer')
         core.setOutput('swarmID', swarmID)
         core.setOutput('endpointID', endpointID)
 
-        // Job Summary
+        // Summary
         if (config.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(config, stack)
+            try {
+                await addSummary(config, stack)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -209,12 +214,12 @@ function getEnv(config, stack) {
 }
 
 /**
- * @function writeSummary
+ * Add Job Summary
  * @param {Config} config
  * @param {Object} stack
  * @return {Promise<void>}
  */
-async function writeSummary(config, stack) {
+async function addSummary(config, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
     const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
     core.summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
