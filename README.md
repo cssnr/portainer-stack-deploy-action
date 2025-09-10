@@ -35,7 +35,8 @@
 Deploy or Update a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
 
-This action is written from the ground up in VanillaJS and is not a fork/clone of existing actions.
+This action is written from the ground up in Vanilla JavaScript and is not a fork/clone of existing actions.
+You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/features#action-comparison) of all available actions on the website.
 
 _No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)_
 
@@ -49,7 +50,7 @@ _No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with:
     token: ${{ secrets.PORTAINER_TOKEN }}
 ```
 
-Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
+Make sure to review the [Inputs](#inputs) and checkout additional [Examples](#examples).
 
 This is a fairly simple action, for more details see [src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
 
@@ -68,7 +69,7 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 ## Inputs
 
 > [!IMPORTANT]  
-> Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date docs.
+> Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date documentation.
 
 | Input        |  Req.   | Default&nbsp;Value    | Input&nbsp;Description   |
 | :----------- | :-----: | :-------------------- | :----------------------- |
@@ -92,7 +93,8 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | `fs_path`    |    -    | -                     | Relative Path (BE) \*    |
 | `summary`    |    -    | `true`                | Add Summary to Job \*    |
 
-> For more details on inputs, see the Portainer API [documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
+> For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
+> and [Portainer API Documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
 
 **token:** To create a Portainer API token see: https://docs.portainer.io/api/access
 
