@@ -30696,7 +30696,7 @@ class Portainer {
      * Portainer API
      * @param {String} url
      * @param {String} token
-     * @param {Object} headers
+     * @param {Object} [headers]
      */
     constructor(url, token, headers = {}) {
         url = url.replace(/\/$/, '')
