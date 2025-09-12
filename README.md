@@ -33,7 +33,7 @@
 > [!TIP]  
 > ▶️ View the [Getting Started Guide](https://portainer-deploy.cssnr.com/guides/get-started) on the website.
 
-Deploy or Update a Portainer Stack from a Repository or Compose File.
+Deploy, Update or Create a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
 Includes most [features](#features) including file or repo deploy, deploy from other repo, custom headers, and much more...
 
