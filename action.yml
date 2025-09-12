@@ -69,6 +69,10 @@ inputs:
   fs_path:
     description: "Relative path volume in host (only available in Portainer BE)"
     required: false
+  headers:
+    description: "Custom Headers"
+    required: false
+    default: "{}"
   summary:
     description: "Add Summary to Job"
     required: false

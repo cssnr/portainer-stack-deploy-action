@@ -20,7 +20,11 @@ const Portainer = require('./portainer')
         }
 
         // Check Portainer
-        const portainer = new Portainer(config.url, config.token)
+        const portainer = new Portainer(
+            config.url,
+            config.token,
+            config.headers
+        )
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
@@ -289,6 +293,7 @@ async function addSummary(config, stack) {
  * @property {string|undefined} username
  * @property {string|undefined} password
  * @property {string|undefined} fs_path
+ * @property {object} headers
  * @property {boolean} summary
  * @return {Config}
  */
@@ -312,6 +317,7 @@ function getConfig() {
         username: core.getInput('username'),
         password: core.getInput('password'),
         fs_path: core.getInput('fs_path'),
+        headers: JSON.parse(core.getInput('headers', { required: true })),
         summary: core.getBooleanInput('summary'),
     }
 }

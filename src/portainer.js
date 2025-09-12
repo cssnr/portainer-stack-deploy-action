@@ -6,8 +6,9 @@ class Portainer {
      * Portainer API
      * @param {String} url
      * @param {String} token
+     * @param {Object} headers
      */
-    constructor(url, token) {
+    constructor(url, token, headers = {}) {
         url = url.replace(/\/$/, '')
         if (!url.endsWith('api')) {
             url += '/api'
@@ -17,7 +18,7 @@ class Portainer {
         })
         this.client = axios.create({
             baseURL: url,
-            headers: { 'X-API-Key': token },
+            headers: { 'X-API-Key': token, ...headers },
             httpsAgent: agent,
         })
     }
