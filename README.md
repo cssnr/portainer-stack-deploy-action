@@ -39,8 +39,6 @@ Supports both Swarm and Standalone Docker deployments for Portainer Community an
 This action is written from the ground up in Vanilla JavaScript and is not a fork/clone of existing actions.
 You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/features#action-comparison) of all available actions on the website.
 
-_No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)_
-
 ```yaml
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
@@ -54,6 +52,8 @@ _No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with:
 Make sure to review the [Inputs](#inputs) and checkout additional [Examples](#examples).
 
 This is a fairly simple action, for more details see [src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
+
+_No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)_
 
 ## Features
 
@@ -93,7 +93,7 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | `username`   |    -    | -                     | Repository Username \*   |
 | `password`   |    -    | -                     | Repository Password \*   |
 | `fs_path`    |    -    | -                     | Relative Path (BE) \*    |
-| `headers`    |    -    | `{}`                  | Custom Headers \*        |
+| `headers`    |    -    | `"{}"`                | Custom Headers JSON \*   |
 | `summary`    |    -    | `true`                | Add Summary to Job \*    |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
@@ -131,7 +131,7 @@ Set this to enable relative path volumes support for volume mappings in your com
 See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
 
 **headers:** Custom Headers in **JSON format** for services like Cloudflare Zero Trust.
-The `headers` are parsed with JSON.parse and passed directly to axios:  
+The `headers` are parsed with JSON.parse and passed directly to axios:
 `headers: { 'X-API-Key': token, ...JSON.parse(headers) }`
 
 <details><summary>👀 View Custom Headers Example</summary>

@@ -70,7 +70,7 @@ inputs:
     description: "Relative path volume in host (only available in Portainer BE)"
     required: false
   headers:
-    description: "Custom Headers"
+    description: "Custom Headers JSON"
     required: false
     default: "{}"
   summary:
