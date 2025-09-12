@@ -6,7 +6,7 @@
 This is a basic contributing guide and is a work in progress.
 
 To contribute to the [documentation site](https://portainer-deploy.cssnr.com/)
-go here: [cssnr/portainer-stack-deploy-docs](https://github.com/cssnr/portainer-stack-deploy-docs)
+go to [cssnr/portainer-stack-deploy-docs](https://github.com/cssnr/portainer-stack-deploy-docs).
 
 ## Workflow
 

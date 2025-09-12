@@ -35,6 +35,7 @@
 
 Deploy or Update a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
+Includes most [features](#features) including file or repo deploy, deploy from other repo, custom headers, and much more...
 
 This action is written from the ground up in Vanilla JavaScript and is not a fork/clone of existing actions.
 You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/features#action-comparison) of all available actions on the website.
