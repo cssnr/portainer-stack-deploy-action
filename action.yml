@@ -1,5 +1,5 @@
 name: "Portainer Stack Deploy Action"
-description: "Deploy or Update a Portainer Stack from a Repository or Compose File"
+description: "Deploy, Update or Create a Portainer Swarm or Standalone Stack from a Repository or Compose File"
 author: "Shane"
 branding:
   icon: "layers"
@@ -69,6 +69,10 @@ inputs:
   fs_path:
     description: "Relative path volume in host (only available in Portainer BE)"
     required: false
+  headers:
+    description: "Custom Headers JSON"
+    required: false
+    default: "{}"
   summary:
     description: "Add Summary to Job"
     required: false

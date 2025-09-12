@@ -1,16 +1,17 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
-[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/portainer-stack-deploy-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src/index.js)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/portainer-stack-deploy-action/dist%2Findex.js?logo=github&label=dist%20size)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src/index.js)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_portainer-stack-deploy-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_portainer-stack-deploy-action)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
+[![Docs Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-docs?logo=vitepress&logoColor=white&label=docs)](https://portainer-deploy.cssnr.com/)
 [![GitHub Contributors](https://img.shields.io/github/contributors/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/contributors)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/portainer-stack-deploy-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/stack-deploy-action/blob/master/src/main.sh)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/portainer-stack-deploy-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src/index.js)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
 [![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/discussions)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/stargazers)
@@ -32,13 +33,12 @@
 > [!TIP]  
 > ▶️ View the [Getting Started Guide](https://portainer-deploy.cssnr.com/guides/get-started) on the website.
 
-Deploy or Update a Portainer Stack from a Repository or Compose File.
+Deploy, Update or Create a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
+Includes most [features](#features) including file or repo deploy, deploy from other repo, custom headers, and much more...
 
 This action is written from the ground up in Vanilla JavaScript and is not a fork/clone of existing actions.
 You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/features#action-comparison) of all available actions on the website.
-
-_No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)_
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -54,14 +54,17 @@ Make sure to review the [Inputs](#inputs) and checkout additional [Examples](#ex
 
 This is a fairly simple action, for more details see [src/index.js](src/index.js) and [src/portainer.js](src/portainer.js).
 
+_No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action)_
+
 ## Features
 
-- Deploy a new stack or update existing one.
+- Deploy or re-deploy an existing stack otherwise create a new stack.
 - Deploy from a repository or a compose file, see [type](https://portainer-deploy.cssnr.com/docs/inputs#type).
 - Deploy from a different [repo](https://portainer-deploy.cssnr.com/docs/inputs#repo) than the current one.
 - Provide environment variables in [JSON](https://portainer-deploy.cssnr.com/docs/inputs#env_json) or [file](https://portainer-deploy.cssnr.com/docs/inputs#env_file) format.
 - Automatically parse [Endpoint ID](https://portainer-deploy.cssnr.com/docs/inputs#endpoint) if only one endpoint.
 - Supports Docker Swarm and Docker [Standalone](https://portainer-deploy.cssnr.com/docs/inputs#standalone).
+- Supports custom [headers](https://portainer-deploy.cssnr.com/docs/inputs#headers) for services like Cloudflare Zero Trust.
 - **To view all features see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs).**
 
 You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started) or view [workflow examples](https://portainer-deploy.cssnr.com/guides/examples).
@@ -91,6 +94,7 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | `username`   |    -    | -                     | Repository Username \*   |
 | `password`   |    -    | -                     | Repository Password \*   |
 | `fs_path`    |    -    | -                     | Relative Path (BE) \*    |
+| `headers`    |    -    | `"{}"`                | Custom Headers JSON \*   |
 | `summary`    |    -    | `true`                | Add Summary to Job \*    |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
@@ -126,6 +130,29 @@ This is NOT the Portainer username/password, see `token` for Portainer authentic
 **fs_path:** Relative Path Support for Portainer BE.
 Set this to enable relative path volumes support for volume mappings in your compose file.
 See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
+
+**headers:** Custom Headers in **JSON format** for services like Cloudflare Zero Trust.
+The `headers` are parsed with JSON.parse and passed directly to axios:
+`headers: { 'X-API-Key': token, ...JSON.parse(headers) }`
+
+<details><summary>👀 View Custom Headers Example</summary>
+
+```yaml
+- name: 'Portainer Deploy'
+  uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    token: ${{ secrets.PORTAINER_TOKEN }}
+    url: https://portainer.example.com:9443
+    name: stack-name
+    file: docker-compose.yaml
+    headers: |
+      {
+        "CF-Access-Client-Id": "${{ secrets.CF_CLIENT_ID }}",
+        "CF-Access-Client-Secret": "${{ secrets.CF_CLIENT_SECRET }}",
+      }
+```
+
+</details>
 
 **summary:** Write a Summary for the job. To disable this set to `false`.
 
@@ -354,7 +381,7 @@ jobs:
 
   steps:
     - name: 'Checkout'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 'Setup Buildx'
       uses: docker/setup-buildx-action@v3
@@ -392,7 +419,7 @@ jobs:
 
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 'Portainer Deploy'
         uses: cssnr/portainer-stack-deploy-action@v1
@@ -475,9 +502,10 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
+Contributions of all kinds are welcome, including updating this [README.md](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/README.md).
 If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
-To contribute to the [documentation site](https://portainer-deploy.cssnr.com/) go here: [cssnr/portainer-stack-deploy-docs](https://github.com/cssnr/portainer-stack-deploy-docs)
+To contribute to the [documentation site](https://portainer-deploy.cssnr.com/) go to [cssnr/portainer-stack-deploy-docs](https://github.com/cssnr/portainer-stack-deploy-docs).
 
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.

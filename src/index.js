@@ -20,7 +20,11 @@ const Portainer = require('./portainer')
         }
 
         // Check Portainer
-        const portainer = new Portainer(config.url, config.token)
+        const portainer = new Portainer(
+            config.url,
+            config.token,
+            config.headers
+        )
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
@@ -262,9 +266,11 @@ async function addSummary(config, stack) {
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
-    const text = 'View Documentation, Report Issues or Request Features'
-    const link = `https://github.com/cssnr/portainer-stack-deploy-action`
-    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
+    const docs = 'https://portainer-deploy.cssnr.com/'
+    const repo = 'https://github.com/cssnr/portainer-stack-deploy-action'
+    core.summary.addRaw(
+        `\n\nView the [Documentation](${docs}), report [Issues](${repo}/issues) or [Request Features](${repo}/discussions/categories/feature-requests).\n\n---`
+    )
     await core.summary.write()
 }
 
@@ -289,6 +295,7 @@ async function addSummary(config, stack) {
  * @property {string|undefined} username
  * @property {string|undefined} password
  * @property {string|undefined} fs_path
+ * @property {object} headers
  * @property {boolean} summary
  * @return {Config}
  */
@@ -312,6 +319,7 @@ function getConfig() {
         username: core.getInput('username'),
         password: core.getInput('password'),
         fs_path: core.getInput('fs_path'),
+        headers: JSON.parse(core.getInput('headers', { required: true })),
         summary: core.getBooleanInput('summary'),
     }
 }
