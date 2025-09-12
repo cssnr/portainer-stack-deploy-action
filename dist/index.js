@@ -38050,9 +38050,11 @@ async function addSummary(config, stack) {
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
-    const text = 'View Documentation, Report Issues or Request Features'
-    const link = `https://github.com/cssnr/portainer-stack-deploy-action`
-    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
+    const docs = 'https://portainer-deploy.cssnr.com/'
+    const repo = 'https://github.com/cssnr/portainer-stack-deploy-action'
+    core.summary.addRaw(
+        `\n\nView the [Documentation](${docs}), report [Issues](${repo}/issues) or [Request Features](${repo}/discussions/categories/feature-requests).\n\n---`
+    )
     await core.summary.write()
 }
 
