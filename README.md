@@ -1,7 +1,7 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
-[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/tags)
+[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/releases)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/portainer-stack-deploy-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/portainer-stack-deploy-action/releases/latest)
-[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/portainer-stack-deploy-action/dist%2Findex.js?logo=github&label=dist%20size)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src/index.js)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/portainer-stack-deploy-action/dist%2Findex.js?logo=github&label=dist%20size)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/portainer-stack-deploy-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/portainer-stack-deploy-action/actions/workflows/lint.yaml)
@@ -526,6 +526,8 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
+- [Label Creator Action](https://github.com/cssnr/label-creator-action?tab=readme-ov-file#readme)
 - [Algolia Crawler Action](https://github.com/cssnr/algolia-crawler-action?tab=readme-ov-file#readme)
+- [Upload Release Action](https://github.com/cssnr/upload-release-action?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
