@@ -8,23 +8,19 @@ const Portainer = require('./portainer')
     try {
         core.info('🏳️ Portainer Stack Deploy Action')
 
-        // Parse Config
-        const config = getConfig()
-        core.startGroup('Parsed Config')
-        console.log('config:', config)
-        core.endGroup() // Config
+        // Parse Inputs
+        const inputs = getInputs()
+        core.startGroup('Parsed Inputs')
+        console.log('inputs:', inputs)
+        core.endGroup() // Inputs
 
-        if (!['repo', 'file'].includes(config.type)) {
-            core.setFailed(`Unknown type: ${config.type}. Values: [repo, file]`)
+        if (!['repo', 'file'].includes(inputs.type)) {
+            core.setFailed(`Unknown type: ${inputs.type}. Values: [repo, file]`)
             return
         }
 
         // Check Portainer
-        const portainer = new Portainer(
-            config.url,
-            config.token,
-            config.headers
-        )
+        const portainer = new Portainer(inputs.url, inputs.token, inputs.headers)
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
@@ -32,7 +28,7 @@ const Portainer = require('./portainer')
         console.log(version)
         core.endGroup() // Portainer Version
 
-        if (config.fs_path) {
+        if (inputs.fs_path) {
             if (version.ServerEdition !== 'EE') {
                 core.setFailed('Relative path only supported in Portainer EE!')
                 return
@@ -40,7 +36,7 @@ const Portainer = require('./portainer')
         }
 
         // Set Variables
-        let endpointID = parseInt(config.endpoint)
+        let endpointID = parseInt(inputs.endpoint)
         if (!endpointID) {
             const endpoints = await portainer.getEndpoints()
             // console.log('endpoints:', endpoints)
@@ -52,7 +48,7 @@ const Portainer = require('./portainer')
         core.info(`endpointID: \u001b[36m${endpointID}`)
 
         let swarmID = null
-        if (!config.standalone) {
+        if (!inputs.standalone) {
             const swarm = await portainer.getSwarm(endpointID)
             // console.log('swarm:', swarm)
             swarmID = swarm.ID
@@ -63,57 +59,50 @@ const Portainer = require('./portainer')
         const stacks = await portainer.getStacks()
         // console.log('stacks:', stacks)
         let stack = stacks.find(
-            (item) =>
-                item.Name === config.name && item.EndpointId === endpointID
+            (item) => item.Name === inputs.name && item.EndpointId === endpointID
         )
         // console.log('stack:', stack)
         let stackID = stack?.Id
         core.info(`stackID: \u001b[36m${stackID}`)
 
         // Update Environment
-        const env = getEnv(config, stack)
+        const env = getEnv(inputs, stack)
 
         // Perform Deploy
-        if (config.type === 'repo') {
+        if (inputs.type === 'repo') {
             core.info('🌐 Performing Repository Deployment')
-            const repositoryAuthentication = !!(
-                config.username || config.password
-            )
+            const repositoryAuthentication = !!(inputs.username || inputs.password)
             if (stackID) {
                 core.info(`Stack Found - Updating Stack ID: ${stack.Id}`)
                 const body = {
                     env,
-                    prune: config.prune,
-                    pullImage: config.pull,
-                    repositoryReferenceName: config.ref,
+                    prune: inputs.prune,
+                    pullImage: inputs.pull,
+                    repositoryReferenceName: inputs.ref,
                     repositoryAuthentication,
-                    repositoryPassword: config.password,
-                    repositoryUsername: config.username,
+                    repositoryPassword: inputs.password,
+                    repositoryUsername: inputs.username,
                 }
                 // console.log('body:', body)
-                stack = await portainer.updateStackRepo(
-                    stackID,
-                    endpointID,
-                    body
-                )
+                stack = await portainer.updateStackRepo(stackID, endpointID, body)
                 // console.log('stack:', stack)
                 core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
                 core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {
-                    name: config.name,
+                    name: inputs.name,
                     swarmID,
-                    repositoryURL: config.repo,
-                    composeFile: config.file,
+                    repositoryURL: inputs.repo,
+                    composeFile: inputs.file,
                     env,
-                    tlsskipVerify: config.tlsskip,
-                    repositoryReferenceName: config.ref,
+                    tlsskipVerify: inputs.tlsskip,
+                    repositoryReferenceName: inputs.ref,
                     repositoryAuthentication,
-                    repositoryPassword: config.password,
-                    repositoryUsername: config.username,
-                    ...(config.fs_path && {
+                    repositoryPassword: inputs.password,
+                    repositoryUsername: inputs.username,
+                    ...(inputs.fs_path && {
                         supportRelativePath: true,
-                        fileSystemPath: config.fs_path,
+                        fileSystemPath: inputs.fs_path,
                     }),
                 }
                 // console.log('body:', body)
@@ -121,29 +110,25 @@ const Portainer = require('./portainer')
                 // console.log('stack:', stack)
                 core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
             }
-        } else if (config.type === 'file') {
+        } else if (inputs.type === 'file') {
             core.info('📄 Performing Stack File Deployment')
-            const stackFileContent = fs.readFileSync(config.file, 'utf-8')
+            const stackFileContent = fs.readFileSync(inputs.file, 'utf-8')
             if (stackID) {
                 core.info(`Stack Found - Updating Stack ID: ${stackID}`)
                 const body = {
                     env,
-                    prune: config.prune,
-                    pullImage: config.pull,
+                    prune: inputs.prune,
+                    pullImage: inputs.pull,
                     stackFileContent,
                 }
                 // console.log('body:', body)
-                stack = await portainer.updateStackString(
-                    stackID,
-                    endpointID,
-                    body
-                )
+                stack = await portainer.updateStackString(stackID, endpointID, body)
                 // console.log('stack:', stack)
                 core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
                 core.info('   Stack NOT Found - Deploying NEW Stack')
                 const body = {
-                    name: config.name,
+                    name: inputs.name,
                     swarmID,
                     stackFileContent,
                     env,
@@ -162,10 +147,10 @@ const Portainer = require('./portainer')
         core.setOutput('endpointID', endpointID)
 
         // Summary
-        if (config.summary) {
+        if (inputs.summary) {
             core.info('📝 Writing Job Summary')
             try {
-                await addSummary(config, stack)
+                await addSummary(inputs, stack)
             } catch (e) {
                 console.log(e)
                 core.error(`Error writing Job Summary ${e.message}`)
@@ -182,30 +167,30 @@ const Portainer = require('./portainer')
 
 /**
  * @function getEnv
- * @param {Config} config
+ * @param {Inputs} inputs
  * @param {Object} stack
  * @return {Object[]} Portainer formatted environment
  */
-function getEnv(config, stack) {
-    if (!config.env_json && !config.env_file) {
+function getEnv(inputs, stack) {
+    if (!inputs.env_json && !inputs.env_file) {
         return stack?.env ? stack.env : []
     }
     const env = {}
-    if (config.merge_env && stack?.Env?.length) {
+    if (inputs.merge_env && stack?.Env?.length) {
         console.log('🔁 Merging Environment with Current')
         const current = Object.fromEntries(
             stack.Env.map(({ name, value }) => [name, value])
         )
         Object.assign(env, current)
     }
-    if (config.env_json) {
-        let data = JSON.parse(config.env_json)
+    if (inputs.env_json) {
+        let data = JSON.parse(inputs.env_json)
         for (const [name, value] of Object.entries(data)) {
             env[name] = value
         }
     }
-    if (config.env_file) {
-        let data = dotenv.config({ path: config.env_file })
+    if (inputs.env_file) {
+        let data = dotenv.config({ path: inputs.env_file })
         for (const [name, value] of Object.entries(data.parsed)) {
             env[name] = value
         }
@@ -219,11 +204,11 @@ function getEnv(config, stack) {
 
 /**
  * Add Job Summary
- * @param {Config} config
+ * @param {Inputs} inputs
  * @param {Object} stack
  * @return {Promise<void>}
  */
-async function addSummary(config, stack) {
+async function addSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
     const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
     core.summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
@@ -257,12 +242,12 @@ async function addSummary(config, stack) {
     ])
     core.summary.addRaw('</details>\n')
 
-    delete config.token
-    delete config.env_json
-    const yaml = Object.entries(config)
+    delete inputs.token
+    delete inputs.env_json
+    const yaml = Object.entries(inputs)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
-    core.summary.addRaw('<details><summary>Config</summary>')
+    core.summary.addRaw('<details><summary>Inputs</summary>')
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
@@ -275,13 +260,13 @@ async function addSummary(config, stack) {
 }
 
 /**
- * Get Config
- * @typedef {Object} Config
+ * Get Inputs
+ * @typedef {object} Inputs
  * @property {string} token
  * @property {string} url
  * @property {string} name
  * @property {string} file
- * @property {string | undefined} endpoint
+ * @property {string|undefined} endpoint
  * @property {string} ref
  * @property {string} repo
  * @property {boolean} tlsskip
@@ -297,9 +282,9 @@ async function addSummary(config, stack) {
  * @property {string|undefined} fs_path
  * @property {object} headers
  * @property {boolean} summary
- * @return {Config}
+ * @return {Inputs}
  */
-function getConfig() {
+function getInputs() {
     return {
         token: core.getInput('token', { required: true }),
         url: core.getInput('url', { required: true }),

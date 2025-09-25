@@ -11,6 +11,7 @@ eslint_report.json
 # Build
 dist/
 node_modules/
+.github/disabled/
 
 # Files
 .github/pull_request_template.md
