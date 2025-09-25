@@ -30689,7 +30689,7 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const axios = __nccwpck_require__(7269)
-const https = __nccwpck_require__(5692)
+const https = __nccwpck_require__(4708)
 
 class Portainer {
     /**
@@ -30961,6 +30961,22 @@ module.exports = require("node:crypto");
 
 "use strict";
 module.exports = require("node:events");
+
+/***/ }),
+
+/***/ 3024:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
+/***/ 4708:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:https");
 
 /***/ }),
 
@@ -37777,7 +37793,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"application/1d-interleaved-parityfec
 /************************************************************************/
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484)
-const fs = __nccwpck_require__(9896)
+const fs = __nccwpck_require__(3024)
 const dotenv = __nccwpck_require__(8889)
 
 const Portainer = __nccwpck_require__(1055)
@@ -37814,7 +37830,7 @@ const Portainer = __nccwpck_require__(1055)
         }
 
         // Set Variables
-        let endpointID = parseInt(inputs.endpoint)
+        let endpointID = Number.parseInt(inputs.endpoint)
         if (!endpointID) {
             const endpoints = await portainer.getEndpoints()
             // console.log('endpoints:', endpoints)

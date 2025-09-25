@@ -1,5 +1,5 @@
 const core = require('@actions/core')
-const fs = require('fs')
+const fs = require('node:fs')
 const dotenv = require('dotenv')
 
 const Portainer = require('./portainer')
@@ -36,7 +36,7 @@ const Portainer = require('./portainer')
         }
 
         // Set Variables
-        let endpointID = parseInt(inputs.endpoint)
+        let endpointID = Number.parseInt(inputs.endpoint)
         if (!endpointID) {
             const endpoints = await portainer.getEndpoints()
             // console.log('endpoints:', endpoints)
