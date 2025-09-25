@@ -1,5 +1,5 @@
 const axios = require('axios')
-const https = require('https')
+const https = require('node:https')
 
 class Portainer {
     /**
@@ -50,9 +50,7 @@ class Portainer {
      * @return {Promise<Object>}
      */
     async getSwarm(endpointId) {
-        const response = await this.client.get(
-            `/endpoints/${endpointId}/docker/swarm`
-        )
+        const response = await this.client.get(`/endpoints/${endpointId}/docker/swarm`)
         return response.data
     }
 
@@ -73,11 +71,9 @@ class Portainer {
      * @return {Promise<Object>}
      */
     async updateStackRepo(stackID, endpointId, body) {
-        const response = await this.client.put(
-            `/stacks/${stackID}/git/redeploy`,
-            body,
-            { params: { endpointId } }
-        )
+        const response = await this.client.put(`/stacks/${stackID}/git/redeploy`, body, {
+            params: { endpointId },
+        })
         return response.data
     }
 
