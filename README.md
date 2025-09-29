@@ -30,9 +30,9 @@
 - [Support](#Support)
 - [Contributing](#Contributing)
 
-<p style="text-align: center;"><a title="Portainer Stack Deploy" href="https://portainer-deploy.cssnr.com/" target="_blank">
+<p align="center">
 <img alt="Portainer Stack Deploy" width="256" height="auto" src="https://raw.githubusercontent.com/cssnr/portainer-stack-deploy-docs/refs/heads/master/docs/public/images/logo/logo.png" />
-</a></p>
+</p>
 
 Deploy, Update or Create a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
