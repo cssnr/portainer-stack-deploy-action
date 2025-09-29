@@ -79,28 +79,28 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 > [!IMPORTANT]  
 > Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date documentation.
 
-| Input                         | Default&nbsp;Value    | Description&nbsp;of&nbsp;Input |
-| :---------------------------- | :-------------------- | :----------------------------- |
-| **name**                      | _Required_            | Stack Name                     |
-| **url**                       | _Required_            | Portainer URL                  |
-| [token](#token)               | _Required_            | Portainer Token                |
-| **file**                      | `docker-compose.yaml` | Compose File                   |
-| [endpoint](#endpoint)         | `endpoints[0].Id`     | Portainer Endpoint             |
-| [ref](#ref)                   | `current reference`   | Repository Ref                 |
-| [repo](#repo)                 | `current repository`  | Repository URL                 |
-| **tlsskip**                   | `false`               | Skip Repo TLS Verify           |
-| **prune**                     | `true`                | Prune Services                 |
-| **pull**                      | `true`                | Pull Images                    |
-| [type](#type)                 | `repo`                | Type [`repo`, `file`]          |
-| **standalone**                | `false`               | Deploy Standalone Stack        |
-| [env_json](#env_jsonenv_file) | -                     | Dotenv JSON Data               |
-| [env_file](#env_jsonenv_file) | -                     | Dotenv File Path               |
-| [merge_env](#merge_env)       | `false`               | Merge Env Vars                 |
-| [username](#usernamepassword) | -                     | Repository Username            |
-| [password](#usernamepassword) | -                     | Repository Password            |
-| [fs_path](#fs_path)           | -                     | Relative Path (BE)             |
-| [headers](#headers)           | `"{}"`                | Custom Headers JSON            |
-| [summary](#summary)           | `true`                | Add Summary to Job             |
+| Input          | Default&nbsp;Value    | Description&nbsp;of&nbsp;Input              |
+| :------------- | :-------------------- | :------------------------------------------ |
+| **name**       | _Required_            | Stack Name                                  |
+| **url**        | _Required_            | Portainer URL                               |
+| **token**      | _Required_            | Portainer Token [⤵️](#token)                |
+| **file**       | `docker-compose.yaml` | Compose File                                |
+| **endpoint**   | `endpoints[0].Id`     | Portainer Endpoint [⤵️](#endpoint)          |
+| **ref**        | `current reference`   | Repository Ref [⤵️](#ref)                   |
+| **repo**       | `current repository`  | Repository URL [⤵️](#repo)                  |
+| **tlsskip**    | `false`               | Skip Repo TLS Verify                        |
+| **prune**      | `true`                | Prune Services                              |
+| **pull**       | `true`                | Pull Images                                 |
+| **type**       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
+| **standalone** | `false`               | Deploy Standalone Stack                     |
+| **env_json**   | -                     | Dotenv JSON Data [⤵️](#env_jsonenv_file)    |
+| **env_file**   | -                     | Dotenv File Path [⤵️](#env_jsonenv_file)    |
+| **merge_env**  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
+| **username**   | -                     | Repository Username [⤵️](#usernamepassword) |
+| **password**   | -                     | Repository Password [⤵️](#usernamepassword) |
+| **fs_path**    | -                     | Relative Path (BE) [⤵️](#fs_path)           |
+| **headers**    | `"{}"`                | Custom Headers JSON [⤵️](#headers)          |
+| **summary**    | `true`                | Add Summary to Job [⤵️](#summary)           |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
 > and [Portainer API Documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
