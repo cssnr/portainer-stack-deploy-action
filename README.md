@@ -30,9 +30,9 @@
 - [Support](#Support)
 - [Contributing](#Contributing)
 
-<a title="Portainer Stack Deploy" href="https://portainer-deploy.cssnr.com/" target="_blank">
-<img alt="Portainer Stack Deploy" src="https://raw.githubusercontent.com/cssnr/portainer-stack-deploy-docs/refs/heads/master/docs/public/images/logo/logo.png" style="max-width: 256px; margin: auto; display: block;" />
-</a>
+<p style="text-align: center;"><a title="Portainer Stack Deploy" href="https://portainer-deploy.cssnr.com/" target="_blank">
+<img alt="Portainer Stack Deploy" width="256" height="auto" src="https://raw.githubusercontent.com/cssnr/portainer-stack-deploy-docs/refs/heads/master/docs/public/images/logo/logo.png" />
+</a></p>
 
 Deploy, Update or Create a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
@@ -79,28 +79,28 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 > [!IMPORTANT]  
 > Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date documentation.
 
-| Input                         | Default&nbsp;Value    | Input&nbsp;Description  |
-| :---------------------------- | :-------------------- | :---------------------- |
-| `name`                        | **Required**          | Stack Name              |
-| `url`                         | **Required**          | Portainer URL           |
-| [token](#token)               | **Required**          | Portainer Token         |
-| `file`                        | `docker-compose.yaml` | Compose File            |
-| [endpoint](#endpoint)         | `endpoints[0].Id`     | Portainer Endpoint      |
-| [ref](#ref)                   | `current reference`   | Repository Ref          |
-| [repo](#repo)                 | `current repository`  | Repository URL          |
-| `tlsskip`                     | `false`               | Skip Repo TLS Verify    |
-| `prune`                       | `true`                | Prune Services          |
-| `pull`                        | `true`                | Pull Images             |
-| [type](#type)                 | `repo`                | Type [`repo`, `file`]   |
-| `standalone`                  | `false`               | Deploy Standalone Stack |
-| [env_json](#env_jsonenv_file) | -                     | Dotenv JSON Data\*      |
-| [env_file](#env_jsonenv_file) | -                     | Dotenv File Path        |
-| [merge_env](#merge_env)       | `false`               | Merge Env Vars          |
-| [username](#usernamepassword) | -                     | Repository Username     |
-| [password](#usernamepassword) | -                     | Repository Password     |
-| [fs_path](#fs_path)           | -                     | Relative Path (BE)      |
-| [headers](#headers)           | `"{}"`                | Custom Headers JSON     |
-| [summary](#summary)           | `true`                | Add Summary to Job      |
+| Input                         | Default&nbsp;Value    | Description&nbsp;of&nbsp;Input |
+| :---------------------------- | :-------------------- | :----------------------------- |
+| `name`                        | Required              | Stack Name                     |
+| `url`                         | Required              | Portainer URL                  |
+| [token](#token)               | Required              | Portainer Token                |
+| `file`                        | `docker-compose.yaml` | Compose File                   |
+| [endpoint](#endpoint)         | `endpoints[0].Id`     | Portainer Endpoint             |
+| [ref](#ref)                   | `current reference`   | Repository Ref                 |
+| [repo](#repo)                 | `current repository`  | Repository URL                 |
+| `tlsskip`                     | `false`               | Skip Repo TLS Verify           |
+| `prune`                       | `true`                | Prune Services                 |
+| `pull`                        | `true`                | Pull Images                    |
+| [type](#type)                 | `repo`                | Type [`repo`, `file`]          |
+| `standalone`                  | `false`               | Deploy Standalone Stack        |
+| [env_json](#env_jsonenv_file) | -                     | Dotenv JSON Data               |
+| [env_file](#env_jsonenv_file) | -                     | Dotenv File Path               |
+| [merge_env](#merge_env)       | `false`               | Merge Env Vars                 |
+| [username](#usernamepassword) | -                     | Repository Username            |
+| [password](#usernamepassword) | -                     | Repository Password            |
+| [fs_path](#fs_path)           | -                     | Relative Path (BE)             |
+| [headers](#headers)           | `"{}"`                | Custom Headers JSON            |
+| [summary](#summary)           | `true`                | Add Summary to Job             |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
 > and [Portainer API Documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
