@@ -81,18 +81,18 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 
 | Input                         | Default&nbsp;Value    | Description&nbsp;of&nbsp;Input |
 | :---------------------------- | :-------------------- | :----------------------------- |
-| `name`                        | Required              | Stack Name                     |
-| `url`                         | Required              | Portainer URL                  |
-| [token](#token)               | Required              | Portainer Token                |
-| `file`                        | `docker-compose.yaml` | Compose File                   |
+| **name**                      | _Required_            | Stack Name                     |
+| **url**                       | _Required_            | Portainer URL                  |
+| [token](#token)               | _Required_            | Portainer Token                |
+| **file**                      | `docker-compose.yaml` | Compose File                   |
 | [endpoint](#endpoint)         | `endpoints[0].Id`     | Portainer Endpoint             |
 | [ref](#ref)                   | `current reference`   | Repository Ref                 |
 | [repo](#repo)                 | `current repository`  | Repository URL                 |
-| `tlsskip`                     | `false`               | Skip Repo TLS Verify           |
-| `prune`                       | `true`                | Prune Services                 |
-| `pull`                        | `true`                | Pull Images                    |
+| **tlsskip**                   | `false`               | Skip Repo TLS Verify           |
+| **prune**                     | `true`                | Prune Services                 |
+| **pull**                      | `true`                | Pull Images                    |
 | [type](#type)                 | `repo`                | Type [`repo`, `file`]          |
-| `standalone`                  | `false`               | Deploy Standalone Stack        |
+| **standalone**                | `false`               | Deploy Standalone Stack        |
 | [env_json](#env_jsonenv_file) | -                     | Dotenv JSON Data               |
 | [env_file](#env_jsonenv_file) | -                     | Dotenv File Path               |
 | [merge_env](#merge_env)       | `false`               | Merge Env Vars                 |
