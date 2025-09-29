@@ -41,6 +41,9 @@ Includes most [features](#features) including file or repo deploy, deploy from o
 This action is written from the ground up in Vanilla JavaScript and is not a fork/clone of existing actions.
 You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/features#action-comparison) of all available actions on the website.
 
+> [!TIP]  
+> ▶️ View the [Getting Started Guide](https://portainer-deploy.cssnr.com/guides/get-started) on the website.
+
 ```yaml
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
@@ -57,9 +60,6 @@ This is a fairly simple action, for more details see [src/index.js](src/index.js
 
 _No Portainer? You can deploy directly to Docker Swarm or Compose over SSH with: [cssnr/stack-deploy-action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
 or [cssnr/docker-context-action](https://github.com/cssnr/docker-context-action?tab=readme-ov-file#readme)._
-
-> [!TIP]  
-> ▶️ View the [Getting Started Guide](https://portainer-deploy.cssnr.com/guides/get-started) on the website.
 
 ## Features
 
@@ -79,7 +79,7 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 > [!IMPORTANT]  
 > Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date documentation.
 
-| Input          | Default&nbsp;Value    | Description&nbsp;of&nbsp;Input              |
+| Input          | Default&nbsp;Value    | Description&nbsp;of&nbsp;the&nbsp;Input     |
 | :------------- | :-------------------- | :------------------------------------------ |
 | **name**       | _Required_            | Stack Name                                  |
 | **url**        | _Required_            | Portainer URL                               |
