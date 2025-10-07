@@ -10,14 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  pull-requests: write
-
 jobs:
   lint:
     name: "Lint"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    permissions:
+      pull-requests: write
 
     steps:
       - name: "Checkout"
@@ -70,9 +70,14 @@ jobs:
           echo "::endgroup::"
           "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
 
+      - name: "Verify action.yml"
+        if: ${{ !cancelled() }}
+        run: |
+          yq -e '.runs.main | test("^dist/")' action.yml
+
       - name: "Check Build Action"
         if: ${{ !cancelled() }}
-        uses: cssnr/check-build-action@master
+        uses: cssnr/check-build-action@v1
 
       - name: "ESLint Annotate"
         if: ${{ !cancelled() && steps.eslint.outcome != 'success' }}
