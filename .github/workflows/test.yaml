@@ -28,6 +28,13 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v5
 
+      - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+
       - name: "Write YAML"
         id: yaml-action
         uses: teunmooij/yaml@v1
@@ -44,8 +51,10 @@ jobs:
           name: test_portainer-stack-deploy
           file: docker-compose.yaml
           type: file
-          env_json: '{"TEST": "TRUE"}'
+          env_data: |
+            TEST: "TRUE"
           merge_env: true
+          summary: false
 
       #- name: "Echo Output"
       #  run: |

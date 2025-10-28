@@ -66,7 +66,7 @@ or [cssnr/docker-context-action](https://github.com/cssnr/docker-context-action?
 - Deploy or re-deploy an existing stack otherwise create a new stack.
 - Deploy from a repository or a compose file, see [type](https://portainer-deploy.cssnr.com/docs/inputs#type).
 - Deploy from a different [repo](https://portainer-deploy.cssnr.com/docs/inputs#repo) than the current one.
-- Provide environment variables in [JSON](https://portainer-deploy.cssnr.com/docs/inputs#env_json) or [file](https://portainer-deploy.cssnr.com/docs/inputs#env_file) format.
+- Provide environment variables in [JSON/YAML](https://portainer-deploy.cssnr.com/docs/inputs#env_data) or [file](https://portainer-deploy.cssnr.com/docs/inputs#env_data) format.
 - Automatically parse [Endpoint ID](https://portainer-deploy.cssnr.com/docs/inputs#endpoint) if only one endpoint.
 - Supports Docker Swarm and Docker [Standalone](https://portainer-deploy.cssnr.com/docs/inputs#standalone).
 - Supports custom [headers](https://portainer-deploy.cssnr.com/docs/inputs#headers) for services like Cloudflare Zero Trust.
@@ -93,13 +93,13 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | **pull**       | `true`                | Pull Images                                 |
 | **type**       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
 | **standalone** | `false`               | Deploy Standalone Stack                     |
-| **env_json**   | -                     | Dotenv JSON Data [⤵️](#env_jsonenv_file)    |
-| **env_file**   | -                     | Dotenv File Path [⤵️](#env_jsonenv_file)    |
+| **env_data**   | -                     | Env JSON/YAML Data [⤵️](#env)               |
+| **env_file**   | -                     | Dotenv File Path [⤵️](#env)                 |
 | **merge_env**  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
 | **username**   | -                     | Repository Username [⤵️](#usernamepassword) |
 | **password**   | -                     | Repository Password [⤵️](#usernamepassword) |
 | **fs_path**    | -                     | Relative Path (BE) [⤵️](#fs_path)           |
-| **headers**    | `"{}"`                | Custom Headers JSON [⤵️](#headers)          |
+| **headers**    | -                     | Custom Headers JSON/YAML [⤵️](#headers)     |
 | **summary**    | `true`                | Add Summary to Job [⤵️](#summary)           |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
@@ -128,19 +128,40 @@ put the full http URL to that repository here.
 
 Type of Deployment. Currently, supports either `repo` or `file`.
 
-#### env_json/env_file
+#### env
 
-Optional environment variables used when creating the stack. File should be in dotenv format and
-JSON should be an object. Example: `{"KEY": "Value"}`
+Optional environment variables used when creating the stack.
+
+File should be in dotenv format.
+
+Data should be in JSON or YAML format.
+
+<details><summary>View Example JSON/YAML Data Format</summary>
+
+```yaml
+data: |
+  {
+    "key1": "value1",
+    "key2": "value2"
+  }
+```
+
+```yaml
+data: |
+  key1: value1
+  key2: value2
+```
+
+</details>
 
 > [!WARNING]  
 > Inputs are NOT secure unless using secrets or secure output.
-> Using `env_json` on a public repository will otherwise expose this data.
+> Using `env_data` on a public repository will otherwise expose this data.
 > To securely pass an environment use the `env_file` option.
 
 #### merge_env
 
-If this is `true` and the stack exists, will update the existing Env with the provided `env_json/env_file`.
+If this is `true` and the stack exists, will update the existing Env with the provided `env_data/env_file`.
 If you are not providing an env, the existing env will be used, and you do not need to set this.
 
 #### username/password
@@ -284,7 +305,7 @@ View more [Examples](https://portainer-deploy.cssnr.com/guides/examples) on the 
 </details>
 <details><summary>Specify environment variables</summary>
 
-You can use env_json, env_file, or both.
+You can use env_data, env_file, or both.
 
 ```yaml
 - name: 'Portainer Deploy'
@@ -295,7 +316,7 @@ You can use env_json, env_file, or both.
     name: stack-name
     file: docker-compose.yaml
     type: file
-    env_json: '{"KEY": "Value"}'
+    env_data: '{"KEY": "Value"}'
     env_file: .env
 ```
 
@@ -313,7 +334,8 @@ This will add the provided variables to the existing stack variables.
     name: stack-name
     file: docker-compose.yaml
     type: file
-    env_json: '{"KEY": "Value"}'
+    env_data: |
+      KEY: Value
     merge_env: true
 ```
 
@@ -331,7 +353,7 @@ Note: Secrets are secure in this context.
     name: stack-name
     file: docker-compose.yaml
     type: file
-    env_json: |
+    env_data: |
       {
         "APP_PRIVATE_KEY": "${{ secrets.APP_PRIVATE_KEY }}",
         "VERSION": "${{ inputs.VERSION }}"

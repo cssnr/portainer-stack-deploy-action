@@ -17,65 +17,50 @@ inputs:
     required: true
   file:
     description: "Compose File"
-    required: false
     default: "docker-compose.yaml"
   endpoint:
     description: "Portainer Endpoint ID"
-    required: false
   ref:
     description: "Repository Ref"
-    required: false
     default: "${{ github.ref }}"
   repo:
     description: "Repository URL"
-    required: false
     default: "${{ github.server_url }}/${{ github.repository }}"
   tlsskip:
     description: "Skip TLS Repo Verification"
-    required: false
     default: "false"
   prune:
     description: "Prune Services"
-    required: false
     default: "true"
   pull:
     description: "Pull Images"
-    required: false
     default: "true"
   type:
     description: "Deploy Type"
-    required: false
     default: "repo"
   standalone:
     description: "Standalone Stack"
-    required: false
     default: "false"
+  env_data:
+    description: "Environment JSON/YAML String"
   env_json:
-    description: "Dotenv JSON String"
-    required: false
+    description: "Environment JSON/YAML String"
+    deprecationMessage: "This input has changed to: env_data"
   env_file:
     description: "Dotenv File Path"
-    required: false
   merge_env:
     description: "Merge Env Vars"
-    required: false
     default: "false"
   username:
     description: "Repository Username"
-    required: false
   password:
     description: "Repository Password"
-    required: false
   fs_path:
     description: "Relative path volume in host (only available in Portainer BE)"
-    required: false
   headers:
     description: "Custom Headers JSON"
-    required: false
-    default: "{}"
   summary:
     description: "Add Summary to Job"
-    required: false
     default: "true"
 
 outputs:
