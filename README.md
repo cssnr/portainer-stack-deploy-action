@@ -93,8 +93,8 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | **pull**       | `true`                | Pull Images                                 |
 | **type**       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
 | **standalone** | `false`               | Deploy Standalone Stack                     |
-| **env_json**   | **DEPRECATED**        | This has changed to [env_data](#env_data)   |
 | **env_data**   | -                     | Env JSON/YAML Data [⤵️](#env_data)          |
+| **env_json**   | **DEPRECATED**        | This has changed to [env_data](#env_data)   |
 | **env_file**   | -                     | Dotenv File Path [⤵️](#env_file)            |
 | **merge_env**  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
 | **username**   | -                     | Repository Username [⤵️](#usernamepassword) |
@@ -310,7 +310,7 @@ toJSON Output
 ```yaml
 - uses: cssnr/portainer-stack-deploy-action@v1
   with:
-    env_json: ${{ toJSON(steps.import-secrets.outputs) }}
+    env_data: ${{ toJSON(steps.import-secrets.outputs) }}
 ```
 
 </details>
