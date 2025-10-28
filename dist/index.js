@@ -42399,11 +42399,11 @@ async function addSummary(inputs, stack) {
 
     delete inputs.token
     delete inputs.env_data
-    const yaml = Object.entries(inputs)
-        .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
-        .join('\n')
+    // const yaml = Object.entries(inputs)
+    //     .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+    //     .join('\n')
     core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addCodeBlock(yaml, 'yaml')
+    core.summary.addCodeBlock(yaml.dump(inputs), 'yaml')
     core.summary.addRaw('</details>\n')
 
     const docs = 'https://portainer-deploy.cssnr.com/'
