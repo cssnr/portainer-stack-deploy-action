@@ -10,9 +10,8 @@ class Portainer {
      */
     constructor(url, token, headers = {}) {
         url = url.replace(/\/$/, '')
-        if (!url.endsWith('api')) {
-            url += '/api'
-        }
+        if (!url.endsWith('api')) url += '/api'
+
         const agent = new https.Agent({
             rejectUnauthorized: false,
         })
