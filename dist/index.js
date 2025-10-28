@@ -42345,7 +42345,7 @@ function getEnv(inputs, stack) {
         }
     }
     if (inputs.env_file) {
-        let data = dotenv.config({ path: inputs.env_file })
+        const data = dotenv.config({ path: inputs.env_file })
         for (const [name, value] of Object.entries(data.parsed)) {
             env[name] = value
         }
@@ -42361,7 +42361,7 @@ function getEnv(inputs, stack) {
  * Add Job Summary
  * @param {Inputs} inputs
  * @param {object} stack
- * @return {promise<void>}
+ * @return {Promise<void>}
  */
 async function addSummary(inputs, stack) {
     core.summary.addRaw(`## Portainer Stack Deploy Action\n`)
