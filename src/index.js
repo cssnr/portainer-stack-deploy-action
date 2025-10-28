@@ -21,7 +21,9 @@ const Portainer = require('./portainer')
         }
 
         // Check Portainer
-        const portainer = new Portainer(inputs.url, inputs.token, inputs.headers)
+        const headers = parseData(inputs.headers)
+        // console.log('headers:', headers)
+        const portainer = new Portainer(inputs.url, inputs.token, headers)
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
@@ -245,6 +247,7 @@ async function addSummary(inputs, stack) {
 
     delete inputs.token
     delete inputs.env_data
+    delete inputs.headers
     // const yaml = Object.entries(inputs)
     //     .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
     //     .join('\n')
@@ -267,21 +270,21 @@ async function addSummary(inputs, stack) {
  * @return {object}
  */
 function parseData(input, get = true) {
-    console.log(`parseData input type: ${typeof input} - get: ${get}`)
+    core.debug(`parseData input type: ${typeof input} - get: ${get}`)
     const data = get ? core.getInput(input) : input
-    console.log(`parseData data: ${data}`)
+    core.debug(`parseData data: ${data}`)
     if (!data) return {}
     try {
         return JSON.parse(data)
     } catch (e) {
         core.debug(`${input} - JSON.parse failed: ${e.message}`)
-        console.log(`${input} - JSON.parse failed:`, e.message)
+        // console.log(`${input} - JSON.parse failed:`, e.message)
     }
     try {
         return yaml.load(data)
     } catch (e) {
         core.debug(`${input} - yaml.load failed: ${e.message}`)
-        console.log(`${input} - yaml.load failed:`, e.message)
+        // console.log(`${input} - yaml.load failed:`, e.message)
     }
     throw new Error(`Unable to parse "${input}" with value: ${data}`)
 }
@@ -293,13 +296,13 @@ function parseData(input, get = true) {
  */
 function getInput(names) {
     core.debug(`Get Input for names: ${names}`)
-    console.log(`Get Input for names: ${names}`)
+    // console.log(`Get Input for names: ${names}`)
     for (const name of names) {
         const input = core.getInput(name)
         if (input) return input
     }
     core.debug(`INPUT NOT FOUND - name: ${names}`)
-    console.log(`INPUT NOT FOUND - name: ${names}`)
+    // console.log(`INPUT NOT FOUND - name: ${names}`)
     return ''
 }
 
@@ -348,7 +351,7 @@ function getInputs() {
         username: core.getInput('username'),
         password: core.getInput('password'),
         fs_path: core.getInput('fs_path'),
-        headers: parseData('headers'),
+        headers: core.getInput('headers'),
         summary: core.getBooleanInput('summary'),
     }
 }
