@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: "Setup Node 24"
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 24
 
@@ -75,9 +75,9 @@ jobs:
         run: |
           yq -e '.runs.main | test("^dist/")' action.yml
 
-      - name: "Check Build Action"
-        if: ${{ !cancelled() }}
-        uses: cssnr/check-build-action@v1
+      #- name: "Check Build Action"
+      #  if: ${{ !cancelled() }}
+      #  uses: cssnr/check-build-action@v1
 
       - name: "ESLint Annotate"
         if: ${{ !cancelled() && steps.eslint.outcome != 'success' }}

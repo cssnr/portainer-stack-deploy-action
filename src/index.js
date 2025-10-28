@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const fs = require('node:fs')
 const dotenv = require('dotenv')
+const yaml = require('js-yaml')
 
 const Portainer = require('./portainer')
 
@@ -20,7 +21,9 @@ const Portainer = require('./portainer')
         }
 
         // Check Portainer
-        const portainer = new Portainer(inputs.url, inputs.token, inputs.headers)
+        const headers = parseData(inputs.headers)
+        // console.log('headers:', headers)
+        const portainer = new Portainer(inputs.url, inputs.token, headers)
         const version = await portainer.getVersion()
         const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
         core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
@@ -168,11 +171,11 @@ const Portainer = require('./portainer')
 /**
  * @function getEnv
  * @param {Inputs} inputs
- * @param {Object} stack
- * @return {Object[]} Portainer formatted environment
+ * @param {object} stack
+ * @return {object[]} Portainer formatted environment
  */
 function getEnv(inputs, stack) {
-    if (!inputs.env_json && !inputs.env_file) {
+    if (!inputs.env_data && !inputs.env_file) {
         return stack?.env ? stack.env : []
     }
     const env = {}
@@ -183,14 +186,15 @@ function getEnv(inputs, stack) {
         )
         Object.assign(env, current)
     }
-    if (inputs.env_json) {
-        let data = JSON.parse(inputs.env_json)
+    if (inputs.env_data) {
+        const data = parseData(inputs.env_data)
+        // console.log('data:', data)
         for (const [name, value] of Object.entries(data)) {
             env[name] = value
         }
     }
     if (inputs.env_file) {
-        let data = dotenv.config({ path: inputs.env_file })
+        const data = dotenv.config({ path: inputs.env_file })
         for (const [name, value] of Object.entries(data.parsed)) {
             env[name] = value
         }
@@ -205,7 +209,7 @@ function getEnv(inputs, stack) {
 /**
  * Add Job Summary
  * @param {Inputs} inputs
- * @param {Object} stack
+ * @param {object} stack
  * @return {Promise<void>}
  */
 async function addSummary(inputs, stack) {
@@ -243,12 +247,13 @@ async function addSummary(inputs, stack) {
     core.summary.addRaw('</details>\n')
 
     delete inputs.token
-    delete inputs.env_json
-    const yaml = Object.entries(inputs)
-        .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
-        .join('\n')
+    delete inputs.env_data
+    delete inputs.headers
+    // const yaml = Object.entries(inputs)
+    //     .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+    //     .join('\n')
     core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addCodeBlock(yaml, 'yaml')
+    core.summary.addCodeBlock(yaml.dump(inputs), 'yaml')
     core.summary.addRaw('</details>\n')
 
     const docs = 'https://portainer-deploy.cssnr.com/'
@@ -260,13 +265,37 @@ async function addSummary(inputs, stack) {
 }
 
 /**
+ * Parse Data from Input
+ * @param {string} data
+ * @return {object}
+ */
+function parseData(data) {
+    core.debug(`parseData: ${typeof data}: ${data}`)
+    // console.log(`parseData: ${typeof data}: ${data}`)
+    if (!data) return {}
+    try {
+        return JSON.parse(data)
+    } catch (e) {
+        core.debug(`JSON.parse failed: ${e.message}`)
+        // console.log(`JSON.parse failed: ${e.message}`)
+    }
+    try {
+        return yaml.load(data)
+    } catch (e) {
+        core.debug(`yaml.load failed: ${e.message}`)
+        // console.log(`yaml.load failed: ${e.message}`)
+    }
+    throw new Error(`Unable to parse data: ${data}`)
+}
+
+/**
  * Get Inputs
  * @typedef {object} Inputs
  * @property {string} token
  * @property {string} url
  * @property {string} name
  * @property {string} file
- * @property {string|undefined} endpoint
+ * @property {string} endpoint
  * @property {string} ref
  * @property {string} repo
  * @property {boolean} tlsskip
@@ -274,12 +303,12 @@ async function addSummary(inputs, stack) {
  * @property {boolean} pull
  * @property {string} type
  * @property {boolean} standalone
- * @property {string|undefined} env_json
- * @property {string|undefined} env_file
+ * @property {string} env_data
+ * @property {string} env_file
  * @property {boolean} merge_env
- * @property {string|undefined} username
- * @property {string|undefined} password
- * @property {string|undefined} fs_path
+ * @property {string} username
+ * @property {string} password
+ * @property {string} fs_path
  * @property {object} headers
  * @property {boolean} summary
  * @return {Inputs}
@@ -291,20 +320,20 @@ function getInputs() {
         name: core.getInput('name', { required: true }),
         file: core.getInput('file', { required: true }),
         endpoint: core.getInput('endpoint'),
-        ref: core.getInput('ref', { required: true }),
-        repo: core.getInput('repo', { required: true }),
+        ref: core.getInput('ref'),
+        repo: core.getInput('repo'),
         tlsskip: core.getBooleanInput('tlsskip'),
         prune: core.getBooleanInput('prune'),
         pull: core.getBooleanInput('pull'),
         type: core.getInput('type', { required: true }),
         standalone: core.getBooleanInput('standalone'),
-        env_json: core.getInput('env_json'),
+        env_data: core.getInput('env_data') || core.getInput('env_json'),
         env_file: core.getInput('env_file'),
         merge_env: core.getBooleanInput('merge_env'),
         username: core.getInput('username'),
         password: core.getInput('password'),
         fs_path: core.getInput('fs_path'),
-        headers: JSON.parse(core.getInput('headers', { required: true })),
+        headers: core.getInput('headers'),
         summary: core.getBooleanInput('summary'),
     }
 }
