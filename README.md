@@ -48,8 +48,8 @@ You can view an [Action Comparison](https://portainer-deploy.cssnr.com/guides/fe
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
   with:
-    name: 'stack-name'
-    file: 'docker-compose.yaml'
+    name: stack-name
+    file: docker-compose.yaml
     url: ${{ secrets.PORTAINER_URL }}
     token: ${{ secrets.PORTAINER_TOKEN }}
 ```
