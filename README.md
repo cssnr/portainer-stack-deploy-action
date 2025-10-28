@@ -81,10 +81,10 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 
 | Input          | Default&nbsp;Value    | Description&nbsp;of&nbsp;the&nbsp;Input     |
 | :------------- | :-------------------- | :------------------------------------------ |
-| **name**       | _Required_            | Stack Name                                  |
-| **url**        | _Required_            | Portainer URL                               |
+| **name**       | _Required_            | Stack Name [⤵️](#name)                      |
+| **url**        | _Required_            | Portainer URL [⤵️](#url)                    |
 | **token**      | _Required_            | Portainer Token [⤵️](#token)                |
-| **file**       | `docker-compose.yaml` | Compose File                                |
+| **file**       | `docker-compose.yaml` | Compose File [⤵️](#file)                    |
 | **endpoint**   | `endpoints[0].Id`     | Portainer Endpoint [⤵️](#endpoint)          |
 | **ref**        | `current reference`   | Repository Ref [⤵️](#ref)                   |
 | **repo**       | `current repository`  | Repository URL [⤵️](#repo)                  |
@@ -93,8 +93,8 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 | **pull**       | `true`                | Pull Images                                 |
 | **type**       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
 | **standalone** | `false`               | Deploy Standalone Stack                     |
-| **env_data**   | -                     | Env JSON/YAML Data [⤵️](#env)               |
-| **env_file**   | -                     | Dotenv File Path [⤵️](#env)                 |
+| **env_data**   | -                     | Env JSON/YAML Data [⤵️](#env_data)          |
+| **env_file**   | -                     | Dotenv File Path [⤵️](#env_file)            |
 | **merge_env**  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
 | **username**   | -                     | Repository Username [⤵️](#usernamepassword) |
 | **password**   | -                     | Repository Password [⤵️](#usernamepassword) |
@@ -105,38 +105,105 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
 > and [Portainer API Documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
 
+#### name
+
+Swarm sack name or Compose project name.
+
+Example: `cool-stack`
+
+#### url
+
+Portainer URL.
+
+This is the base url to your Portainer instance.
+
+Example: `https://portainer.example.com:9443`
+
 #### token
 
-To create a Portainer API token see: https://docs.portainer.io/api/access
+Portainer API token.
+
+For Instructions to create an API token visit: https://docs.portainer.io/api/access
+
+#### file
+
+The Docker compose file. This path is relative to your working directory.
+
+If you check out your repository to the root, and the compose file is called `docker-compose.yaml`, and is in the `app` directory, set `file` to: `app/docker-compose.yaml`
+
+Default: `docker-compose.yaml`
 
 #### endpoint
 
-If `endpoint` is not provided the first endpoint returned by the API will be used.
+If endpoint is not provided the first endpoint returned by the API will be used.
 If you only have one endpoint, this will work as expected, otherwise, you should provide an endpoint.
+
+Example: `1`
+
+Default: `${endpoints[0]}`
 
 #### ref
 
-If you want to deploy a different ref than the one triggering the workflow.
-Useful if you are deploying from another repository. Example: `refs/heads/master`
+This defaults to the reference that triggered the workflow.
+
+If deploying from a different repository than the current one, you may want to specify the `ref` of that repository to deploy from.
+
+Example: `refs/heads/master`
+
+Default: <span v-pre>`${{ github.ref }}`</span>
 
 #### repo
 
-This defaults to the repository running the action. If you want to deploy a different repository
-put the full http URL to that repository here.
+This defaults to the repository running the action.
+
+If you want to deploy a different repository, put the full http URL to that repository.
+
+Example: `https://github.com/cssnr/portainer-stack-deploy-action`
+
+Default: <span v-pre>`${{ github.server_url }}/${{ github.repository }}`</span>
+
+#### tlsskip
+
+Skips SSL verification when cloning the Git repository.
+Set to `true` to enable.
+
+Default: `false`
+
+#### prune
+
+Prune services that are no longer referenced (only available for Swarm stacks).
+Set to `false` to disable.
+
+Default: `true`
+
+#### pull
+
+Pull latest image before deploy. Set to `false` to disable.
+
+Default: `true`
 
 #### type
 
-Type of Deployment. Currently, supports either `repo` or `file`.
+Type of Deployment. Supports either `repo` or `file`.
 
-#### env
+Default: `repo`
+
+#### standalone
+
+Deploy a **compose** stack instead of _swarm_. Set to `true` to enable.
+
+Default: `false`
+
+#### env_data
 
 Optional environment variables used when creating the stack.
 
-File should be in dotenv format.
+These can be provided in JSON or YAML format and can be used with [env_file](#env_file).
+Values in [env_file](#env_file) take precedence over these values.
 
-Data should be in JSON or YAML format.
+<details><summary>👀 View Example JSON/YAML Data Format</summary>
 
-<details><summary>View Example JSON/YAML Data Format</summary>
+These examples are identical, just different ways of passing the input.
 
 ```yaml
 data: |
@@ -159,43 +226,90 @@ data: |
 > Using `env_data` on a public repository will otherwise expose this data.
 > To securely pass an environment use the `env_file` option.
 
+#### env_file
+
+Environment File in [dotenv](https://www.npmjs.com/package/dotenv) format, parsed using [dotenv](https://www.npmjs.com/package/dotenv).
+
+This can be used with [env_data](#env_data). Values in this file take precedence over [env_data](#env_data).
+
+<details><summary>👀 View Environment File Example</summary>
+
+```dotenv [.env]
+KEY="Value"
+KEY_2="Value 2"
+```
+
+```yaml [.github/workflow.yaml]
+- uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    env_file: .env
+```
+
+Note: Additional [inputs](../docs/inputs.md) are excluded for brevity.
+
+</details>
+
 #### merge_env
 
-If this is `true` and the stack exists, will update the existing Env with the provided `env_data/env_file`.
-If you are not providing an env, the existing env will be used, and you do not need to set this.
+Set this to `true` to merge the current environment variables from the existing stack
+with any newly provided variables in the [env_data](#env_data) or [env_file](#env_file) inputs.
+
+When not providing the [env_data](#env_data) or [env_file](#env_file) inputs the
+current environment variables from the existing stack are always used.
+
+When deploying a new stack, there are no current environment variables to merge, and this has no effect.
+
+Default: `false`
 
 #### username/password
 
-Only set these if the `repo` is private and requires authentication.
-This is NOT the Portainer username/password, see `token` for Portainer authentication.
+Username for private repository authentication when [type](#type) is set to `repo`.
+
+This is **NOT** your Portainer username, see [token](#token) for Portainer authentication.
 
 #### fs_path
 
 Relative Path Support for Portainer BE.
 Set this to enable relative path volumes support for volume mappings in your compose file.
-See the [docs](https://docs.portainer.io/advanced/relative-paths) for more info.
+
+_For more info see the [Portainer Documentation - Relative Path Support](https://docs.portainer.io/advanced/relative-paths)._
 
 #### headers
 
-Custom Headers in **JSON format** for services like Cloudflare Zero Trust.
-The `headers` are parsed with JSON.parse and passed directly to axios:
-`headers: { 'X-API-Key': token, ...JSON.parse(headers) }`
+Custom Headers in JSON or YAML format for services like Cloudflare Zero Trust.
+
+The `headers` are parsed with `JSON.parse` or `yaml.load` and passed directly to axios.
 
 <details><summary>👀 View Custom Headers Example</summary>
 
+YAML
+
 ```yaml
-- name: 'Portainer Deploy'
-  uses: cssnr/portainer-stack-deploy-action@v1
+- uses: cssnr/portainer-stack-deploy-action@v1
   with:
-    token: ${{ secrets.PORTAINER_TOKEN }}
-    url: https://portainer.example.com:9443
-    name: stack-name
-    file: docker-compose.yaml
-    headers: |
+    env_data: |
+      CF-Access-Client-Id: ${{ secrets.CF_CLIENT_ID }}
+      CF-Access-Client-Secret: ${{ secrets.CF_CLIENT_SECRET }}
+```
+
+Multi-Line JSON
+
+```yaml
+- uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    env_data: |
       {
         "CF-Access-Client-Id": "${{ secrets.CF_CLIENT_ID }}",
-        "CF-Access-Client-Secret": "${{ secrets.CF_CLIENT_SECRET }}",
+        "CF-Access-Client-Secret": "${{ secrets.CF_CLIENT_SECRET }}"
       }
+```
+
+toJSON Output
+
+```yaml
+- uses: cssnr/portainer-stack-deploy-action@v1
+  with:
+    env_json: ${{ toJSON(steps.import-secrets.outputs) }}
 ```
 
 </details>
