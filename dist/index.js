@@ -42342,6 +42342,7 @@ function getEnv(inputs, stack) {
     }
     if (inputs.env_data) {
         const data = parseData(inputs.env_data)
+        // console.log('data:', data)
         for (const [name, value] of Object.entries(data)) {
             env[name] = value
         }
@@ -42419,45 +42420,26 @@ async function addSummary(inputs, stack) {
 
 /**
  * Parse Data from Input
- * @param input
- * @param get
+ * @param {string} data
  * @return {object}
  */
-function parseData(input, get = true) {
-    core.debug(`parseData input type: ${typeof input} - get: ${get}`)
-    const data = get ? core.getInput(input) : input
-    core.debug(`parseData data: ${data}`)
+function parseData(data) {
+    core.debug(`parseData: ${typeof data}: ${data}`)
+    // console.log(`parseData: ${typeof data}: ${data}`)
     if (!data) return {}
     try {
         return JSON.parse(data)
     } catch (e) {
-        core.debug(`${input} - JSON.parse failed: ${e.message}`)
-        // console.log(`${input} - JSON.parse failed:`, e.message)
+        core.debug(`JSON.parse failed: ${e.message}`)
+        // console.log(`JSON.parse failed: ${e.message}`)
     }
     try {
         return yaml.load(data)
     } catch (e) {
-        core.debug(`${input} - yaml.load failed: ${e.message}`)
-        // console.log(`${input} - yaml.load failed:`, e.message)
+        core.debug(`yaml.load failed: ${e.message}`)
+        // console.log(`yaml.load failed: ${e.message}`)
     }
-    throw new Error(`Unable to parse "${input}" with value: ${data}`)
-}
-
-/**
- * Get Input from names
- * @param {string[]} names
- * @return {string}
- */
-function getInput(names) {
-    core.debug(`Get Input for names: ${names}`)
-    // console.log(`Get Input for names: ${names}`)
-    for (const name of names) {
-        const input = core.getInput(name)
-        if (input) return input
-    }
-    core.debug(`INPUT NOT FOUND - name: ${names}`)
-    // console.log(`INPUT NOT FOUND - name: ${names}`)
-    return ''
+    throw new Error(`Unable to parse data: ${data}`)
 }
 
 /**
@@ -42499,7 +42481,7 @@ function getInputs() {
         pull: core.getBooleanInput('pull'),
         type: core.getInput('type', { required: true }),
         standalone: core.getBooleanInput('standalone'),
-        env_data: getInput(['env_data', 'env_json']),
+        env_data: core.getInput('env_data') || core.getInput('env_json'),
         env_file: core.getInput('env_file'),
         merge_env: core.getBooleanInput('merge_env'),
         username: core.getInput('username'),
