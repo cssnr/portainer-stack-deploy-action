@@ -234,15 +234,15 @@ This can be used with [env_data](#env_data). Values in this file take precedence
 
 <details><summary>👀 View Environment File Example</summary>
 
-```dotenv [.env]
-KEY="Value"
-KEY_2="Value 2"
-```
-
-```yaml [.github/workflow.yaml]
+```yaml
 - uses: cssnr/portainer-stack-deploy-action@v1
   with:
     env_file: .env
+```
+
+```dotenv
+KEY="Value"
+KEY_2="Value 2"
 ```
 
 Note: Additional [inputs](../docs/inputs.md) are excluded for brevity.
@@ -332,6 +332,9 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
 
 </details>
 
+> [!TIP]  
+> View the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs) for more details.
+
 ```yaml
 - name: 'Portainer Deploy'
   uses: cssnr/portainer-stack-deploy-action@v1
@@ -341,9 +344,6 @@ To view a workflow run, click on a recent [Test](https://github.com/cssnr/portai
     name: stack-name
     file: docker-compose.yaml
 ```
-
-> [!TIP]  
-> View the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs) for more details.
 
 ## Outputs
 
