@@ -54,7 +54,7 @@ jobs:
           env_data: |
             TEST: "TRUE"
           merge_env: true
-          summary: false
+          summary: ${{ !github.event.act }}
 
       #- name: "Echo Output"
       #  run: |
