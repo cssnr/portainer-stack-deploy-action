@@ -42329,7 +42329,7 @@ const Portainer = __nccwpck_require__(1055)
  */
 function getEnv(inputs, stack) {
     if (!inputs.env_data && !inputs.env_file) {
-        return stack?.env ? stack.env : []
+        return stack?.Env ? stack.Env : []
     }
     const env = {}
     if (inputs.merge_env && stack?.Env?.length) {
