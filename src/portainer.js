@@ -3,7 +3,7 @@ const https = require('node:https')
 
 class Portainer {
     /**
-     * Portainer API
+     * Portainer API - https://app.swaggerhub.com/apis/portainer/portainer-ce/
      * @param {string} url
      * @param {string} token
      * @param {object} [headers]
@@ -85,7 +85,7 @@ class Portainer {
      * @property {number} EndpointId
      * @property {string} SwarmId
      * @property {string} EntryPoint
-     * @property {object[]} Env
+     * @property {Env[]} Env
      * @property {object} ResourceControl
      * @property {number} Status
      * @property {string} ProjectPath
@@ -99,6 +99,11 @@ class Portainer {
      * @property {object} GitConfig
      * @property {boolean} FromAppTemplate
      * @property {string} Namespace
+     *
+     * @typedef {object} Env
+     * @property {string} name
+     * @property {string} value
+     *
      * @return {Promise<Stack[]>}
      */
     async getStacks() {

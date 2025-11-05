@@ -34804,7 +34804,7 @@ const https = __nccwpck_require__(4708)
 
 class Portainer {
     /**
-     * Portainer API
+     * Portainer API - https://app.swaggerhub.com/apis/portainer/portainer-ce/
      * @param {string} url
      * @param {string} token
      * @param {object} [headers]
@@ -34886,7 +34886,7 @@ class Portainer {
      * @property {number} EndpointId
      * @property {string} SwarmId
      * @property {string} EntryPoint
-     * @property {object[]} Env
+     * @property {Env[]} Env
      * @property {object} ResourceControl
      * @property {number} Status
      * @property {string} ProjectPath
@@ -34900,6 +34900,11 @@ class Portainer {
      * @property {object} GitConfig
      * @property {boolean} FromAppTemplate
      * @property {string} Namespace
+     *
+     * @typedef {object} Env
+     * @property {string} name
+     * @property {string} value
+     *
      * @return {Promise<Stack[]>}
      */
     async getStacks() {
@@ -42331,7 +42336,7 @@ const Portainer = __nccwpck_require__(1055)
                 // console.log('stack:', stack)
                 core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
-                core.info('   Stack NOT Found - Deploying NEW Stack')
+                core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {
                     name: inputs.name,
                     swarmID,
@@ -42374,7 +42379,7 @@ const Portainer = __nccwpck_require__(1055)
  * @function getEnv
  * @param {Inputs} inputs
  * @param {object} stack
- * @return {object[]} Portainer formatted environment
+ * @return {Env[]}
  */
 function getEnv(inputs, stack) {
     if (!inputs.env_data && !inputs.env_file) {
