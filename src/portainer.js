@@ -15,6 +15,7 @@ class Portainer {
         const agent = new https.Agent({
             rejectUnauthorized: false,
         })
+        // noinspection JSCheckFunctionSignatures
         this.client = axios.create({
             baseURL: url,
             headers: { 'X-API-Key': token, ...headers },
@@ -27,7 +28,17 @@ class Portainer {
 
     /**
      * Get Version
-     * @return {Promise<object>}
+     * @typedef {object} Version - https://app.swaggerhub.com/apis/portainer/portainer-ce/2.35.0#/system.versionResponse
+     * @property {boolean} UpdateAvailable
+     * @property {string} LatestVersion
+     * @property {string} ServerVersion
+     * @property {string} VersionSupport
+     * @property {string} ServerEdition
+     * @property {string} DatabaseVersion
+     * @property {object} Build
+     * @property {object} Dependencies
+     * @property {object} Runtime
+     * @return {Promise<Version>}
      */
     async getVersion() {
         const response = await this.client.get('/system/version')
@@ -46,7 +57,19 @@ class Portainer {
     /**
      * Get Swarm
      * @param {string|number} endpointId
-     * @return {Promise<object>}
+     * @typedef {object} Swarm
+     * @property {string} CreatedAt
+     * @property {number} DataPathPort
+     * @property {string[]} DefaultAddrPool
+     * @property {string} ID
+     * @property {object} JoinTokens
+     * @property {boolean} RootRotationInProgress
+     * @property {object} Spec
+     * @property {number} SubnetSize
+     * @property {object} TLSInfo
+     * @property {string} UpdatedAt
+     * @property {object} Version
+     * @return {Promise<Swarm>}
      */
     async getSwarm(endpointId) {
         const response = await this.client.get(`/endpoints/${endpointId}/docker/swarm`)
@@ -55,7 +78,28 @@ class Portainer {
 
     /**
      * Get Stacks
-     * @return {Promise<object[]>}
+     * @typedef {object} Stack - https://app.swaggerhub.com/apis/portainer/portainer-ce/2.35.0#/portainer.Stack
+     * @property {number} Id
+     * @property {string} Name
+     * @property {number} Type
+     * @property {number} EndpointId
+     * @property {string} SwarmId
+     * @property {string} EntryPoint
+     * @property {object[]} Env
+     * @property {object} ResourceControl
+     * @property {number} Status
+     * @property {string} ProjectPath
+     * @property {number} CreationDate
+     * @property {string} CreatedBy
+     * @property {number} UpdateDate
+     * @property {string} UpdatedBy
+     * @property {object} AdditionalFiles
+     * @property {object} AutoUpdate
+     * @property {object} Option
+     * @property {object} GitConfig
+     * @property {boolean} FromAppTemplate
+     * @property {string} Namespace
+     * @return {Promise<Stack[]>}
      */
     async getStacks() {
         const response = await this.client.get('/stacks')
@@ -64,10 +108,10 @@ class Portainer {
 
     /**
      * Update Stack Repository
-     * @param {string} stackID
+     * @param {string|number} stackID
      * @param {string|number} endpointId
      * @param {object} body
-     * @return {Promise<object>}
+     * @return {Promise<Stack>}
      */
     async updateStackRepo(stackID, endpointId, body) {
         const response = await this.client.put(`/stacks/${stackID}/git/redeploy`, body, {
@@ -81,7 +125,7 @@ class Portainer {
      * @param {string|number} endpointId
      * @param {object} body
      * @param {string} [url]
-     * @return {Promise<object>}
+     * @return {Promise<Stack>}
      */
     async createStackRepo(endpointId, body, url) {
         if (body.swarmID) {
@@ -97,10 +141,10 @@ class Portainer {
 
     /**
      * Update Stack String
-     * @param {string} stackID
+     * @param {string|number} stackID
      * @param {string|number} endpointId
      * @param {object} body
-     * @return {Promise<object>}
+     * @return {Promise<Stack>}
      */
     async updateStackString(stackID, endpointId, body) {
         const response = await this.client.put(`/stacks/${stackID}`, body, {
@@ -114,7 +158,7 @@ class Portainer {
      * @param {string|number} endpointId
      * @param {object} body
      * @param {string} [url]
-     * @return {Promise<object>}
+     * @return {Promise<Stack>}
      */
     async createStackString(endpointId, body, url) {
         if (body.swarmID) {
