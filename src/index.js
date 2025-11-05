@@ -129,7 +129,7 @@ const Portainer = require('./portainer')
                 // console.log('stack:', stack)
                 core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
             } else {
-                core.info('   Stack NOT Found - Deploying NEW Stack')
+                core.info('Stack NOT Found - Deploying NEW Stack')
                 const body = {
                     name: inputs.name,
                     swarmID,
@@ -172,7 +172,7 @@ const Portainer = require('./portainer')
  * @function getEnv
  * @param {Inputs} inputs
  * @param {object} stack
- * @return {object[]} Portainer formatted environment
+ * @return {Env[]}
  */
 function getEnv(inputs, stack) {
     if (!inputs.env_data && !inputs.env_file) {
