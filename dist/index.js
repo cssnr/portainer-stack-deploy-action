@@ -34829,7 +34829,7 @@ class Portainer {
 
     /**
      * Get Version
-     * @typedef {object} Version - https://app.swaggerhub.com/apis/portainer/portainer-ce/2.35.0#/system.versionResponse
+     * @typedef {object} Version - https://app.swaggerhub.com/apis/portainer/portainer-ce/#/system.versionResponse
      * @property {boolean} UpdateAvailable
      * @property {string} LatestVersion
      * @property {string} ServerVersion
@@ -34879,7 +34879,7 @@ class Portainer {
 
     /**
      * Get Stacks
-     * @typedef {object} Stack - https://app.swaggerhub.com/apis/portainer/portainer-ce/2.35.0#/portainer.Stack
+     * @typedef {object} Stack - https://app.swaggerhub.com/apis/portainer/portainer-ce/#/portainer.Stack
      * @property {number} Id
      * @property {string} Name
      * @property {number} Type
