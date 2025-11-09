@@ -42212,168 +42212,162 @@ const yaml = __nccwpck_require__(4281)
 
 const Portainer = __nccwpck_require__(1055)
 
-;(async () => {
-    try {
-        core.info('🏳️ Portainer Stack Deploy Action')
+async function main() /* NOSONAR */ {
+    core.info('🏳️ Portainer Stack Deploy Action')
 
-        // Parse Inputs
-        const inputs = getInputs()
-        core.startGroup('Parsed Inputs')
-        console.log('inputs:', inputs)
-        core.endGroup() // Inputs
+    // Parse Inputs
+    const inputs = getInputs()
+    core.startGroup('Parsed Inputs')
+    console.log('inputs:', inputs)
+    core.endGroup() // Inputs
 
-        if (!['repo', 'file'].includes(inputs.type)) {
-            core.setFailed(`Unknown type: ${inputs.type}. Values: [repo, file]`)
+    if (!['repo', 'file'].includes(inputs.type)) {
+        core.setFailed(`Unknown type: ${inputs.type}. Values: [repo, file]`)
+        return
+    }
+
+    // Check Portainer
+    const headers = parseData(inputs.headers)
+    // console.log('headers:', headers)
+    const portainer = new Portainer(inputs.url, inputs.token, headers)
+    const version = await portainer.getVersion()
+    const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
+    core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
+    delete version.Runtime
+    console.log(version)
+    core.endGroup() // Portainer Version
+
+    if (inputs.fs_path) {
+        if (version.ServerEdition !== 'EE') {
+            core.setFailed('Relative path only supported in Portainer EE!')
             return
         }
-
-        // Check Portainer
-        const headers = parseData(inputs.headers)
-        // console.log('headers:', headers)
-        const portainer = new Portainer(inputs.url, inputs.token, headers)
-        const version = await portainer.getVersion()
-        const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
-        core.startGroup(`Portainer Version: \u001b[34m${versionString}`)
-        delete version.Runtime
-        console.log(version)
-        core.endGroup() // Portainer Version
-
-        if (inputs.fs_path) {
-            if (version.ServerEdition !== 'EE') {
-                core.setFailed('Relative path only supported in Portainer EE!')
-                return
-            }
-        }
-
-        // Set Variables
-        let endpointID = Number.parseInt(inputs.endpoint)
-        if (!endpointID) {
-            const endpoints = await portainer.getEndpoints()
-            // console.log('endpoints:', endpoints)
-            endpointID = endpoints[0]?.Id
-            if (!endpointID) {
-                return core.setFailed('No Endpoints Found!')
-            }
-        }
-        core.info(`endpointID: \u001b[36m${endpointID}`)
-
-        let swarmID = null
-        if (!inputs.standalone) {
-            const swarm = await portainer.getSwarm(endpointID)
-            // console.log('swarm:', swarm)
-            swarmID = swarm.ID
-        }
-        core.info(`swarmID: \u001b[36m${swarmID}`)
-
-        // Get Stack
-        const stacks = await portainer.getStacks()
-        // console.log('stacks:', stacks)
-        let stack = stacks.find(
-            (item) => item.Name === inputs.name && item.EndpointId === endpointID
-        )
-        // console.log('stack:', stack)
-        let stackID = stack?.Id
-        core.info(`stackID: \u001b[36m${stackID}`)
-
-        // Update Environment
-        const env = getEnv(inputs, stack)
-
-        // Perform Deploy
-        if (inputs.type === 'repo') {
-            core.info('🌐 Performing Repository Deployment')
-            const repositoryAuthentication = !!(inputs.username || inputs.password)
-            if (stackID) {
-                core.info(`Stack Found - Updating Stack ID: ${stack.Id}`)
-                const body = {
-                    env,
-                    prune: inputs.prune,
-                    pullImage: inputs.pull,
-                    repositoryReferenceName: inputs.ref,
-                    repositoryAuthentication,
-                    repositoryPassword: inputs.password,
-                    repositoryUsername: inputs.username,
-                }
-                // console.log('body:', body)
-                stack = await portainer.updateStackRepo(stackID, endpointID, body)
-                // console.log('stack:', stack)
-                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
-            } else {
-                core.info('Stack NOT Found - Deploying NEW Stack')
-                const body = {
-                    name: inputs.name,
-                    swarmID,
-                    repositoryURL: inputs.repo,
-                    composeFile: inputs.file,
-                    env,
-                    tlsskipVerify: inputs.tlsskip,
-                    repositoryReferenceName: inputs.ref,
-                    repositoryAuthentication,
-                    repositoryPassword: inputs.password,
-                    repositoryUsername: inputs.username,
-                    ...(inputs.fs_path && {
-                        supportRelativePath: true,
-                        fileSystemPath: inputs.fs_path,
-                    }),
-                }
-                // console.log('body:', body)
-                stack = await portainer.createStackRepo(endpointID, body)
-                // console.log('stack:', stack)
-                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
-            }
-        } else if (inputs.type === 'file') {
-            core.info('📄 Performing Stack File Deployment')
-            const stackFileContent = fs.readFileSync(inputs.file, 'utf-8')
-            if (stackID) {
-                core.info(`Stack Found - Updating Stack ID: ${stackID}`)
-                const body = {
-                    env,
-                    prune: inputs.prune,
-                    pullImage: inputs.pull,
-                    stackFileContent,
-                }
-                // console.log('body:', body)
-                stack = await portainer.updateStackString(stackID, endpointID, body)
-                // console.log('stack:', stack)
-                core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
-            } else {
-                core.info('Stack NOT Found - Deploying NEW Stack')
-                const body = {
-                    name: inputs.name,
-                    swarmID,
-                    stackFileContent,
-                    env,
-                }
-                // console.log('body:', body)
-                stack = await portainer.createStackString(endpointID, body)
-                // console.log('stack:', stack)
-                core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
-            }
-        }
-
-        // Set Outputs
-        core.info('📩 Setting Outputs')
-        core.setOutput('stackID', stack.Id)
-        core.setOutput('swarmID', swarmID)
-        core.setOutput('endpointID', endpointID)
-
-        // Summary
-        if (inputs.summary) {
-            core.info('📝 Writing Job Summary')
-            try {
-                await addSummary(inputs, stack)
-            } catch (e) {
-                console.log(e)
-                core.error(`Error writing Job Summary ${e.message}`)
-            }
-        }
-
-        core.info('✅ \u001b[32;1mFinished Success')
-    } catch (e) {
-        core.debug(e)
-        console.log('response:', e.response?.data)
-        core.setFailed(e.message)
     }
-})()
+
+    // Set Variables
+    let endpointID = Number.parseInt(inputs.endpoint)
+    if (!endpointID) {
+        const endpoints = await portainer.getEndpoints()
+        // console.log('endpoints:', endpoints)
+        endpointID = endpoints[0]?.Id
+        if (!endpointID) {
+            return core.setFailed('No Endpoints Found!')
+        }
+    }
+    core.info(`endpointID: \u001b[36m${endpointID}`)
+
+    let swarmID = null
+    if (!inputs.standalone) {
+        const swarm = await portainer.getSwarm(endpointID)
+        // console.log('swarm:', swarm)
+        swarmID = swarm.ID
+    }
+    core.info(`swarmID: \u001b[36m${swarmID}`)
+
+    // Get Stack
+    const stacks = await portainer.getStacks()
+    // console.log('stacks:', stacks)
+    let stack = stacks.find(
+        (item) => item.Name === inputs.name && item.EndpointId === endpointID
+    )
+    // console.log('stack:', stack)
+    let stackID = stack?.Id
+    core.info(`stackID: \u001b[36m${stackID}`)
+
+    // Update Environment
+    const env = getEnv(inputs, stack)
+
+    // Perform Deploy
+    if (inputs.type === 'repo') {
+        core.info('🌐 Performing Repository Deployment')
+        const repositoryAuthentication = !!(inputs.username || inputs.password)
+        if (stackID) {
+            core.info(`Stack Found - Updating Stack ID: ${stack.Id}`)
+            const body = {
+                env,
+                prune: inputs.prune,
+                pullImage: inputs.pull,
+                repositoryReferenceName: inputs.ref,
+                repositoryAuthentication,
+                repositoryPassword: inputs.password,
+                repositoryUsername: inputs.username,
+            }
+            // console.log('body:', body)
+            stack = await portainer.updateStackRepo(stackID, endpointID, body)
+            // console.log('stack:', stack)
+            core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+        } else {
+            core.info('Stack NOT Found - Deploying NEW Stack')
+            const body = {
+                name: inputs.name,
+                swarmID,
+                repositoryURL: inputs.repo,
+                composeFile: inputs.file,
+                env,
+                tlsskipVerify: inputs.tlsskip,
+                repositoryReferenceName: inputs.ref,
+                repositoryAuthentication,
+                repositoryPassword: inputs.password,
+                repositoryUsername: inputs.username,
+                ...(inputs.fs_path && {
+                    supportRelativePath: true,
+                    fileSystemPath: inputs.fs_path,
+                }),
+            }
+            // console.log('body:', body)
+            stack = await portainer.createStackRepo(endpointID, body)
+            // console.log('stack:', stack)
+            core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
+        }
+    } else if (inputs.type === 'file') {
+        core.info('📄 Performing Stack File Deployment')
+        const stackFileContent = fs.readFileSync(inputs.file, 'utf-8')
+        if (stackID) {
+            core.info(`Stack Found - Updating Stack ID: ${stackID}`)
+            const body = {
+                env,
+                prune: inputs.prune,
+                pullImage: inputs.pull,
+                stackFileContent,
+            }
+            // console.log('body:', body)
+            stack = await portainer.updateStackString(stackID, endpointID, body)
+            // console.log('stack:', stack)
+            core.info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+        } else {
+            core.info('Stack NOT Found - Deploying NEW Stack')
+            const body = {
+                name: inputs.name,
+                swarmID,
+                stackFileContent,
+                env,
+            }
+            // console.log('body:', body)
+            stack = await portainer.createStackString(endpointID, body)
+            // console.log('stack:', stack)
+            core.info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
+        }
+    }
+
+    // Set Outputs
+    core.info('📩 Setting Outputs')
+    core.setOutput('stackID', stack.Id)
+    core.setOutput('swarmID', swarmID)
+    core.setOutput('endpointID', endpointID)
+
+    // Summary
+    if (inputs.summary) {
+        core.info('📝 Writing Job Summary')
+        try {
+            await addSummary(inputs, stack)
+        } catch (e) {
+            console.log(e)
+            core.error(`Error writing Job Summary ${e.message}`)
+        }
+    }
+
+    core.info('✅ \u001b[32;1mFinished Success')
+}
 
 /**
  * @function getEnv
@@ -42472,7 +42466,7 @@ async function addSummary(inputs, stack) {
 }
 
 /**
- * Parse Data from Input
+ * Parse JSON/YAML Data from a String
  * @param {string} data
  * @return {object}
  */
@@ -42544,6 +42538,12 @@ function getInputs() {
         summary: core.getBooleanInput('summary'),
     }
 }
+
+main().catch((e) => {
+    core.debug(e)
+    core.info(e.message)
+    core.setFailed(e.message)
+})
 
 module.exports = __webpack_exports__;
 /******/ })()

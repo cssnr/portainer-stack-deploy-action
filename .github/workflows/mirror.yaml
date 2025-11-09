@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: "Mirror to Codeberg"
-        uses: cssnr/mirror-repository-action@v1
+        uses: cssnr/mirror-repository-action@latest
         with:
           host: https://codeberg.org
           create: true

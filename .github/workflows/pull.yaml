@@ -41,4 +41,10 @@ jobs:
 
       - name: "NPM Outdated Check"
         continue-on-error: true
-        uses: cssnr/npm-outdated-action@master
+        uses: cssnr/npm-outdated-action@latest
+
+      - name: "Actions Up"
+        continue-on-error: true
+        uses: cssnr/actions-up-action@latest
+        with:
+          exclude: "cssnr/.*,actions/.*"
