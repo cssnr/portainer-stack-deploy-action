@@ -19,10 +19,12 @@ jobs:
 
     permissions:
       pull-requests: write
+      statuses: write
+      checks: write
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "Setup Node 24"
         uses: actions/setup-node@v6
@@ -38,7 +40,7 @@ jobs:
         id: eslint
         if: ${{ !cancelled() }}
         run: |
-          npm run lint:report
+          npm run lint
 
       - name: "Prettier"
         if: ${{ !cancelled() }}
@@ -76,7 +78,7 @@ jobs:
         run: |
           yq -e '.runs.main | test("^dist/")' action.yml
 
-      - name: "ESLint Annotate"
-        if: ${{ !cancelled() && steps.eslint.outcome != 'success' }}
-        continue-on-error: true
-        uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0
+      #- name: "ESLint Annotate"
+      #  if: ${{ !cancelled() && steps.eslint.outcome != 'success' }}
+      #  continue-on-error: true
+      #  uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0

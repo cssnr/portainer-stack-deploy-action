@@ -10,9 +10,9 @@
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-action?logo=github&label=updated)](https://github.com/cssnr/portainer-stack-deploy-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/portainer-stack-deploy-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/portainer-stack-deploy-action)
 [![Docs Last Commit](https://img.shields.io/github/last-commit/cssnr/portainer-stack-deploy-docs?logo=vitepress&logoColor=white&label=docs)](https://portainer-deploy.cssnr.com/)
-[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/contributors)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/portainer-stack-deploy-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/portainer-stack-deploy-action?logo=htmx)](https://github.com/cssnr/portainer-stack-deploy-action/blob/master/src)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/graphs/contributors)
 [![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/portainer-stack-deploy-action?logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/portainer-stack-deploy-action?style=flat&logo=github)](https://github.com/cssnr/portainer-stack-deploy-action/stargazers)
@@ -22,6 +22,9 @@
 
 # Portainer Stack Deploy Action
 
+<a title="Portainer Stack Deploy" href="https://portainer-deploy.cssnr.com/" target="_blank">
+<img alt="Portainer Stack Deploy" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/portainer-stack-deploy-docs/refs/heads/master/docs/public/images/logo/logo.png"></a>
+
 - [Features](#Features)
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
@@ -30,10 +33,6 @@
 - [Tags](#Tags)
 - [Support](#Support)
 - [Contributing](#Contributing)
-
-<p align="center"><a title="Portainer Stack Deploy" href="https://portainer-deploy.cssnr.com/" target="_blank">
-<img alt="Portainer Stack Deploy" width="256" height="auto" src="https://raw.githubusercontent.com/cssnr/portainer-stack-deploy-docs/refs/heads/master/docs/public/images/logo/logo.png" />
-</a></p>
 
 Deploy, Update or Create a Portainer Stack from a Repository or Compose File.
 Supports both Swarm and Standalone Docker deployments for Portainer Community and Business Enterprise Edition.
@@ -80,29 +79,29 @@ You can [get started here](https://portainer-deploy.cssnr.com/guides/get-started
 > [!IMPORTANT]  
 > Visit the [Documentation Site](https://portainer-deploy.cssnr.com/) for comprehensive, up-to-date documentation.
 
-| Input          | Default&nbsp;Value    | Description&nbsp;of&nbsp;the&nbsp;Input     |
-| :------------- | :-------------------- | :------------------------------------------ |
-| **name**       | _Required_            | Stack Name [⤵️](#name)                      |
-| **url**        | _Required_            | Portainer URL [⤵️](#url)                    |
-| **token**      | _Required_            | Portainer Token [⤵️](#token)                |
-| **file**       | `docker-compose.yaml` | Compose File [⤵️](#file)                    |
-| **endpoint**   | `endpoints[0].Id`     | Portainer Endpoint [⤵️](#endpoint)          |
-| **ref**        | `current reference`   | Repository Ref [⤵️](#ref)                   |
-| **repo**       | `current repository`  | Repository URL [⤵️](#repo)                  |
-| **tlsskip**    | `false`               | Skip Repo TLS Verify                        |
-| **prune**      | `true`                | Prune Services                              |
-| **pull**       | `true`                | Pull Images                                 |
-| **type**       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
-| **standalone** | `false`               | Deploy Standalone Stack                     |
-| **env_data**   | -                     | Env JSON/YAML Data [⤵️](#env_data)          |
-| **env_json**   | **DEPRECATED**        | This has changed to [env_data](#env_data)   |
-| **env_file**   | -                     | Dotenv File Path [⤵️](#env_file)            |
-| **merge_env**  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
-| **username**   | -                     | Repository Username [⤵️](#usernamepassword) |
-| **password**   | -                     | Repository Password [⤵️](#usernamepassword) |
-| **fs_path**    | -                     | Relative Path (BE) [⤵️](#fs_path)           |
-| **headers**    | -                     | Custom Headers JSON/YAML [⤵️](#headers)     |
-| **summary**    | `true`                | Add Summary to Job [⤵️](#summary)           |
+| Input      | Default&nbsp;Value    | Description&nbsp;of&nbsp;the&nbsp;Input     |
+| :--------- | :-------------------- | :------------------------------------------ |
+| name       | _Required_            | Stack Name [⤵️](#name)                      |
+| url        | _Required_            | Portainer URL [⤵️](#url)                    |
+| token      | _Required_            | Portainer Token [⤵️](#token)                |
+| file       | `docker-compose.yaml` | Compose File [⤵️](#file)                    |
+| endpoint   | `endpoints[0].Id`     | Portainer Endpoint [⤵️](#endpoint)          |
+| ref        | `current reference`   | Repository Ref [⤵️](#ref)                   |
+| repo       | `current repository`  | Repository URL [⤵️](#repo)                  |
+| tlsskip    | `false`               | Skip Repo TLS Verify                        |
+| prune      | `true`                | Prune Services                              |
+| pull       | `true`                | Pull Images                                 |
+| type       | `repo`                | Type [`repo`, `file`] [⤵️](#type)           |
+| standalone | `false`               | Deploy Standalone Stack                     |
+| env_data   | -                     | Env JSON/YAML Data [⤵️](#env_data)          |
+| env_json   | **DEPRECATED**        | This has changed to [env_data](#env_data)   |
+| env_file   | -                     | Dotenv File Path [⤵️](#env_file)            |
+| merge_env  | `false`               | Merge Env Vars [⤵️](#merge_env)             |
+| username   | -                     | Repository Username [⤵️](#usernamepassword) |
+| password   | -                     | Repository Password [⤵️](#usernamepassword) |
+| fs_path    | -                     | Relative Path (BE) [⤵️](#fs_path)           |
+| headers    | -                     | Custom Headers JSON/YAML [⤵️](#headers)     |
+| summary    | `true`                | Add Summary to Job [⤵️](#summary)           |
 
 > For more details, see the [Inputs Documentation](https://portainer-deploy.cssnr.com/docs/inputs)
 > and [Portainer API Documentation](https://app.swaggerhub.com/apis/portainer/portainer-ce/).
@@ -677,16 +676,20 @@ and [additional](https://cssnr.com/) open source projects.
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
 
-Additionally, you can support other GitHub Actions I have published:
+[![Actions Tools](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/actions/actions-tools.png)](https://actions-tools.cssnr.com/)
+
+Additionally, you can support other [GitHub Actions](https://actions.cssnr.com/) I have published:
 
 - [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
 - [Portainer Stack Deploy Action](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
 - [Docker Context Action](https://github.com/cssnr/docker-context-action?tab=readme-ov-file#readme)
 - [Actions Up Action](https://github.com/cssnr/actions-up-action?tab=readme-ov-file#readme)
+- [Zensical Action](https://github.com/cssnr/zensical-action?tab=readme-ov-file#readme)
 - [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
 - [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
+- [TOML Action](https://github.com/cssnr/toml-action?tab=readme-ov-file#readme)
 - [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
 - [JSON Key Value Check Action](https://github.com/cssnr/json-key-value-check-action?tab=readme-ov-file#readme)
 - [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
@@ -720,10 +723,11 @@ These actions are not published on the Marketplace, but may be useful.
 
 These are basic action templates that I use for creating new actions.
 
-- [js-test-action](https://github.com/smashedr/js-test-action?tab=readme-ov-file#readme) - JavaScript
-- [ts-test-action](https://github.com/smashedr/ts-test-action?tab=readme-ov-file#readme) - TypeScript
-- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python (Dockerfile)
-- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker (Image)
+- [javascript-action](https://github.com/smashedr/javascript-action?tab=readme-ov-file#readme) - JavaScript
+- [typescript-action](https://github.com/smashedr/typescript-action?tab=readme-ov-file#readme) - TypeScript
+- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Dockerfile Python
+- [test-action-uv](https://github.com/smashedr/test-action-uv?tab=readme-ov-file#readme) - Dockerfile Python UV
+- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker Image Python
 
 Note: The `docker-test-action` builds, runs and pushes images to [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
