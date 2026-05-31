@@ -1,4 +1,4 @@
-import core from '@actions/core'
+import * as core from '@actions/core'
 import fs from 'node:fs'
 import dotenv from 'dotenv'
 import yaml from 'js-yaml'

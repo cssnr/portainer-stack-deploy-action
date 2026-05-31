@@ -33552,10 +33552,6 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// NAMESPACE OBJECT: ./node_modules/@actions/core/lib/core.js
-var core_namespaceObject = {};
-__nccwpck_require__.r(core_namespaceObject);
-
 // NAMESPACE OBJECT: ./node_modules/axios/lib/platform/common/utils.js
 var common_utils_namespaceObject = {};
 __nccwpck_require__.r(common_utils_namespaceObject);
@@ -33569,6 +33565,42 @@ __nccwpck_require__.d(common_utils_namespaceObject, {
 
 // EXTERNAL MODULE: external "os"
 var external_os_ = __nccwpck_require__(857);
+;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
+// We use any as a valid input type
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Sanitizes an input into a string so it can be passed into issueCommand safely
+ * @param input input to sanitize into a string
+ */
+function utils_toCommandValue(input) {
+    if (input === null || input === undefined) {
+        return '';
+    }
+    else if (typeof input === 'string' || input instanceof String) {
+        return input;
+    }
+    return JSON.stringify(input);
+}
+/**
+ *
+ * @param annotationProperties
+ * @returns The command properties to send with the actual annotation command
+ * See IssueCommandProperties: https://github.com/actions/runner/blob/main/src/Runner.Worker/ActionCommandManager.cs#L646
+ */
+function utils_toCommandProperties(annotationProperties) {
+    if (!Object.keys(annotationProperties).length) {
+        return {};
+    }
+    return {
+        title: annotationProperties.title,
+        file: annotationProperties.file,
+        line: annotationProperties.startLine,
+        endLine: annotationProperties.endLine,
+        col: annotationProperties.startColumn,
+        endColumn: annotationProperties.endColumn
+    };
+}
+//# sourceMappingURL=utils.js.map
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/command.js
 
 
@@ -33607,7 +33639,7 @@ var external_os_ = __nccwpck_require__(857);
  */
 function command_issueCommand(command, properties, message) {
     const cmd = new Command(command, properties, message);
-    process.stdout.write(cmd.toString() + os.EOL);
+    process.stdout.write(cmd.toString() + external_os_.EOL);
 }
 function command_issue(name, message = '') {
     command_issueCommand(name, {}, message);
@@ -33647,13 +33679,13 @@ class Command {
     }
 }
 function escapeData(s) {
-    return toCommandValue(s)
+    return utils_toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A');
 }
 function escapeProperty(s) {
-    return toCommandValue(s)
+    return utils_toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A')
@@ -33678,16 +33710,16 @@ function file_command_issueFileCommand(command, message) {
     if (!filePath) {
         throw new Error(`Unable to find environment variable for file command ${command}`);
     }
-    if (!fs.existsSync(filePath)) {
+    if (!external_fs_.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
     }
-    fs.appendFileSync(filePath, `${toCommandValue(message)}${os.EOL}`, {
+    external_fs_.appendFileSync(filePath, `${utils_toCommandValue(message)}${external_os_.EOL}`, {
         encoding: 'utf8'
     });
 }
 function file_command_prepareKeyValueMessage(key, value) {
-    const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
-    const convertedValue = toCommandValue(value);
+    const delimiter = `ghadelimiter_${external_crypto_.randomUUID()}`;
+    const convertedValue = utils_toCommandValue(value);
     // These should realistically never happen, but just in case someone finds a
     // way to exploit uuid generation let's not allow keys or values that contain
     // the delimiter.
@@ -33697,7 +33729,7 @@ function file_command_prepareKeyValueMessage(key, value) {
     if (convertedValue.includes(delimiter)) {
         throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
     }
-    return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
+    return `${key}<<${delimiter}${external_os_.EOL}${convertedValue}${external_os_.EOL}${delimiter}`;
 }
 //# sourceMappingURL=file-command.js.map
 // EXTERNAL MODULE: external "path"
@@ -34927,7 +34959,7 @@ const _summary = new Summary();
  * @deprecated use `core.summary`
  */
 const markdownSummary = (/* unused pure expression or super */ null && (_summary));
-const summary = (/* unused pure expression or super */ null && (_summary));
+const summary = _summary;
 //# sourceMappingURL=summary.js.map
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/path-utils.js
 
@@ -36319,10 +36351,10 @@ function getBooleanInput(name, options) {
 function setOutput(name, value) {
     const filePath = process.env['GITHUB_OUTPUT'] || '';
     if (filePath) {
-        return issueFileCommand('OUTPUT', prepareKeyValueMessage(name, value));
+        return file_command_issueFileCommand('OUTPUT', file_command_prepareKeyValueMessage(name, value));
     }
-    process.stdout.write(os.EOL);
-    issueCommand('set-output', { name }, toCommandValue(value));
+    process.stdout.write(external_os_.EOL);
+    command_issueCommand('set-output', { name }, utils_toCommandValue(value));
 }
 /**
  * Enables or disables the echoing of commands into stdout for the rest of the step.
@@ -36358,7 +36390,7 @@ function isDebug() {
  * @param message debug message
  */
 function core_debug(message) {
-    issueCommand('debug', {}, message);
+    command_issueCommand('debug', {}, message);
 }
 /**
  * Adds an error issue
@@ -36366,7 +36398,7 @@ function core_debug(message) {
  * @param properties optional properties to add to the annotation.
  */
 function error(message, properties = {}) {
-    issueCommand('error', toCommandProperties(properties), message instanceof Error ? message.toString() : message);
+    command_issueCommand('error', utils_toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 /**
  * Adds a warning issue
@@ -36389,7 +36421,7 @@ function notice(message, properties = {}) {
  * @param message info message
  */
 function info(message) {
-    process.stdout.write(message + os.EOL);
+    process.stdout.write(message + external_os_.EOL);
 }
 /**
  * Begin an output group.
@@ -36399,13 +36431,13 @@ function info(message) {
  * @param name The name of the output group
  */
 function startGroup(name) {
-    issue('group', name);
+    command_issue('group', name);
 }
 /**
  * End an output group.
  */
 function endGroup() {
-    issue('endgroup');
+    command_issue('endgroup');
 }
 /**
  * Wrap an asynchronous function call in a group.
@@ -47625,16 +47657,16 @@ class Portainer {
 
 
 async function src_main() /* NOSONAR */ {
-  core_namespaceObject["default"].info('🏳️ Portainer Stack Deploy Action')
+  info('🏳️ Portainer Stack Deploy Action')
 
   // Parse Inputs
   const inputs = getInputs()
-  core_namespaceObject["default"].startGroup('Parsed Inputs')
+  startGroup('Parsed Inputs')
   console.log('inputs:', inputs)
-  core_namespaceObject["default"].endGroup() // Inputs
+  endGroup() // Inputs
 
   if (!['repo', 'file'].includes(inputs.type)) {
-    core_namespaceObject["default"].setFailed(`Unknown type: ${inputs.type}. Values: [repo, file]`)
+    setFailed(`Unknown type: ${inputs.type}. Values: [repo, file]`)
     return
   }
 
@@ -47644,14 +47676,14 @@ async function src_main() /* NOSONAR */ {
   const portainer = new src_portainer(inputs.url, inputs.token, headers)
   const version = await portainer.getVersion()
   const versionString = `${version.ServerVersion} ${version.VersionSupport} ${version.ServerEdition}`
-  core_namespaceObject["default"].startGroup(`Portainer Version: \u001b[34m${versionString}`)
+  startGroup(`Portainer Version: \u001b[34m${versionString}`)
   delete version.Runtime
   console.log(version)
-  core_namespaceObject["default"].endGroup() // Portainer Version
+  endGroup() // Portainer Version
 
   if (inputs.fs_path) {
     if (version.ServerEdition !== 'EE') {
-      core_namespaceObject["default"].setFailed('Relative path only supported in Portainer EE!')
+      setFailed('Relative path only supported in Portainer EE!')
       return
     }
   }
@@ -47663,10 +47695,10 @@ async function src_main() /* NOSONAR */ {
     // console.log('endpoints:', endpoints)
     endpointID = endpoints[0]?.Id
     if (!endpointID) {
-      return core_namespaceObject["default"].setFailed('No Endpoints Found!')
+      return setFailed('No Endpoints Found!')
     }
   }
-  core_namespaceObject["default"].info(`endpointID: \u001b[36m${endpointID}`)
+  info(`endpointID: \u001b[36m${endpointID}`)
 
   let swarmID = null
   if (!inputs.standalone) {
@@ -47674,7 +47706,7 @@ async function src_main() /* NOSONAR */ {
     // console.log('swarm:', swarm)
     swarmID = swarm.ID
   }
-  core_namespaceObject["default"].info(`swarmID: \u001b[36m${swarmID}`)
+  info(`swarmID: \u001b[36m${swarmID}`)
 
   // Get Stack
   const stacks = await portainer.getStacks()
@@ -47684,17 +47716,17 @@ async function src_main() /* NOSONAR */ {
   )
   // console.log('stack:', stack)
   let stackID = stack?.Id
-  core_namespaceObject["default"].info(`stackID: \u001b[36m${stackID}`)
+  info(`stackID: \u001b[36m${stackID}`)
 
   // Update Environment
   const env = src_getEnv(inputs, stack)
 
   // Perform Deploy
   if (inputs.type === 'repo') {
-    core_namespaceObject["default"].info('🌐 Performing Repository Deployment')
+    info('🌐 Performing Repository Deployment')
     const repositoryAuthentication = !!(inputs.username || inputs.password)
     if (stackID) {
-      core_namespaceObject["default"].info(`Stack Found - Updating Stack ID: ${stack.Id}`)
+      info(`Stack Found - Updating Stack ID: ${stack.Id}`)
       const body = {
         env,
         prune: inputs.prune,
@@ -47707,9 +47739,9 @@ async function src_main() /* NOSONAR */ {
       // console.log('body:', body)
       stack = await portainer.updateStackRepo(stackID, endpointID, body)
       // console.log('stack:', stack)
-      core_namespaceObject["default"].info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+      info(`Updated Stack ${stack.Id}: ${stack.Name}`)
     } else {
-      core_namespaceObject["default"].info('Stack NOT Found - Deploying NEW Stack')
+      info('Stack NOT Found - Deploying NEW Stack')
       const body = {
         name: inputs.name,
         swarmID,
@@ -47729,13 +47761,13 @@ async function src_main() /* NOSONAR */ {
       // console.log('body:', body)
       stack = await portainer.createStackRepo(endpointID, body)
       // console.log('stack:', stack)
-      core_namespaceObject["default"].info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
+      info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
     }
   } else if (inputs.type === 'file') {
-    core_namespaceObject["default"].info('📄 Performing Stack File Deployment')
+    info('📄 Performing Stack File Deployment')
     const stackFileContent = external_node_fs_default().readFileSync(inputs.file, 'utf-8')
     if (stackID) {
-      core_namespaceObject["default"].info(`Stack Found - Updating Stack ID: ${stackID}`)
+      info(`Stack Found - Updating Stack ID: ${stackID}`)
       const body = {
         env,
         prune: inputs.prune,
@@ -47745,9 +47777,9 @@ async function src_main() /* NOSONAR */ {
       // console.log('body:', body)
       stack = await portainer.updateStackString(stackID, endpointID, body)
       // console.log('stack:', stack)
-      core_namespaceObject["default"].info(`Updated Stack ${stack.Id}: ${stack.Name}`)
+      info(`Updated Stack ${stack.Id}: ${stack.Name}`)
     } else {
-      core_namespaceObject["default"].info('Stack NOT Found - Deploying NEW Stack')
+      info('Stack NOT Found - Deploying NEW Stack')
       const body = {
         name: inputs.name,
         swarmID,
@@ -47757,28 +47789,28 @@ async function src_main() /* NOSONAR */ {
       // console.log('body:', body)
       stack = await portainer.createStackString(endpointID, body)
       // console.log('stack:', stack)
-      core_namespaceObject["default"].info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
+      info(`Deployed Stack: ${stack.Id}: ${stack.Name}`)
     }
   }
 
   // Set Outputs
-  core_namespaceObject["default"].info('📩 Setting Outputs')
-  core_namespaceObject["default"].setOutput('stackID', stack.Id)
-  core_namespaceObject["default"].setOutput('swarmID', swarmID)
-  core_namespaceObject["default"].setOutput('endpointID', endpointID)
+  info('📩 Setting Outputs')
+  setOutput('stackID', stack.Id)
+  setOutput('swarmID', swarmID)
+  setOutput('endpointID', endpointID)
 
   // Summary
   if (inputs.summary) {
-    core_namespaceObject["default"].info('📝 Writing Job Summary')
+    info('📝 Writing Job Summary')
     try {
       await addSummary(inputs, stack)
     } catch (e) {
       console.log(e)
-      core_namespaceObject["default"].error(`Error writing Job Summary ${e.message}`)
+      error(`Error writing Job Summary ${e.message}`)
     }
   }
 
-  core_namespaceObject["default"].info('✅ \u001b[32;1mFinished Success')
+  info('✅ \u001b[32;1mFinished Success')
 }
 
 /**
@@ -47824,12 +47856,12 @@ function src_getEnv(inputs, stack) {
  * @return {Promise<void>}
  */
 async function addSummary(inputs, stack) {
-  core_namespaceObject["default"].summary.addRaw(`## Portainer Stack Deploy Action\n`)
+  summary.addRaw(`## Portainer Stack Deploy Action\n`)
   const action = stack.UpdateDate ? '**Updated** Existing' : '**Created** New'
-  core_namespaceObject["default"].summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
+  summary.addRaw(`🎉 ${action} Stack ${stack.Id}: \`${stack.Name}\`\n\n`)
 
-  core_namespaceObject["default"].summary.addRaw('<details><summary>Stack Details</summary>')
-  core_namespaceObject["default"].summary.addTable([
+  summary.addRaw('<details><summary>Stack Details</summary>')
+  summary.addTable([
     [
       { data: 'Item', header: true },
       { data: 'Value', header: true },
@@ -47850,7 +47882,7 @@ async function addSummary(inputs, stack) {
     [{ data: 'EndpointID' }, { data: stack.EndpointId }],
     [{ data: 'SwarmID' }, { data: stack.SwarmId ? stack.SwarmId : '-' }],
   ])
-  core_namespaceObject["default"].summary.addRaw('</details>\n')
+  summary.addRaw('</details>\n')
 
   delete inputs.token
   delete inputs.env_data
@@ -47858,16 +47890,16 @@ async function addSummary(inputs, stack) {
   // const yaml = Object.entries(inputs)
   //     .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
   //     .join('\n')
-  core_namespaceObject["default"].summary.addRaw('<details><summary>Inputs</summary>')
-  core_namespaceObject["default"].summary.addCodeBlock(jsYaml.dump(inputs), 'yaml')
-  core_namespaceObject["default"].summary.addRaw('</details>\n')
+  summary.addRaw('<details><summary>Inputs</summary>')
+  summary.addCodeBlock(jsYaml.dump(inputs), 'yaml')
+  summary.addRaw('</details>\n')
 
   const docs = 'https://portainer-deploy.cssnr.com/'
   const repo = 'https://github.com/cssnr/portainer-stack-deploy-action'
-  core_namespaceObject["default"].summary.addRaw(
+  summary.addRaw(
     `\n\nView the [Documentation](${docs}), report [Issues](${repo}/issues) or [Request Features](${repo}/discussions/categories/feature-requests).\n\n---`,
   )
-  await core_namespaceObject["default"].summary.write()
+  await summary.write()
 }
 
 /**
@@ -47876,19 +47908,19 @@ async function addSummary(inputs, stack) {
  * @return {object}
  */
 function parseData(data) {
-  core_namespaceObject["default"].debug(`parseData: ${typeof data}: ${data}`)
+  core_debug(`parseData: ${typeof data}: ${data}`)
   // console.log(`parseData: ${typeof data}: ${data}`)
   if (!data) return {}
   try {
     return JSON.parse(data)
   } catch (e) {
-    core_namespaceObject["default"].debug(`JSON.parse failed: ${e.message}`)
+    core_debug(`JSON.parse failed: ${e.message}`)
     // console.log(`JSON.parse failed: ${e.message}`)
   }
   try {
     return jsYaml.load(data)
   } catch (e) {
-    core_namespaceObject["default"].debug(`yaml.load failed: ${e.message}`)
+    core_debug(`yaml.load failed: ${e.message}`)
     // console.log(`yaml.load failed: ${e.message}`)
   }
   throw new Error(`Unable to parse data: ${data}`)
@@ -47921,33 +47953,33 @@ function parseData(data) {
  */
 function getInputs() {
   return {
-    token: core_namespaceObject["default"].getInput('token', { required: true }),
-    url: core_namespaceObject["default"].getInput('url', { required: true }),
-    name: core_namespaceObject["default"].getInput('name', { required: true }),
-    file: core_namespaceObject["default"].getInput('file', { required: true }),
-    endpoint: core_namespaceObject["default"].getInput('endpoint'),
-    ref: core_namespaceObject["default"].getInput('ref'),
-    repo: core_namespaceObject["default"].getInput('repo'),
-    tlsskip: core_namespaceObject["default"].getBooleanInput('tlsskip'),
-    prune: core_namespaceObject["default"].getBooleanInput('prune'),
-    pull: core_namespaceObject["default"].getBooleanInput('pull'),
-    type: core_namespaceObject["default"].getInput('type', { required: true }),
-    standalone: core_namespaceObject["default"].getBooleanInput('standalone'),
-    env_data: core_namespaceObject["default"].getInput('env_data') || core_namespaceObject["default"].getInput('env_json'),
-    env_file: core_namespaceObject["default"].getInput('env_file'),
-    merge_env: core_namespaceObject["default"].getBooleanInput('merge_env'),
-    username: core_namespaceObject["default"].getInput('username'),
-    password: core_namespaceObject["default"].getInput('password'),
-    fs_path: core_namespaceObject["default"].getInput('fs_path'),
-    headers: core_namespaceObject["default"].getInput('headers'),
-    summary: core_namespaceObject["default"].getBooleanInput('summary'),
+    token: getInput('token', { required: true }),
+    url: getInput('url', { required: true }),
+    name: getInput('name', { required: true }),
+    file: getInput('file', { required: true }),
+    endpoint: getInput('endpoint'),
+    ref: getInput('ref'),
+    repo: getInput('repo'),
+    tlsskip: getBooleanInput('tlsskip'),
+    prune: getBooleanInput('prune'),
+    pull: getBooleanInput('pull'),
+    type: getInput('type', { required: true }),
+    standalone: getBooleanInput('standalone'),
+    env_data: getInput('env_data') || getInput('env_json'),
+    env_file: getInput('env_file'),
+    merge_env: getBooleanInput('merge_env'),
+    username: getInput('username'),
+    password: getInput('password'),
+    fs_path: getInput('fs_path'),
+    headers: getInput('headers'),
+    summary: getBooleanInput('summary'),
   }
 }
 
 src_main().catch((e) => {
-  core_namespaceObject["default"].debug(e)
-  core_namespaceObject["default"].info(e.message)
-  core_namespaceObject["default"].setFailed(e.message)
+  core_debug(e)
+  info(e.message)
+  setFailed(e.message)
 })
 
 })();
