@@ -1,7 +1,16 @@
 name: "Check Build"
 
 on:
+  workflow_dispatch:
+  push:
+    branches: [master]
   pull_request_target:
+    paths:
+      - ".github/workflows/check-build.yaml"
+      - "dist/**"
+      - "src/**"
+      - "package*.json"
+      - "rollup.config.*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,32 +27,40 @@ jobs:
       issues: write
 
     steps:
+      - name: "Debug event.json"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
       - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
-
-      - name: "Check Changed Files"
-        id: changed
-        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
-        with:
-          files: |
-            dist/**
-            src/**
-            package*.json
-            rollup.config.*
+      - name: "Debug Environment"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: env
 
       - name: "Checkout Pull"
-        if: ${{ steps.changed.outputs.any_changed == 'true' }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      #- name: "Setup NPM"
+      #  run: |
+      #    npm install -g npm@11.11.1
+
       - name: "Debug"
-        if: ${{ steps.changed.outputs.any_changed == 'true' }}
         continue-on-error: true
         run: |
+          node --version
+          npm --version
           echo "::group::ls"
           ls -lAh
           echo "::endgroup::"
@@ -51,18 +68,5 @@ jobs:
           tree .
           echo "::endgroup::"
 
-      #- name: "Setup Node"
-      #  if: ${{ steps.changed.outputs.any_changed == 'true' }}
-      #  uses: actions/setup-node@v6
-      #  with:
-      #    node-version: 24
-      #
-      #- name: "Install"
-      #  if: ${{ steps.changed.outputs.any_changed == 'true' }}
-      #  id: install
-      #  run: |
-      #    npm ci
-
       - name: "Check Build Action"
-        if: ${{ steps.changed.outputs.any_changed == 'true' }}
         uses: cssnr/check-build-action@v1

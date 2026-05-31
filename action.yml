@@ -1,6 +1,7 @@
 name: "Portainer Stack Deploy Action"
 description: "Deploy, Update or Create a Portainer Swarm or Standalone Stack from a Repository or Compose File"
 author: "Shane"
+
 branding:
   icon: "layers"
   color: "blue"
@@ -56,7 +57,7 @@ inputs:
   password:
     description: "Repository Password"
   fs_path:
-    description: "Relative path volume in host (only available in Portainer BE)"
+    description: "Relative path volume in host (Portainer BE)"
   headers:
     description: "Custom Headers JSON"
   summary:
@@ -72,5 +73,5 @@ outputs:
     description: "Endpoint ID"
 
 runs:
-  using: "node20"
+  using: "node24"
   main: "dist/index.js"

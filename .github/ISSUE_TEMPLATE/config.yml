@@ -1,17 +1,17 @@
 blank_issues_enabled: true
 contact_links:
-  - name: "💡 Request a Feature"
-    about: Request a new feature or enhancement in a discussions.
-    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=feature-requests
-
-  - name: "❔ Ask a Question"
-    about: Ask a general question or start a discussions.
-    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions/new?category=q-a
+  - name: "❔ Start a Discussion"
+    about: Ask a general question or start a discussion
+    url: https://github.com/cssnr/portainer-stack-deploy-action/discussions
 
   - name: "💬 Join Discord"
-    about: Chat with us about general questions, issues or suggestions.
+    about: Chat with us about anything
     url: https://discord.gg/wXy6m2X8wY
 
-  - name: "📝 Submit Feedback"
-    about: Send general feedback through the website.
-    url: https://cssnr.github.io/feedback
+  - name: "📑 View Documentation"
+    about: View the documentation site
+    url: https://portainer-deploy.cssnr.com/
+
+  - name: "🌐 Visit Actions Site"
+    about: Browse more Actions
+    url: https://actions.cssnr.com/

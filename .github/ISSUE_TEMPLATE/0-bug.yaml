@@ -1,26 +1,24 @@
 name: "⚠️ Report an Issue"
-description: "Please let us know if something is not working right..."
+description: "Please let us know if something is not right..."
+type: bug
 labels: ["bug"]
 assignees:
   - smashedr
 
 body:
-  - type: input
-    id: website
-    validations:
-      required: false
+  - type: markdown
     attributes:
-      label: URL
-      description: Please provide a link to the repository or workflow in question if possible.
+      value: |
+        All issues will be responded too.
 
   - type: textarea
     id: description
     validations:
       required: true
     attributes:
-      label: Issue Description
-      description: Please describe the issue you are experiencing and how it can be reproduced.
-      placeholder: Provide as many details as possible...
+      label: Details
+      description: Please describe the issue you are experiencing and how to reproduce.
+      placeholder: Provide as many details as you can...
 
   - type: textarea
     id: logs
@@ -29,11 +27,18 @@ body:
     attributes:
       label: Log Output
       description: Paste any relevant logs or output in this box.
-      placeholder: This text is automatically wrapped in a code block.
+      placeholder: Output is automatically wrapped in a code block.
       render: shell
+
+  - type: input
+    id: website
+    validations:
+      required: false
+    attributes:
+      label: URL
+      description: Please provide a link to the repository or workflow in question if possible.
 
   - type: markdown
     attributes:
       value: |
-        Any issues or bugs that can be verified will be fixed!
-        Thank you very much for taking the time to make this report...
+        Thank you for taking the time to make this report!
