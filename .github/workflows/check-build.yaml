@@ -1,10 +1,12 @@
 name: "Check Build"
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
   pull_request_target:
     paths:
+      - ".github/workflows/check-build.yaml"
       - "dist/**"
       - "src/**"
       - "package*.json"
@@ -25,20 +27,40 @@ jobs:
       issues: write
 
     steps:
+      - name: "Debug event.json"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
       - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
+      - name: "Debug Environment"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: env
 
       - name: "Checkout Pull"
         uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      #- name: "Setup NPM"
+      #  run: |
+      #    npm install -g npm@11.11.1
+
       - name: "Debug"
         continue-on-error: true
         run: |
+          node --version
+          npm --version
           echo "::group::ls"
           ls -lAh
           echo "::endgroup::"
@@ -47,4 +69,4 @@ jobs:
           echo "::endgroup::"
 
       - name: "Check Build Action"
-        uses: cssnr/check-build-action@latest
+        uses: cssnr/check-build-action@v1
